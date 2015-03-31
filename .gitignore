@@ -1,0 +1,9 @@
+/.idea
+/distributive
+/node_modules
+/system/cache/*
+!/system/cache/.gitkeep
+/system/config/database.php
+/system/config/settings.php
+/system/logs/*
+!/system/logs/.gitkeep

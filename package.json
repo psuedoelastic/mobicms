@@ -1,0 +1,38 @@
+{
+  "name": "mobiCMS",
+  "version": "0.1.0",
+  "description": "mobiCMS Mobile Content Management System",
+  "homepage": "http://mobicms.net",
+  "main": "index.php",
+  "author": "AUTHORS.md",
+  "license": "LICENSE",
+  "keywords": [
+    "mobicms",
+    "cms",
+    "php",
+    "mobile",
+    "web"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://mobiCMS@bitbucket.org/mobiCMS/mobicms.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://bitbucket.org/mobiCMS/mobicms/issues"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-autoprefixer": "^3.0.0",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-compress": "^0.13.0",
+    "grunt-contrib-copy": "^0.8.0",
+    "grunt-contrib-cssmin": "^0.12.2",
+    "grunt-contrib-less": "^1.0.1",
+    "grunt-contrib-uglify": "^0.9.1",
+    "grunt-dev-update": "^1.1.0",
+    "time-grunt": "^1.1.0"
+  }
+}
