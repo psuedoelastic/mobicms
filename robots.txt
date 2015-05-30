@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /assets/
+Disallow: /install/
+Disallow: /modules/
+Disallow: /system/
+Allow: /
