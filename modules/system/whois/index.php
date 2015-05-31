@@ -44,72 +44,32 @@ $form
     ->html('<a class="btn btn-link" href="' . (isset($_SERVER['HTTP_REFERER']) ? htmlspecialchars($_SERVER['HTTP_REFERER']) : App::router()->getUri()) . '">' . __('back') . '</a>');
 
 $form->validate('ip', 'ip');
-//TODO: Доработать ссылку "Назад"
 
 if ($form->process() === true) {
-    $whois = '';
-    if (($fsk = @fsockopen('whois.arin.net.', 43))) {
-        fputs($fsk, $form->output['ip'] . "\r\n");
-        while (!feof($fsk)) $whois .= fgets($fsk, 1024);
-        @fclose($fsk);
-    }
-    $match = [];
-    if (preg_match('#ReferralServer: whois://(.+)#im', $whois, $match)) {
-        if (strpos($match[1], ':') !== false) {
-            $pos = strrpos($match[1], ':');
-            $server = substr($match[1], 0, $pos);
-            $port = (int)substr($match[1], $pos + 1);
-            unset($pos);
-        } else {
-            $server = $match[1];
-            $port = 43;
-        }
-        $buffer = '';
-        if (($fsk = @fsockopen($server, $port))) {
-            fputs($fsk, $form->output['ip'] . "\r\n");
-            while (!feof($fsk)) $buffer .= fgets($fsk, 1024);
-            @fclose($fsk);
-        }
-        $whois = (empty($buffer)) ? $whois : $buffer;
-    }
+    include_once(__DIR__ . '/_sys/classes/WhoisClient.php');
+    include_once(__DIR__ . '/_sys/classes/Whois.php');
+    include_once(__DIR__ . '/_sys/classes/IpTools.php');
+
+    $result = (new Whois)->lookup($form->output['ip']);
+    $whois = nl2br(implode("\n", $result['rawdata']));
 
     // Выделяем цветом важные параметры
     $whois = strtr($whois,
         [
-            '%'              => '#',
-            'inetnum:'       => '<span style="color: #c81237"><strong>inetnum:</strong></span>',
-            'netname:'       => '<span style="color: #c81237"><strong>netname:</strong></span>',
-            'country:'       => '<span style="color: #c81237"><strong>country:</strong></span>',
-            'route:'         => '<span style="color: #c81237"><strong>route:</strong></span>',
-            'org-name:'      => '<span style="color: #c81237"><strong>org-name:</strong></span>',
-            'descr:'         => '<span style="color: #26a51d"><strong>descr:</strong></span>',
-            'address:'       => '<span style="color: #26a51d"><strong>address:</strong></span>'
+            '%'         => '#',
+            'inetnum:'  => '<span style="color: #c81237"><strong>inetnum:</strong></span>',
+            'netname:'  => '<span style="color: #c81237"><strong>netname:</strong></span>',
+            'country:'  => '<span style="color: #c81237"><strong>country:</strong></span>',
+            'route:'    => '<span style="color: #c81237"><strong>route:</strong></span>',
+            'org-name:' => '<span style="color: #c81237"><strong>org-name:</strong></span>',
+            'descr:'    => '<span style="color: #26a51d"><strong>descr:</strong></span>',
+            'address:'  => '<span style="color: #26a51d"><strong>address:</strong></span>'
         ]
     );
 
-    $array = [];
-    $empty = true;
-    foreach (explode("\n", $whois) as $val) {
-        if (substr($val, 0, 1) == '#') {
-            continue;
-        }
-
-        if (empty($val)) {
-            if ($empty) {
-                continue;
-            }
-
-            $empty = true;
-        } else {
-            $empty = false;
-        }
-
-        $array[] = $val;
-    }
-
     $form
         ->divider()
-        ->html('<div class="alert alert-neytral"><small>' . nl2br(implode("\n", $array)) . '</small></div>');
+        ->html('<div class="alert alert-neytral"><small>' . $whois . '</small></div>');
 }
 
 App::view()->setRawVar('form', $form->display());
