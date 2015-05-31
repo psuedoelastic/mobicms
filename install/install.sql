@@ -5,23 +5,24 @@ DROP TABLE IF EXISTS `news`;
 CREATE TABLE `news` (
   `id`          INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `time`        INT(10) UNSIGNED NOT NULL DEFAULT '0',
-  `author`      VARCHAR(30)      NOT NULL DEFAULT '',
+  `author`      VARCHAR(50)      NOT NULL DEFAULT '',
   `author_id`   INT(10) UNSIGNED NOT NULL DEFAULT '0',
-  `title`       VARCHAR(150)     NOT NULL DEFAULT '',
+  `title`       VARCHAR(200)     NOT NULL DEFAULT '',
   `text`        TEXT             NOT NULL,
   `comm_enable` TINYINT(1)       NOT NULL DEFAULT '0',
   `comm_count`  INT(10) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 )
   ENGINE = MyISAM
-  DEFAULT CHARSET = utf8;
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
 
 --
 -- Структура таблицы `system__sessions`
 --
 DROP TABLE IF EXISTS `system__sessions`;
 CREATE TABLE `system__sessions` (
-  `session_id`        VARCHAR(64)          NOT NULL DEFAULT '',
+  `session_id`        VARCHAR(100)          NOT NULL DEFAULT '',
   `session_timestamp` INT(10) UNSIGNED     NOT NULL DEFAULT '0',
   `session_data`      TEXT                 NOT NULL,
   `user_id`           INT(10) UNSIGNED     NOT NULL DEFAULT '0',
@@ -29,13 +30,14 @@ CREATE TABLE `system__sessions` (
   `ip_via_proxy`      INT(10) UNSIGNED     NOT NULL DEFAULT '0',
   `user_agent`        VARCHAR(255)         NOT NULL DEFAULT '',
   `place`             VARCHAR(200)         NOT NULL DEFAULT '',
-  `views`             SMALLINT(5) UNSIGNED NOT NULL DEFAULT '0',
-  `movings`           SMALLINT(5) UNSIGNED NOT NULL DEFAULT '0',
+  `views`             INT(10) UNSIGNED NOT NULL DEFAULT '0',
+  `movings`           INT(10) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`session_id`),
   KEY `online` (`user_id`, `session_timestamp`)
 )
   ENGINE = InnoDB
-  DEFAULT CHARSET = utf8;
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
 
 --
 -- Структура таблицы `user__`
@@ -43,7 +45,7 @@ CREATE TABLE `system__sessions` (
 DROP TABLE IF EXISTS `user__`;
 CREATE TABLE `user__` (
   `id`             INT(10) UNSIGNED    NOT NULL AUTO_INCREMENT,
-  `nickname`       VARCHAR(32)         NOT NULL DEFAULT '',
+  `nickname`       VARCHAR(50)         NOT NULL DEFAULT '',
   `change_time`    INT(10) UNSIGNED    NOT NULL DEFAULT '0',
   `password`       VARCHAR(255)        NOT NULL DEFAULT '',
   `token`          VARCHAR(100)        NOT NULL DEFAULT '',
@@ -53,8 +55,8 @@ CREATE TABLE `user__` (
   `level`          TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
   `ban`            TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
   `sex`            ENUM('m', 'w')      NOT NULL DEFAULT 'm',
-  `avatar`         VARCHAR(250)        NOT NULL DEFAULT '',
-  `imname`         VARCHAR(50)         NOT NULL DEFAULT '',
+  `avatar`         VARCHAR(255)        NOT NULL DEFAULT '',
+  `imname`         VARCHAR(100)         NOT NULL DEFAULT '',
   `birth`          DATE                NOT NULL DEFAULT '0000-00-00',
   `count_comments` INT(10) UNSIGNED    NOT NULL DEFAULT '0',
   `count_forum`    INT(10) UNSIGNED    NOT NULL DEFAULT '0',
@@ -73,14 +75,14 @@ CREATE TABLE `user__` (
   `comm_old`       INT(10) UNSIGNED    NOT NULL DEFAULT '0',
   `ip`             INT(10) UNSIGNED    NOT NULL DEFAULT '0',
   `ip_via_proxy`   INT(10) UNSIGNED    NOT NULL DEFAULT '0',
-  `user_agent`     VARCHAR(200)        NOT NULL DEFAULT '',
-  `notifications`  TEXT                NOT NULL,
+  `user_agent`     VARCHAR(255)        NOT NULL DEFAULT '',
   `reputation`     TEXT                NOT NULL,
   PRIMARY KEY (`id`),
   KEY `last_visit` (`last_visit`)
 )
   ENGINE = InnoDB
-  DEFAULT CHARSET = utf8;
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
 
 --
 -- Структура таблицы `user__ip`
@@ -100,8 +102,8 @@ CREATE TABLE `user__ip` (
   KEY `timestamp` (`timestamp`)
 )
   ENGINE = MyISAM
-  AUTO_INCREMENT = 2
-  DEFAULT CHARSET = utf8;
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
 
 --
 -- Структура таблицы `user__reputation`
@@ -114,7 +116,8 @@ CREATE TABLE `user__reputation` (
   PRIMARY KEY (`from`, `to`)
 )
   ENGINE = MyISAM
-  DEFAULT CHARSET = utf8;
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
 
 --
 -- Структура таблицы `user__settings`
@@ -127,7 +130,8 @@ CREATE TABLE `user__settings` (
   PRIMARY KEY (`user_id`, `key`)
 )
   ENGINE = InnoDB
-  DEFAULT CHARSET = utf8;
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
 
 --
 -- Создаем суперпользователя
@@ -141,5 +145,4 @@ SET `nickname`    = 'admin',
   `rights`        = 9,
   `level`         = 1,
   `sex`           = 'm',
-  `about`         = '',
-  `notifications` = '';
+  `about`         = '';

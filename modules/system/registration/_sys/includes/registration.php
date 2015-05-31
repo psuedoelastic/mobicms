@@ -107,7 +107,6 @@ if (App::cfg()->sys->usr_reg_allow) {
           `join_date`     = ?,
           `last_visit`    = ?,
           `about`         = ?,
-          `notifications` = ?,
           `reputation`  = ?
         ");
 
@@ -121,7 +120,6 @@ if (App::cfg()->sys->usr_reg_allow) {
                 $form->output['sex'],
                 time(),
                 time(),
-                '',
                 '',
                 ''
             ]
