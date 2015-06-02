@@ -6,6 +6,10 @@
 
 Mobile Content Management System. 
 
+## ВНИМАНИЕ!
+Система находится в стадии разработки, не устанавливайте на рабочих сайтах.  
+Только для локального тестирования.
+
 ## The main possibilities of the system:
 - PSR-0 compliant core framework
 - modular architecture

@@ -12,8 +12,6 @@
 
 namespace Mobicms\Routing;
 
-use Mobicms\Exceptions\CommonException;
-
 /**
  * Class Router
  *
@@ -45,7 +43,7 @@ class Router
             require_once CONFIG_PATH . 'routing.php';
             $modules = isset($modules) && is_array($modules) ? $modules : [];
         } else {
-            throw new CommonException('modules configuration file does not exist');
+            throw new \RuntimeException('modules configuration file does not exist');
         }
 
         if (!isset($modules[$this->module])) {

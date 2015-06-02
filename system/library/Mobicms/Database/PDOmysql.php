@@ -12,10 +12,6 @@
 
 namespace Mobicms\Database;
 
-use PDO;
-use PDOException;
-use Mobicms\Exceptions\DatabaseException;
-
 /**
  * Class PDOmysql
  *
@@ -23,14 +19,14 @@ use Mobicms\Exceptions\DatabaseException;
  * @author  Oleg (AlkatraZ) Kasyanov <dev@mobicms.net>
  * @version v.1.0.0 2015-02-01
  */
-class PDOmysql extends PDO
+class PDOmysql extends \PDO
 {
     public function __construct()
     {
         if (is_file(CONFIG_PATH . 'database.php')) {
             require_once CONFIG_PATH . 'database.php';
         } else {
-            throw new DatabaseException('database configuration file does not exist.<br/>Please install the system or restore the file /system/config/system/database.php.');
+            throw new \RuntimeException('database configuration file does not exist.<br/>Please install the system or restore the file /system/config/system/database.php.');
         }
 
         $db_host = isset($db_host) ? $db_host : 'localhost';
@@ -49,14 +45,14 @@ class PDOmysql extends PDO
                 $db_user,
                 $db_pass,
                 [
-                    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                    PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'",
-                    PDO::MYSQL_ATTR_USE_BUFFERED_QUERY
+                    \PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
+                    \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
+                    \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'",
+                    \PDO::MYSQL_ATTR_USE_BUFFERED_QUERY
                 ]
             );
-        } catch (PDOException $e) {
-            throw new DatabaseException($e->getMessage());
+        } catch (\PDOException $e) {
+            throw new \RuntimeException($e->getMessage());
         }
     }
 

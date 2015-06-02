@@ -12,8 +12,6 @@
 
 namespace Mobicms\Editors;
 
-use Mobicms\Exceptions\BadMethodCallException;
-
 /**
  * Class Editor (Facade)
  *
@@ -59,7 +57,7 @@ class Editor
         if (method_exists($this->editorInstance, $method)) {
             return call_user_func([$this->editorInstance, $method], $arguments);
         } else {
-            throw new BadMethodCallException($method . '()');
+            throw new \BadMethodCallException('Invalid method [' . $method . ']');
         }
     }
 }

@@ -12,8 +12,6 @@
 
 namespace Mobicms\Config;
 
-use Mobicms\Exceptions\RuntimeException;
-
 /**
  * Class System
  *
@@ -137,7 +135,7 @@ class System
     private function writeToFile(array $settings)
     {
         if (file_put_contents(CONFIG_PATH . 'settings.php', '<?php' . "\n" . '$settings = ' . var_export($settings, true) . ';') === false) {
-            throw new RuntimeException('Can not write system configuration file');
+            throw new \RuntimeException('Can not write system configuration file');
         }
     }
 

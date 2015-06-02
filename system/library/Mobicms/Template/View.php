@@ -13,7 +13,6 @@
 namespace Mobicms\Template;
 
 use App;
-use Mobicms\Exceptions\InvalidArgumentException;
 
 /**
  * Class View
@@ -234,10 +233,10 @@ class View extends \ArrayObject
                 break;
 
             default:
-                throw new InvalidArgumentException('Unknown extension');
+                throw new \InvalidArgumentException('Unknown extension');
         }
 
-        throw new InvalidArgumentException($file . '" not found');
+        throw new \InvalidArgumentException($file . '" not found');
     }
 
     ////////////////////////////////////////////////////////////////////////////////

@@ -99,24 +99,24 @@ mb_internal_encoding('UTF-8');
 if (DEBUG) {
     error_reporting(E_ALL);
     ini_set('display_errors', 'On');
+    ini_set('log_errors', 'On');
+    ini_set('error_log', LOG_PATH . 'errors-' . date('Y-m-d') . '.log');
 } else {
     error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
     ini_set('display_errors', 'Off');
-    ini_set('log_errors', 'On');
-    ini_set('error_log', LOG_PATH . 'php-error.' . date('m-d-Y') . '.log');
+    ini_set('log_errors', 'Off');
 }
 
 /**
- * Exception handler
+ * Autoloading classes
  */
-set_exception_handler(
-    function (Exception $exception) {
-        ob_get_level() and ob_clean();
-        echo '<div style="background-color: #fedad7; margin: 24px; padding: 0 12px; border: 1px solid red"><pre>' .
-            $exception->getMessage() .
-            '</pre></div>';
-    }
-);
+require_once(VENDOR_PATH . 'Mobicms/Autoload/Loader.php');
+$loader = new Mobicms\Autoload\Loader;
+
+// Register old classes in folder /system/includes
+$loader->import('Counters', __DIR__ . '/includes/Counters.php');
+$loader->import('Functions', __DIR__ . '/includes/Functions.php');
+$loader->import('Users', __DIR__ . '/includes/Users.php'); //TODO: удалить
 
 /**
  * Class App
@@ -124,7 +124,6 @@ set_exception_handler(
  * @author  Oleg (AlkatraZ) Kasyanov <dev@mobicms.net>
  * @version v.1.0.0 2015-02-01
  *
- * @method static \Mobicms\Autoload\Loader      autoload()
  * @method static \Mobicms\Config\Factory       cfg()
  * @method static \Mobicms\Database\PDOmysql    db()
  * @method static \Mobicms\HtmlFilter\Filter    filter()
@@ -159,7 +158,6 @@ class App
      */
     private static $singleInstanceServices =
         [
-            'autoload'  => '\Mobicms\Autoload\Loader',
             'cfg'       => '\Mobicms\Config\Factory',
             'db'        => '\Mobicms\Database\PDOmysql',
             'languages' => '\Mobicms\L10n\Languages',
@@ -176,7 +174,7 @@ class App
      * @param string $name
      * @param array  $args
      * @return mixed
-     * @throws Mobicms\Exceptions\RuntimeException
+     * @throws BadMethodCallException
      */
     public static function __callStatic($name, $args = [])
     {
@@ -187,20 +185,25 @@ class App
         } elseif (isset(self::$singleInstanceServices[$name])) {
             return self::$objects[$name] = new self::$singleInstanceServices[$name]($args);
         } else {
-            throw new \Mobicms\Exceptions\RuntimeException('method ' . $name . '() not found');
+            throw new BadMethodCallException('method ' . $name . '() not found');
         }
     }
 }
 
 /**
- * Autoloading classes
+ * Exception handler
  */
-require_once(VENDOR_PATH . 'Mobicms/Autoload/Loader.php');
+set_exception_handler(
+    function (Exception $exception) {
+        App::view()->setLayout(false);
+        new Mobicms\Log\ExceptionHandler($exception);
+    }
+);
 
-// Register old classes in folder /system/includes
-App::autoload()->import('Counters', __DIR__ . '/includes/Counters.php');
-App::autoload()->import('Functions', __DIR__ . '/includes/Functions.php');
-App::autoload()->import('Users', __DIR__ . '/includes/Users.php'); //TODO: удалить
+/**
+ *
+ */
+App::db();
 
 /**
  * Starting firewall

@@ -12,8 +12,6 @@
 
 namespace Mobicms\Helpers;
 
-use Mobicms\Exceptions\RuntimeException;
-
 /**
  * Class Image
  *
@@ -41,7 +39,7 @@ class Image
     public function __construct($args)
     {
         if (!isset($args[0]) || empty($args[0])) {
-            throw new RuntimeException('Image not specified');
+            throw new \RuntimeException('Image not specified');
         }
 
         if (isset($args[1])) {

@@ -12,8 +12,6 @@
 
 namespace Mobicms\Form;
 
-use Mobicms\Exceptions\InvalidArgumentException;
-
 /**
  * Class Fields
  *
@@ -69,11 +67,11 @@ class Fields
     public function __construct(array $option)
     {
         if (!isset($option['type'])) {
-            throw new InvalidArgumentException('required argument [type] is missing');
+            throw new \InvalidArgumentException('required argument [type] is missing');
         }
 
         if (!isset($option['name'])) {
-            throw new InvalidArgumentException('required argument [name] is missing');
+            throw new \InvalidArgumentException('required argument [name] is missing');
         }
 
         if (isset($option['value']) && !is_numeric($option['value'])) {

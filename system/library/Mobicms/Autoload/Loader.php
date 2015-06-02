@@ -12,9 +12,6 @@
 
 namespace Mobicms\Autoload;
 
-use Mobicms\Exceptions\InvalidArgumentException;
-use Mobicms\Exceptions\RuntimeException;
-
 /**
  * Class Loader
  *
@@ -36,18 +33,18 @@ class Loader
      *
      * @param string $className
      * @param string $pahToFile
-     * @throws \Mobicms\Exceptions\InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function import($className, $pahToFile)
     {
         if (empty($className)
             || empty($pahToFile)
         ) {
-            throw new InvalidArgumentException('invalid class registration');
+            throw new \InvalidArgumentException('Invalid class registration');
         }
 
         if (isset($this->map[$className])) {
-            throw new InvalidArgumentException('class "' . $className . '" is already registered');
+            throw new \InvalidArgumentException('Class "' . $className . '" is already registered');
         }
 
         $this->map[$className] = $pahToFile;
@@ -57,7 +54,7 @@ class Loader
      * PSR-0 compatible Class Loader
      *
      * @param null $name
-     * @throws \Mobicms\Exceptions\RuntimeException
+     * @throws \RuntimeException
      */
     private function loadClass($name = null)
     {
@@ -76,7 +73,7 @@ class Loader
             }
 
             if (!is_file($fileName) || !is_readable($fileName)) {
-                throw new RuntimeException('class "' . $name . '" is not found or unreadable');
+                throw new \RuntimeException('Class "' . $name . '" is not found or unreadable');
             }
 
             include_once $fileName;
@@ -85,7 +82,7 @@ class Loader
                 && !interface_exists($name, false)
                 && !trait_exists($name, false)
             ) {
-                throw new RuntimeException('unable to find "' . $name . '" in file: ' . $fileName);
+                throw new \RuntimeException('Unable to find "' . $name . '" in file: ' . $fileName);
             }
         }
     }

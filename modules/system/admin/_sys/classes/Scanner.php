@@ -10,8 +10,6 @@
  * @license     LICENSE.md (see attached file)
  */
 
-use Mobicms\Exceptions\CommonException;
-
 /**
  * Class Scanner
  *
@@ -35,7 +33,7 @@ class Scanner
     public function __construct()
     {
         if ($this->loadConfig() === false) {
-            throw new CommonException('ERROR: Scanner configuration file missing or corrupt');
+            throw new RuntimeException('ERROR: Scanner configuration file missing or corrupt');
         }
     }
 

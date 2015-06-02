@@ -12,8 +12,6 @@
 
 namespace Mobicms\Firewall;
 
-use \Mobicms\Exceptions\NetworkException;
-
 /**
  * Class Firewall
  *
@@ -63,8 +61,6 @@ class Firewall
      * Matches the IP with the black/white lists, check for HTTP flood
      *
      * @param int $ip Current IP address
-     * @throws NetworkException if an IP is found in the black list
-     * @throws NetworkException if the requests reached the limit
      */
     public function run($ip)
     {
@@ -79,7 +75,7 @@ class Firewall
             case 1:
                 // IP is found in the black list
                 header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden');
-                throw new NetworkException('access denied');
+                die('Access denied');
                 break;
 
             default:
@@ -89,7 +85,7 @@ class Firewall
         $this->requestsCount($ip);
 
         if ($check && $this->count > $this->requestsLimit) {
-            throw new NetworkException('you have reached the limit of allowed requests<br />Please wait a few minutes');
+            die('<p>You have reached the limit of allowed requests<br />Please wait a few minutes</p>');
         }
     }
 

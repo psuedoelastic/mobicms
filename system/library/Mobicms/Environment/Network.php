@@ -12,8 +12,6 @@
 
 namespace Mobicms\Environment;
 
-use \Mobicms\Exceptions\NetworkException;
-
 /**
  * Class Network
  *
@@ -32,7 +30,6 @@ class Network
      *
      * @param bool $string Return IP Address as string xx.xx.xx.xx
      * @return int|string  IP Address
-     * @throws NetworkException
      */
     public function getIp($string = false)
     {
@@ -42,7 +39,7 @@ class Network
             if ($ip !== false) {
                 $this->ip = $ip;
             } else {
-                throw new NetworkException('invalid IP address');
+                die('<p>Invalid IP address</p>');
             }
         }
 

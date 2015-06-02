@@ -12,8 +12,6 @@
 
 namespace Mobicms\Config;
 
-use Mobicms\Exceptions\BadMethodCallException;
-
 /**
  * Class Factory
  *
@@ -38,7 +36,7 @@ class Factory
                 $this->objects[$method] = new  $this->classes[$method];
             }
         } else {
-            throw new BadMethodCallException;
+            throw new \BadMethodCallException('Invalid method [' . $method . ']');
         }
 
         return $this->objects[$method];
