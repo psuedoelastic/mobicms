@@ -108,22 +108,12 @@ if (DEBUG) {
 }
 
 /**
- * Autoloading classes
- */
-require_once(VENDOR_PATH . 'Mobicms/Autoload/Loader.php');
-$loader = new Mobicms\Autoload\Loader;
-
-// Register old classes in folder /system/includes
-$loader->import('Counters', __DIR__ . '/includes/Counters.php');
-$loader->import('Functions', __DIR__ . '/includes/Functions.php');
-$loader->import('Users', __DIR__ . '/includes/Users.php'); //TODO: удалить
-
-/**
  * Class App
  *
  * @author  Oleg (AlkatraZ) Kasyanov <dev@mobicms.net>
  * @version v.1.0.0 2015-02-01
  *
+ * @method static \Mobicms\Autoload\Loader      autoload()
  * @method static \Mobicms\Config\Factory       cfg()
  * @method static \Mobicms\Database\PDOmysql    db()
  * @method static \Mobicms\HtmlFilter\Filter    filter()
@@ -158,6 +148,7 @@ class App
      */
     private static $singleInstanceServices =
         [
+            'autoload'  => '\Mobicms\Autoload\Loader',
             'cfg'       => '\Mobicms\Config\Factory',
             'db'        => '\Mobicms\Database\PDOmysql',
             'languages' => '\Mobicms\L10n\Languages',
@@ -189,6 +180,16 @@ class App
         }
     }
 }
+
+/**
+ * Autoloading classes
+ */
+require_once(VENDOR_PATH . 'Mobicms/Autoload/Loader.php');
+
+// Register old classes in folder /system/includes
+App::autoload()->import('Counters', __DIR__ . '/includes/Counters.php');
+App::autoload()->import('Functions', __DIR__ . '/includes/Functions.php');
+App::autoload()->import('Users', __DIR__ . '/includes/Users.php'); //TODO: удалить
 
 /**
  * Exception handler
