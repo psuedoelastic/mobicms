@@ -9,7 +9,8 @@ List of mobiCMS contributors, third-party components and libraries.
 
 ## Contributors
 
-  * FlySelf
+  * Oleg (AlkatraZ) Kasyanov <http://mobicms.net>
+  * Dmitry (FlySelf) Liseenko
   * L!MP
 
 ## Third-party components and libraries
