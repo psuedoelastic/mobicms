@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "description": "mobiCMS Mobile Content Management System",
   "homepage": "http://mobicms.net",
+  "bugs": "https://github.com/mobiCMS/mobicms/issues",
   "main": "index.php",
   "author": "AUTHORS.md",
-  "license": "LICENSE.md",
+  "license": "GNU GPL v.3",
   "keywords": [
     "mobicms",
     "cms",
@@ -17,11 +18,11 @@
     "type": "git",
     "url": "https://github.com/mobiCMS/mobicms.git"
   },
+  "engines": {
+    "node": ">= 0.12.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "bugs": {
-    "url": "https://github.com/mobiCMS/mobicms/issues"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
