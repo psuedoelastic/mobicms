@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * mobiCMS Content Management System (http://mobicms.net)
  *
  * For copyright and license information, please see the LICENSE.md
@@ -36,61 +36,59 @@ class Image
     private $isModule;
     private $imgTag;
 
-    public function __construct($args)
+    public function __construct($image, array $args = [], $module = false, $imgTag = true)
     {
-        if (!isset($args[0]) || empty($args[0])) {
+        if (empty($image)) {
             throw new \RuntimeException('Image not specified');
         }
 
-        if (isset($args[1])) {
-            if (isset($args[1]['alt'])) {
-                $this->alt = $args[1]['alt'];
-            }
-
-            if (isset($args[1]['width'])) {
-                $this->args[] = 'width="' . $args[1]['width'] . '"';
-            }
-
-            if (isset($args[1]['height'])) {
-                $this->args[] = 'height="' . $args[1]['height'] . '"';
-            }
-
-            if (isset($args[1]['style'])) {
-                $this->args[] = 'style="' . $args[1]['style'] . '"';
-            }
+        if (isset($args['alt'])) {
+            $this->alt = $args['alt'];
         }
 
-        $this->isModule = isset($args[2]) && $args[2] === true ? true : false;
-        $this->imgTag = isset($args[3]) && $args[3] === false ? false : true;
-        $this->img = $args[0];
+        if (isset($args['width'])) {
+            $this->args[] = 'width="'.$args['width'].'"';
+        }
+
+        if (isset($args['height'])) {
+            $this->args[] = 'height="'.$args['height'].'"';
+        }
+
+        if (isset($args['style'])) {
+            $this->args[] = 'style="'.$args['style'].'"';
+        }
+
+        $this->isModule = $module === true ? true : false;
+        $this->imgTag = $imgTag;
+        $this->img = $image;
     }
 
     public function __toString()
     {
         if ($this->isModule) {
-            if (is_file(THEMES_PATH . \App::user()->settings['skin'] . DS . 'modules' . DS . \App::router()->dir . DS . 'images' . DS . $this->img)) {
+            if (is_file(THEMES_PATH.\App::user()->settings['skin'].DS.'modules'.DS.\App::router()->dir.DS.'images'.DS.$this->img)) {
                 // Картинка из текущей темы (если есть)
-                $file = \App::cfg()->sys->homeurl . 'themes/' . \App::user()->settings['skin'] . '/modules/' . \App::router()->dir . '/images/' . $this->img;
-            } elseif (is_file(ASSETS_PATH . 'modules' . DS . \App::router()->dir . DS . 'images' . DS . $this->img)) {
+                $file = \App::cfg()->sys->homeurl.'themes/'.\App::user()->settings['skin'].'/modules/'.\App::router()->dir.'/images/'.$this->img;
+            } elseif (is_file(ASSETS_PATH.'modules'.DS.\App::router()->dir.DS.'images'.DS.$this->img)) {
                 // Если нет в теме, то выдаем картинку из модуля
-                $file = \App::cfg()->sys->homeurl . 'assets/modules/' . \App::router()->dir . '/images/' . $this->img;
+                $file = \App::cfg()->sys->homeurl.'assets/modules/'.\App::router()->dir.'/images/'.$this->img;
             } else {
                 // Если картинка не найдена
                 return '';
             }
         } else {
-            if (is_file(THEMES_PATH . \App::user()->settings['skin'] . DS . 'images' . DS . $this->img)) {
+            if (is_file(THEMES_PATH.\App::user()->settings['skin'].DS.'images'.DS.$this->img)) {
                 // Картинка из текущей темы (если есть)
-                $file = \App::cfg()->sys->homeurl . 'themes/' . \App::user()->settings['skin'] . '/images/' . $this->img;
-            } elseif (is_file(THEMES_PATH . \App::cfg()->sys->theme_default . DS . 'images' . DS . $this->img)) {
+                $file = \App::cfg()->sys->homeurl.'themes/'.\App::user()->settings['skin'].'/images/'.$this->img;
+            } elseif (is_file(THEMES_PATH.\App::cfg()->sys->theme_default.DS.'images'.DS.$this->img)) {
                 // Если нет в теме, то выдаем картинку по-умолчанию
-                $file = \App::cfg()->sys->homeurl . 'themes/' . \App::cfg()->sys->theme_default . '/images/' . $this->img;
+                $file = \App::cfg()->sys->homeurl.'themes/'.\App::cfg()->sys->theme_default.'/images/'.$this->img;
             } else {
                 // Если картинка не найдена
                 return '';
             }
         }
 
-        return $this->imgTag ? '<img src="' . $file . '" alt="' . $this->alt . '" ' . implode(' ', $this->args) . '/>' : $file;
+        return $this->imgTag ? '<img src="'.$file.'" alt="'.$this->alt.'" '.implode(' ', $this->args).'/>' : $file;
     }
 }

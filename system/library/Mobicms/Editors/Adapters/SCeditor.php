@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * mobiCMS Content Management System (http://mobicms.net)
  *
  * For copyright and license information, please see the LICENSE.md
@@ -24,7 +24,7 @@ class SCeditor implements AdapterInterface
     public function __construct()
     {
         \App::view()->setCss('editors/sceditor/theme.min.css');
-        \App::view()->embedJs('<script src="' . \App::cfg()->sys->homeurl . 'assets/js/sceditor/jquery.sceditor.xhtml.min.js"></script>');
+        \App::view()->embedJs('<script src="'.\App::cfg()->sys->homeurl.'assets/js/sceditor/jquery.sceditor.xhtml.min.js"></script>');
     }
 
     public function display()
@@ -38,9 +38,9 @@ class SCeditor implements AdapterInterface
             'emoticonsEnabled: false',
 //            'toolbar: "bold,italic,underline,strike|size,color|left,center,right,justify|bulletlist,orderedlist,code,quote|link,unlink,youtube,horizontalrule|source"',
             'toolbar: "bold,italic,underline,strike|size,color|bulletlist,orderedlist,code,quote|link,unlink,youtube,horizontalrule|source"',
-            'style: "' . \App::view()->getPath('editors/sceditor/editor.min.css') . '"'
+            'style: "'.\App::view()->getPath('editors/sceditor/editor.min.css').'"'
         ];
-        \App::view()->embedJs('<script>$(function () {$("textarea").sceditor({' . implode(',', $editorOptions) . '});});</script>');
+        \App::view()->embedJs('<script>$(function () {$("textarea").sceditor({'.implode(',', $editorOptions).'});});</script>');
     }
 
     public function getStyle()
@@ -50,8 +50,8 @@ class SCeditor implements AdapterInterface
 
     public function setLanguage($iso)
     {
-        if (is_file(ROOT_PATH . 'assets' . DS . 'js' . DS . 'sceditor' . DS . $iso[0] . '.js')) {
-            \App::view()->embedJs('<script src="' . \App::cfg()->sys->homeurl . 'assets/js/sceditor/' . $iso[0] . '.js" type="text/javascript"></script>');
+        if (is_file(ROOT_PATH.'assets'.DS.'js'.DS.'sceditor'.DS.$iso[0].'.js')) {
+            \App::view()->embedJs('<script src="'.\App::cfg()->sys->homeurl.'assets/js/sceditor/'.$iso[0].'.js" type="text/javascript"></script>');
         }
     }
 

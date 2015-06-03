@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * mobiCMS Content Management System (http://mobicms.net)
  *
  * For copyright and license information, please see the LICENSE.md
@@ -170,13 +170,38 @@ class App
     public static function __callStatic($name, $args = [])
     {
         if (isset(self::$services[$name])) {
-            return new self::$services[$name]($args);
+            return self::factory(self::$services[$name], $args);
         } elseif (isset(self::$objects[$name])) {
             return self::$objects[$name];
         } elseif (isset(self::$singleInstanceServices[$name])) {
-            return self::$objects[$name] = new self::$singleInstanceServices[$name]($args);
+            self::$objects[$name] = self::factory(self::$singleInstanceServices[$name], $args);
+
+            return self::$objects[$name];
         } else {
             throw new BadMethodCallException('method ' . $name . '() not found');
+        }
+    }
+
+    private static function factory($class, $args)
+    {
+        switch (count($args)) {
+            case 0:
+                return new $class;
+
+            case 1:
+                return new $class($args[0]);
+
+            case 2:
+                return new $class($args[0], $args[1]);
+
+            case 3:
+                return new $class($args[0], $args[1], $args[2]);
+
+            case 4:
+                return new $class($args[0], $args[1], $args[2], $args[3]);
+
+            default:
+                return new $class($args);
         }
     }
 }
@@ -205,7 +230,7 @@ set_exception_handler(
  *
  */
 App::db();
-
+//TODO: Переделать на отлов исключений
 /**
  * Starting firewall
  */

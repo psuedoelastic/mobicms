@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * mobiCMS Content Management System (http://mobicms.net)
  *
  * For copyright and license information, please see the LICENSE.md
@@ -100,8 +100,8 @@ class Captcha
         imagesavealpha($image, true);
         imagefill($image, 0, 0, imagecolorallocatealpha($image, 0, 0, 0, 127));
 
-        $fonts_dir = __DIR__ . DS . 'fonts' . DS;
-        $fonts_list = glob($fonts_dir . '*.ttf');
+        $fonts_dir = __DIR__.DS.'fonts'.DS;
+        $fonts_list = glob($fonts_dir.'*.ttf');
         $font = basename($fonts_list[mt_rand(0, count($fonts_list) - 1)]);
         $font_size = isset($this->customFontSize[$font]) ? $this->customFontSize[$font] : $this->defaultFontSize;
 
@@ -113,13 +113,13 @@ class Captcha
             $y = $this->height - (($this->height - $font_size) / 2);
             $capcolor = imagecolorallocate($image, rand(0, 150), rand(0, 150), rand(0, 150));
             $capangle = rand(-25, 25);
-            imagettftext($image, $font_size, $capangle, $x, $y, $capcolor, $fonts_dir . $font, $captcha[$i]);
+            imagettftext($image, $font_size, $capangle, $x, $y, $capcolor, $fonts_dir.$font, $captcha[$i]);
         }
 
         ob_start();
         imagepng($image);
         imagedestroy($image);
 
-        return 'data:image/png;base64,' . base64_encode(ob_get_clean());
+        return 'data:image/png;base64,'.base64_encode(ob_get_clean());
     }
 }

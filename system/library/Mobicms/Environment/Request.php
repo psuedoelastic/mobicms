@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * mobiCMS Content Management System (http://mobicms.net)
  *
  * For copyright and license information, please see the LICENSE.md
@@ -97,10 +97,10 @@ class Request
      */
     private function mapPhpFiles()
     {
-        $files = array();
+        $files = [];
 
         foreach ($_FILES as $fileName => $fileParams) {
-            $files[$fileName] = array();
+            $files[$fileName] = [];
 
             foreach ($fileParams as $param => $data) {
                 if (!is_array($data)) {

@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * mobiCMS Content Management System (http://mobicms.net)
  *
  * For copyright and license information, please see the LICENSE.md
@@ -43,7 +43,7 @@ class Editor
             && isset($this->editors[$editor])
             && $this->editors[$editor] !== false
         ) {
-            $class = __NAMESPACE__ . '\Adapters\\' . $this->editors[$editor];
+            $class = __NAMESPACE__.'\Adapters\\'.$this->editors[$editor];
             $this->editorInstance = new $class;
 
             if (!($this->editorInstance instanceof Adapters\AdapterInterface)) {
@@ -57,7 +57,7 @@ class Editor
         if (method_exists($this->editorInstance, $method)) {
             return call_user_func([$this->editorInstance, $method], $arguments);
         } else {
-            throw new \BadMethodCallException('Invalid method [' . $method . ']');
+            throw new \BadMethodCallException('Invalid method ['.$method.']');
         }
     }
 }

@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * mobiCMS Content Management System (http://mobicms.net)
  *
  * For copyright and license information, please see the LICENSE.md
@@ -36,13 +36,13 @@ class SessionHandler implements \SessionHandlerInterface
      */
     public $sessionLifeTime = 86400;
 
-    function __construct()
+    public function __construct()
     {
-        @ini_set('session.use_trans_sid', '0');
-        @ini_set('session.use_cookies', true);
-        @ini_set('session.use_only_cookies', true);
-        @ini_set('session.gc_probability', '1');
-        @ini_set('session.gc_divisor', '100');
+        ini_set('session.use_trans_sid', '0');
+        ini_set('session.use_cookies', true);
+        ini_set('session.use_only_cookies', true);
+        ini_set('session.gc_probability', '1');
+        ini_set('session.gc_divisor', '100');
 
         session_set_save_handler(
             [$this, 'open'],
@@ -94,7 +94,7 @@ class SessionHandler implements \SessionHandlerInterface
     {
         $stmt = \App::db()->prepare("
             SELECT *
-            FROM `" . TP . "system__sessions`
+            FROM `".TP."system__sessions`
             WHERE `session_id` = ?
             FOR UPDATE
             ");
@@ -107,13 +107,11 @@ class SessionHandler implements \SessionHandlerInterface
             $this->place = $result['place'];
             $this->timestamp = $result['session_timestamp'];
             $this->views = $result['views'];
-            $stmt = null;
 
             return $result['session_data'];
         } else {
-            $stmt = null;
             $stmt = \App::db()->prepare("
-                INSERT INTO `" . TP . "system__sessions`
+                INSERT INTO `".TP."system__sessions`
                 SET
                 `session_id`        = ?,
                 `session_timestamp` = ?,
@@ -127,7 +125,6 @@ class SessionHandler implements \SessionHandlerInterface
                     ''
                 ]
             );
-            $stmt = null;
 
             return '';
         }
@@ -144,16 +141,13 @@ class SessionHandler implements \SessionHandlerInterface
     {
         if ($this->timestamp > (time() - 300)) {
             ++$this->views;
-            //$movings = $this->data['place'] == '' //\Rt::$PLACE //TODO: Разобраться со счетчиком перемещений
-            //    ? $this->data['movings']
-            //    : ++$this->data['movings'];
         } else {
             $this->movings = 1;
             $this->views = 1;
         }
 
         $stmt = \App::db()->prepare("
-            UPDATE `" . TP . "system__sessions`
+            UPDATE `".TP."system__sessions`
             SET
             `session_timestamp` = ?,
             `session_data`      = ?,
@@ -194,12 +188,11 @@ class SessionHandler implements \SessionHandlerInterface
     public function destroy($sessionId)
     {
         $stmt = \App::db()->prepare("
-            DELETE FROM `" . TP . "system__sessions`
+            DELETE FROM `".TP."system__sessions`
             WHERE `session_id` = ?
             ");
 
         $stmt->execute([$sessionId]);
-        $stmt = null;
 
         return true;
     }
@@ -214,7 +207,7 @@ class SessionHandler implements \SessionHandlerInterface
     {
         //TODO: Обдумать использование $maxlifetime
         $stmt = \App::db()->prepare("
-            DELETE FROM `" . TP . "system__sessions`
+            DELETE FROM `".TP."system__sessions`
             WHERE `session_timestamp` < ?
             ");
 
@@ -223,7 +216,6 @@ class SessionHandler implements \SessionHandlerInterface
                 time() - $this->sessionLifeTime
             ]
         );
-        $stmt = null;
 
         return true;
     }

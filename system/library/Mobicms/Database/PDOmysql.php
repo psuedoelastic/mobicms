@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * mobiCMS Content Management System (http://mobicms.net)
  *
  * For copyright and license information, please see the LICENSE.md
@@ -23,25 +23,26 @@ class PDOmysql extends \PDO
 {
     public function __construct()
     {
-        if (is_file(CONFIG_PATH . 'database.php')) {
-            require_once CONFIG_PATH . 'database.php';
+        $db_host = 'localhost';
+        $db_user = 'root';
+        $db_pass = '';
+        $db_name = 'mobicms';
+        $db_prefix = '';
+
+        if (is_file(CONFIG_PATH.'database.php')) {
+            require_once CONFIG_PATH.'database.php';
         } else {
             throw new \RuntimeException('database configuration file does not exist.<br/>Please install the system or restore the file /system/config/system/database.php.');
         }
 
-        $db_host = isset($db_host) ? $db_host : 'localhost';
-        $db_user = isset($db_user) ? $db_user : 'root';
-        $db_pass = isset($db_pass) ? $db_pass : '';
-        $db_name = isset($db_name) ? $db_name : 'mobicms';
-
         /**
          * Префиксы таблиц базы данных
          */
-        define('TP', isset($db_prefix) ? $db_prefix : '');
+        define('TP', $db_prefix);
 
         try {
             parent::__construct(
-                'mysql:host=' . $db_host . ';dbname=' . $db_name,
+                'mysql:host='.$db_host.';dbname='.$db_name,
                 $db_user,
                 $db_pass,
                 [
@@ -58,6 +59,6 @@ class PDOmysql extends \PDO
 
     public function pagination()
     {
-        return ' LIMIT ' . \App::vars()->start . ',' . \App::user()->settings['page_size'];
+        return ' LIMIT '.\App::vars()->start.','.\App::user()->settings['page_size'];
     }
 }

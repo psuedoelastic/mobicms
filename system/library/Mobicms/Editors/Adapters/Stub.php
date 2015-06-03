@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * mobiCMS Content Management System (http://mobicms.net)
  *
  * For copyright and license information, please see the LICENSE.md
@@ -21,13 +21,23 @@ namespace Mobicms\Editors\Adapters;
  */
 class Stub implements AdapterInterface
 {
-    public function __construct(){}
+    public function __construct()
+    {
+    }
 
-    public function display(){}
+    public function display()
+    {
+    }
 
-    public function getStyle(){}
+    public function getStyle()
+    {
+    }
 
-    public function setLanguage($iso){}
+    public function setLanguage($iso)
+    {
+    }
 
-    public function getHelp(){}
+    public function getHelp()
+    {
+    }
 }

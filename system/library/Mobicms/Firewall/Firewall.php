@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * mobiCMS Content Management System (http://mobicms.net)
  *
  * For copyright and license information, please see the LICENSE.md
@@ -60,7 +60,8 @@ class Firewall
      * Start the Firewall
      * Matches the IP with the black/white lists, check for HTTP flood
      *
-     * @param int $ip Current IP address
+     * @param int $ip
+     * @throws \Exception
      */
     public function run($ip)
     {
@@ -74,9 +75,8 @@ class Firewall
 
             case 1:
                 // IP is found in the black list
-                header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden');
-                die('Access denied');
-                break;
+                header($_SERVER['SERVER_PROTOCOL'].' 403 Forbidden');
+                throw new \Exception('Access denied');
 
             default:
         }
@@ -85,7 +85,7 @@ class Firewall
         $this->requestsCount($ip);
 
         if ($check && $this->count > $this->requestsLimit) {
-            die('<p>You have reached the limit of allowed requests<br />Please wait a few minutes</p>');
+            throw new \Exception('You have reached the limit of allowed requests. Please wait a few minutes');
         }
     }
 
@@ -97,7 +97,7 @@ class Firewall
      */
     private function bwListHandler($ip)
     {
-        $file = CACHE_PATH . $this->bwlistCacheFile;
+        $file = CACHE_PATH.$this->bwlistCacheFile;
 
         if (file_exists($file)) {
             $in = fopen($file, 'r');
@@ -129,10 +129,10 @@ class Firewall
         $tmp = [];
         $requests = [];
 
-        $in = fopen(CACHE_PATH . $this->requestsCacheFile, 'c+');
+        $in = fopen(CACHE_PATH.$this->requestsCacheFile, 'c+');
 
         if (!flock($in, LOCK_EX)) {
-            throw new \Exception('firewall cache file is not writable');
+            throw new \RuntimeException('firewall cache file is not writable');
         }
 
         $now = time();
@@ -174,25 +174,25 @@ class Firewall
      */
     private function writeLog(array $requests, $ip)
     {
-        $file = LOG_PATH . $this->requestsLogFile;
+        $file = LOG_PATH.$this->requestsLogFile;
 
         if (!is_file($file) || filemtime($file) < time() - $this->requestsLogInterval) {
-            $out = 'Date: GMT ' . date('d.m.Y H:i:s') . "\r\n";
-            $out .= '-----------------------------' . "\r\n";
+            $out = 'Date: GMT '.date('d.m.Y H:i:s')."\r\n";
+            $out .= '-----------------------------'."\r\n";
 
             if (empty($requests)) {
-                $out .= '[1] - ' . long2ip($ip) . "\r\n";
+                $out .= '[1] - '.long2ip($ip)."\r\n";
             } else {
                 $ip_list = array_count_values($requests);
                 arsort($ip_list);
 
                 foreach ($ip_list as $key => $val) {
-                    $out .= '[' . $val . '] - ' . long2ip($key) . "\r\n";
+                    $out .= '['.$val.'] - '.long2ip($key)."\r\n";
                 }
             }
 
             if (file_put_contents($file, $out) === false) {
-                throw new \Exception('firewall Log file is not writable');
+                throw new \RuntimeException('firewall Log file is not writable');
             }
         }
     }

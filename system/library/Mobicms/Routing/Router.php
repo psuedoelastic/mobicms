@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * mobiCMS Content Management System (http://mobicms.net)
  *
  * For copyright and license information, please see the LICENSE.md
@@ -39,11 +39,10 @@ class Router
     public function dispatch()
     {
         // Подключаем файл конфигурации модулей
-        if (is_file(CONFIG_PATH . 'routing.php')) {
-            require_once CONFIG_PATH . 'routing.php';
-            $modules = isset($modules) && is_array($modules) ? $modules : [];
-        } else {
-            throw new \RuntimeException('modules configuration file does not exist');
+        if (!is_file(CONFIG_PATH.'routing.ini')
+            || ($modules = parse_ini_file(CONFIG_PATH.'routing.ini')) === false
+        ) {
+            throw new \RuntimeException('Modules configuration file does not exist or corrupted.');
         }
 
         if (!isset($modules[$this->module])) {
@@ -51,7 +50,7 @@ class Router
         }
 
         $this->dir = $modules[$this->module];
-        $dir = MODULE_PATH . $this->dir . DS;
+        $dir = MODULE_PATH.$this->dir.DS;
         $file = 'index.php';
 
         /**
@@ -62,8 +61,8 @@ class Router
             $this->module = 'home';
         } elseif (
             !array_key_exists($this->module, $modules) // Если модуль не зарегистрирован
-            || !is_dir(MODULE_PATH . $modules[$this->module]) // Если папки с модулем не существует
-            || !is_file(MODULE_PATH . $modules[$this->module] . DS . 'index.php') // Если нет индексного файла
+            || !is_dir(MODULE_PATH.$modules[$this->module]) // Если папки с модулем не существует
+            || !is_file(MODULE_PATH.$modules[$this->module].DS.'index.php') // Если нет индексного файла
         ) {
             // Пересылаем на ошибку 404
             $this->module = '404';
@@ -78,11 +77,11 @@ class Router
                 foreach ($path as $val) {
                     $val = ltrim($val, '_');
 
-                    if (is_dir($dir . $val)) {
+                    if (is_dir($dir.$val)) {
                         // Если существует директория
-                        $dir .= $val . DS;
+                        $dir .= $val.DS;
                     } else {
-                        if (pathinfo($val, PATHINFO_EXTENSION) == 'php' && is_file($dir . $val)) {
+                        if (pathinfo($val, PATHINFO_EXTENSION) == 'php' && is_file($dir.$val)) {
                             // Если вызван PHP файл
                             $file = $val;
                             ++$i;
@@ -94,10 +93,10 @@ class Router
                     ++$i;
                 }
 
-                if (!is_file($dir . $file)) {
+                if (!is_file($dir.$file)) {
                     // Пересылаем на ошибку 404
                     $this->module = '404';
-                    $dir = MODULE_PATH . $modules[$this->module] . DS;
+                    $dir = MODULE_PATH.$modules[$this->module].DS;
                     $file = 'index.php';
                 } else {
                     // Разделяем URI на Path и Query
@@ -108,7 +107,7 @@ class Router
         }
 
         // Загружаем модуль
-        include_once $dir . $file;
+        include_once $dir.$file;
     }
 
     public function getModule()
@@ -134,6 +133,6 @@ class Router
             $uri = $this->path;
         }
 
-        return htmlspecialchars(\App::cfg()->sys->homeurl . implode('/', $uri) . '/');
+        return htmlspecialchars(\App::cfg()->sys->homeurl.implode('/', $uri).'/');
     }
 }

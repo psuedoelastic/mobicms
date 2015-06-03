@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * mobiCMS Content Management System (http://mobicms.net)
  *
  * For copyright and license information, please see the LICENSE.md
@@ -80,9 +80,9 @@ class Fields
         }
 
         if (isset($option['error']) && $option['error']) {
-            $option['class'] = isset($option['class']) ? $option['class'] . ' error' : 'error';
+            $option['class'] = isset($option['class']) ? $option['class'].' error' : 'error';
         } elseif (isset($option['success']) && $option['success']) {
-            $option['class'] = isset($option['class']) ? $option['class'] . ' success' : 'success';
+            $option['class'] = isset($option['class']) ? $option['class'].' success' : 'success';
         }
 
         $this->option = $option;
@@ -103,10 +103,7 @@ class Fields
                 $this->option['id'] = $this->option['name'];
             }
 
-            if (isset($this->option['required']) && $this->option['required']) {
-                $this->option['label'] = '* ' . $this->option['label'];
-            }
-
+            $this->checkRequired($this->option['label']);
             $this->option['for'] = $this->option['id'];
             $out[] = $this->build('label', $this->option);
         }
@@ -114,18 +111,20 @@ class Fields
         // Добавляем сообщение об ошибке
         if (isset($this->option['error']) && !empty($this->option['error'])) {
             if (is_array($this->option['error'])) {
-                $out[] = '<span class="error-text">' . implode('<br/>', $this->option['error']) . '</span>';
+                $out[] = '<span class="error-text">'.implode('<br/>', $this->option['error']).'</span>';
             } else {
-                $out[] = '<span class="error-text">' . $this->option['error'] . '</span>';
+                $out[] = '<span class="error-text">'.$this->option['error'].'</span>';
             }
         }
 
         switch ($this->option['type']) {
-            case'radio':
+            case 'radio':
                 // Добавляем элемент RADIO
                 if (!isset($this->option['items']) || !is_array($this->option['items'])) {
                     return 'ERROR: missing radio element items';
                 }
+
+                $radio = [];
 
                 foreach ($this->option['items'] as $value => $label) {
                     $radio['name'] = $this->option['name'];
@@ -147,11 +146,12 @@ class Fields
                 }
                 break;
 
-            case'select':
+            case 'select':
                 // Добавляем элемент SELECT
                 $multiple = isset($this->option['multiple']) && $this->option['multiple'] ? true : false;
                 if (isset($this->option['items']) && is_array($this->option['items'])) {
                     $list = [];
+                    $listElement = [];
                     foreach ($this->option['items'] as $value => $label) {
                         if (empty($label)) {
                             $listElement['label'] = $value;
@@ -174,28 +174,29 @@ class Fields
                         $list[] = $this->build('option', $listElement);
                         unset($listElement, $value, $label);
                     }
-                    $this->option['content'] = "\n" . implode("\n", $list) . "\n";
+                    $this->option['content'] = "\n".implode("\n", $list)."\n";
                 }
 
                 if ($multiple) {
-                    $this->option['name'] = $this->option['name'] . '[]';
+                    $this->option['name'] = $this->option['name'].'[]';
                 }
 
                 $out[] = $this->build('select', $this->option);
                 break;
 
-            case'textarea':
+            case 'textarea':
                 if (!empty($this->option['editor'])) {
                     // Initialize editor
                     $this->option['id'] = 'editor';
                     $editor = new \Mobicms\Editors\Editor(\App::user()->settings['editor']);
-                    $editor->setLanguage(\App::languages()->getCurrentISO());
+                    $lng = \App::languages()->getCurrentISO();
+                    $editor->setLanguage($lng);
                     $this->option['style'] = $editor->getStyle();
 
-                    if(empty($this->option['description'])){
+                    if (empty($this->option['description'])) {
                         $this->option['description'] = $editor->getHelp();
                     } else {
-                        $this->option['description'] = $editor->getHelp() . '<br>' . $this->option['description'];
+                        $this->option['description'] = $editor->getHelp().'<br>'.$this->option['description'];
                     }
 
                     $editor->display();
@@ -211,10 +212,7 @@ class Fields
                         $this->option['label_inline_class'] = 'inline';
                     }
 
-                    if (isset($this->option['required']) && $this->option['required']) {
-                        $this->option['label_inline'] = '* ' . $this->option['label_inline'];
-                    }
-
+                    $this->checkRequired($this->option['label_inline']);
                     $this->option['content'] = $this->build($this->option['type'], $this->option);
                     $out[] = $this->build('label_inline', $this->option);
                 } else {
@@ -232,6 +230,18 @@ class Fields
         }
 
         return implode("\n", $out);
+    }
+
+    /**
+     * Add an asterisk to the label
+     *
+     * @param $label
+     */
+    private function checkRequired(&$label)
+    {
+        if (isset($this->option['required']) && $this->option['required'] === true) {
+            $label = '* '.$label;
+        }
     }
 
     /**

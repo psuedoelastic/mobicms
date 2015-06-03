@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * mobiCMS Content Management System (http://mobicms.net)
  *
  * For copyright and license information, please see the LICENSE.md
@@ -24,8 +24,8 @@ class ExceptionHandler
     public function __construct(\Exception $e)
     {
         $out = $this->format($e);
-        echo '<div style="background-color: #fedad7; margin: 24px; padding: 0 12px; border: 1px solid red; display: inline-block">' .
-            '<pre>' . $out . '</pre>' .
+        echo '<div style="background-color: #fedad7; margin: 24px; padding: 0 12px; border: 1px solid red; display: inline-block">'.
+            '<pre>'.$out.'</pre>'.
             '</div>';
 
         if (DEBUG) {
@@ -41,23 +41,23 @@ class ExceptionHandler
      */
     private function format(\Exception $event)
     {
-        ob_get_level() and ob_clean();
+        ob_get_level() && ob_clean();
 
         $out = "\n================================================================================\n";
-        $out .= wordwrap('EXCEPTION: ' . $event->getMessage(), 80, "\n", true);
-        $out .= "\nFILE: " . $event->getFile();
-        $out .= "\nLINE: " . $event->getLine() . "\n";
+        $out .= wordwrap('EXCEPTION: '.$event->getMessage(), 80, "\n", true);
+        $out .= "\nFILE: ".$event->getFile();
+        $out .= "\nLINE: ".$event->getLine()."\n";
         $tracearray = $event->getTrace();
 
         if (!empty($tracearray)) {
             $out .= '--------------------------------------------------------------------------------';
             foreach ($tracearray as $trace) {
                 if (isset($trace['file'])) {
-                    $out .= "\nTrace File: " . $trace['file'];
+                    $out .= "\nTrace File: ".$trace['file'];
                 }
 
                 if (isset($trace['line'])) {
-                    $out .= '(' . $trace['line'] . ')';
+                    $out .= '('.$trace['line'].')';
                 }
 
                 if (isset($trace['class'], $trace['type'], $trace['function'])) {
@@ -75,7 +75,7 @@ class ExceptionHandler
                 }
 
                 if (!empty($trace['args'])) {
-                    $out .= "Args: " . print_r($trace['args'], true);
+                    $out .= "Args: ".print_r($trace['args'], true);
                 }
             }
         }

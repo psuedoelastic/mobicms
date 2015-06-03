@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * mobiCMS Content Management System (http://mobicms.net)
  *
  * For copyright and license information, please see the LICENSE.md
@@ -36,7 +36,7 @@ class Factory
                 $this->objects[$method] = new  $this->classes[$method];
             }
         } else {
-            throw new \BadMethodCallException('Invalid method [' . $method . ']');
+            throw new \BadMethodCallException('Invalid method ['.$method.']');
         }
 
         return $this->objects[$method];

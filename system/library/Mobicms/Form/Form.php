@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * mobiCMS Content Management System (http://mobicms.net)
  *
  * For copyright and license information, please see the LICENSE.md
@@ -108,7 +108,7 @@ class Form
         $this->fields[] =
             [
                 'type'    => 'html',
-                'content' => '<div class="' . ($class === null ? 'form-title' : $class) . '">' . htmlspecialchars($title) . '</div>'
+                'content' => '<div class="'.($class === null ? 'form-title' : $class).'">'.htmlspecialchars($title).'</div>'
             ];
 
         return $this;
@@ -143,7 +143,7 @@ class Form
         $this->fields[] =
             [
                 'type'    => 'html',
-                'content' => '<div style="height: ' . $height . 'px; clear: both"></div>'
+                'content' => '<div style="height: '.$height.'px; clear: both"></div>'
             ];
 
         return $this;
@@ -240,7 +240,7 @@ class Form
 
                 if ($this->confirmation) {
                     // Если задано отдельное окно подтверждения
-                    $message .= '<a class="btn btn-primary" href="' . ($this->continueLink === null ? \App::cfg()->sys->homeurl : $this->continueLink) . '">' . __('continue') . '</a>';
+                    $message .= '<a class="btn btn-primary" href="'.($this->continueLink === null ? \App::cfg()->sys->homeurl : $this->continueLink).'">'.__('continue').'</a>';
 
                     return $message;
                 }
@@ -263,7 +263,7 @@ class Form
                     $captcha = new Captcha;
                     $code = $captcha->generateCode();
                     $_SESSION['captcha'] = $code;
-                    $out[] = '<img alt="' . __('captcha_help') . '" width="' . $captcha->width . '" height="' . $captcha->height . '" src="' . $captcha->generateImage($code) . '"/>';
+                    $out[] = '<img alt="'.__('captcha_help').'" width="'.$captcha->width.'" height="'.$captcha->height.'" src="'.$captcha->generateImage($code).'"/>';
                     break;
 
                 default:
@@ -283,13 +283,13 @@ class Form
             $out[] = (new Fields(['type' => 'hidden', 'name' => 'form_token', 'value' => $_SESSION['form_token']]))->display();
         }
 
-        return sprintf("\n" . $message . "\n" . '<form role="form" name="%s" method="%s"%s%s%s>%s</form>' . "\n",
+        return sprintf("\n".$message."\n".'<form role="form" name="%s" method="%s"%s%s%s>%s</form>'."\n",
             $this->form['name'],
             $this->form['method'],
-            (isset($this->form['action']) ? ' action="' . $this->form['action'] . '"' : ''),
+            (isset($this->form['action']) ? ' action="'.$this->form['action'].'"' : ''),
             (isset($this->form['enctype']) ? ' enctype="multipart/form-data"' : ''),
-            (isset($this->form['class']) ? ' class="' . $this->form['class'] . '"' : ''),
-            "\n" . implode("\n", $out) . "\n"
+            (isset($this->form['class']) ? ' class="'.$this->form['class'].'"' : ''),
+            "\n".implode("\n", $out)."\n"
         );
     }
 
@@ -301,13 +301,13 @@ class Form
     private function _setValues(array &$option)
     {
         switch ($option['type']) {
-            case'html':
+            case 'html':
                 break;
 
-            case'text':
-            case'password':
-            case'hidden':
-            case'textarea':
+            case 'text':
+            case 'password':
+            case 'hidden':
+            case 'textarea':
                 if ($this->input->offsetExists($option['name'])) {
                     $option['value'] = trim($this->input[$option['name']]);
                     $this->input->offsetUnset($option['name']);
@@ -330,7 +330,7 @@ class Form
                 }
                 break;
 
-            case'radio':
+            case 'radio':
                 if (isset($this->input[$option['name']], $option['items'])) {
                     if (array_key_exists($this->input[$option['name']], $option['items'])) {
                         $option['checked'] = trim($this->input[$option['name']]);
@@ -342,7 +342,7 @@ class Form
                 }
                 break;
 
-            case'select':
+            case 'select':
                 if (isset($this->input[$option['name']], $option['items'])) {
                     $allow = true;
 
@@ -369,7 +369,7 @@ class Form
                 }
                 break;
 
-            case'checkbox':
+            case 'checkbox':
                 if ($this->input->offsetExists($option['name'])) {
                     $this->input->offsetUnset($option['name']);
                     $option['checked'] = 1;
@@ -393,20 +393,20 @@ class Form
         $max = isset($option['filter']['max']) ? intval($option['filter']['max']) : false;
 
         switch ($option['filter']['type']) {
-            case'str':
-            case'string':
+            case 'str':
+            case 'string':
                 if (isset($option['filter']['regexp_search'])) {
                     $replace = isset($option['filter']['regexp_replace']) ? $option['filter']['regexp_replace'] : '';
                     $option['value'] = preg_replace($option['filter']['regexp_search'], $replace, $option['value']);
                 }
 
-                if ($max) {
+                if ($max !== false) {
                     $option['value'] = mb_substr($option['value'], 0, $max);
                 }
                 break;
 
-            case'int':
-            case'integer':
+            case 'int':
+            case 'integer':
                 $option['value'] = intval($option['value']);
 
                 if ($min !== false && $option['value'] < $min) {
@@ -419,7 +419,7 @@ class Form
                 break;
 
             default:
-                $option['error'] = 'Unknown filter: ' . $option['filter']['type'];
+                $option['error'] = 'Unknown filter: '.$option['filter']['type'];
         }
     }
 
@@ -451,7 +451,7 @@ class Form
                 if (is_array($option['error'])) {
                     $option['error'] = array_merge($option['error'], $check->error);
                 } else {
-                    $option['error'] = $option['error'] . '<br/>' . implode('<br/>', $check->error);
+                    $option['error'] = $option['error'].'<br/>'.implode('<br/>', $check->error);
                 }
             } else {
                 $option['error'] = $check->error;

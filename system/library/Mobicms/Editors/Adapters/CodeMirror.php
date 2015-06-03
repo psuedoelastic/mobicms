@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * mobiCMS Content Management System (http://mobicms.net)
  *
  * For copyright and license information, please see the LICENSE.md
@@ -25,16 +25,16 @@ class CodeMirror implements AdapterInterface
     {
         \App::view()->setCss('editors/codemirror/theme.min.css');
 
-        \App::view()->embedJs('<script src="' . \App::cfg()->sys->homeurl . 'assets/js/codemirror/lib/codemirror.min.js"></script>');
+        \App::view()->embedJs('<script src="'.\App::cfg()->sys->homeurl.'assets/js/codemirror/lib/codemirror.min.js"></script>');
 
-        \App::view()->embedJs('<script src="' . \App::cfg()->sys->homeurl . 'assets/js/codemirror/addon/hint/show-hint.min.js"></script>');
-        \App::view()->embedJs('<script src="' . \App::cfg()->sys->homeurl . 'assets/js/codemirror/addon/hint/xml-hint.min.js"></script>');
-        \App::view()->embedJs('<script src="' . \App::cfg()->sys->homeurl . 'assets/js/codemirror/addon/hint/html-hint.min.js"></script>');
+        \App::view()->embedJs('<script src="'.\App::cfg()->sys->homeurl.'assets/js/codemirror/addon/hint/show-hint.min.js"></script>');
+        \App::view()->embedJs('<script src="'.\App::cfg()->sys->homeurl.'assets/js/codemirror/addon/hint/xml-hint.min.js"></script>');
+        \App::view()->embedJs('<script src="'.\App::cfg()->sys->homeurl.'assets/js/codemirror/addon/hint/html-hint.min.js"></script>');
 
-        \App::view()->embedJs('<script src="' . \App::cfg()->sys->homeurl . 'assets/js/codemirror/mode/xml/xml.js"></script>');
-        \App::view()->embedJs('<script src="' . \App::cfg()->sys->homeurl . 'assets/js/codemirror/mode/javascript/javascript.js"></script>');
-        \App::view()->embedJs('<script src="' . \App::cfg()->sys->homeurl . 'assets/js/codemirror/mode/css/css.js"></script>');
-        \App::view()->embedJs('<script src="' . \App::cfg()->sys->homeurl . 'assets/js/codemirror/mode/htmlmixed/htmlmixed.js"></script>');
+        \App::view()->embedJs('<script src="'.\App::cfg()->sys->homeurl.'assets/js/codemirror/mode/xml/xml.js"></script>');
+        \App::view()->embedJs('<script src="'.\App::cfg()->sys->homeurl.'assets/js/codemirror/mode/javascript/javascript.js"></script>');
+        \App::view()->embedJs('<script src="'.\App::cfg()->sys->homeurl.'assets/js/codemirror/mode/css/css.js"></script>');
+        \App::view()->embedJs('<script src="'.\App::cfg()->sys->homeurl.'assets/js/codemirror/mode/htmlmixed/htmlmixed.js"></script>');
     }
 
     public function display()

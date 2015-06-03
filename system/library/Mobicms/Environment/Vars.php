@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * mobiCMS Content Management System (http://mobicms.net)
  *
  * For copyright and license information, please see the LICENSE.md
@@ -22,10 +22,10 @@ class Vars
     {
         // Obtain variables
         if (isset($_REQUEST['page'])) {
-            $this->page = abs(intval($_REQUEST['page']));
-            $this->start = $this->page * \App::user()->settings['page_size'] - \App::user()->settings['page_size'];
+            $this->page = intval($_REQUEST['page']);
+            $this->start = intval($this->page * \App::user()->settings['page_size'] - \App::user()->settings['page_size']);
         } elseif (isset($_REQUEST['start'])) {
-            $this->start = abs(intval($_REQUEST['start']));
+            $this->start = intval($_REQUEST['start']);
         }
     }
 }

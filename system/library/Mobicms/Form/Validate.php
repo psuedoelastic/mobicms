@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * mobiCMS Content Management System (http://mobicms.net)
  *
  * For copyright and license information, please see the LICENSE.md
@@ -38,7 +38,7 @@ class Validate
 
     public static function getUserData()
     {
-        return (static::$_userData === null ? false : static::$_userData);
+        return (self::$_userData === null ? false : self::$_userData);
     }
 
     private function captcha(array $option)
@@ -63,21 +63,19 @@ class Validate
     private function login(array $option)
     {
         $stmt = \App::db()->prepare("
-            SELECT * FROM `" . TP . "user__`
-            WHERE `" . ($this->email($option, false) ? 'email' : 'nickname') . "` = ?
+            SELECT * FROM `".TP."user__`
+            WHERE `".($this->email($option, false) ? 'email' : 'nickname')."` = ?
             LIMIT 1
         ");
 
         $stmt->execute([$option['value']]);
 
         if ($stmt->rowCount()) {
-            static::$_userData = $stmt->fetch();
-            $stmt = null;
+            self::$_userData = $stmt->fetch();
 
             return true;
         } else {
             $this->error[] = __('error_user_not_exist');
-            $stmt = null;
 
             return false;
         }
@@ -92,20 +90,20 @@ class Validate
      */
     private function password(array $option)
     {
-        if (static::$_userData === null && \App::user()->id) {
-            static::$_userData =& \App::user()->data;
+        if (self::$_userData === null && \App::user()->id) {
+            self::$_userData = &\App::user()->data;
         }
 
-        if (static::$_userData !== null) {
-            if (password_verify($option['value'], static::$_userData['password'])) {
+        if (self::$_userData !== null) {
+            if (password_verify($option['value'], self::$_userData['password'])) {
                 return true;
             } else {
                 $this->error[] = __('error_wrong_password');
 
                 // Накручиваем счетчик неудачных логинов
-                if (!\App::user()->id && static::$_userData['login_try'] < 3) {
-                    \App::db()->exec("UPDATE `" . TP . "user__` SET `login_try` = " . ++static::$_userData['login_try'] . " WHERE `id` = " . static::$_userData['id']);
-                    static::$_userData = null;
+                if (!\App::user()->id && self::$_userData['login_try'] < 3) {
+                    \App::db()->exec("UPDATE `".TP."user__` SET `login_try` = ".++self::$_userData['login_try']." WHERE `id` = ".self::$_userData['id']);
+                    self::$_userData = null;
                 }
             }
         }
@@ -127,11 +125,11 @@ class Validate
         }
 
         if (isset($option['min']) && mb_strlen($option['value']) < $option['min']) {
-            $this->error[] = __('minimum') . '&#160;' . $option['min'] . ' ' . __('characters');
+            $this->error[] = __('minimum').'&#160;'.$option['min'].' '.__('characters');
 
             return false;
         } elseif (isset($option['max']) && mb_strlen($option['value']) > $option['max']) {
-            $this->error[] = __('maximum') . '&#160;' . $option['max'] . ' ' . __('characters');
+            $this->error[] = __('maximum').'&#160;'.$option['max'].' '.__('characters');
 
             return false;
         }
@@ -159,11 +157,11 @@ class Validate
         }
 
         if (isset($option['min']) && $option['value'] < $option['min']) {
-            $this->error[] = __('minimum') . '&#160;' . $option['min'];
+            $this->error[] = __('minimum').'&#160;'.$option['min'];
 
             return false;
         } elseif (isset($option['max']) && $option['value'] > $option['max']) {
-            $this->error[] = __('maximum') . '&#160;' . $option['max'];
+            $this->error[] = __('maximum').'&#160;'.$option['max'];
 
             return false;
         }
@@ -274,7 +272,7 @@ class Validate
     private function nickoccupied(array $option)
     {
         $stmt = \App::db()->prepare("
-            SELECT COUNT(*) FROM `" . TP . "user__`
+            SELECT COUNT(*) FROM `".TP."user__`
             WHERE `nickname` = ?
         ");
 
@@ -298,7 +296,7 @@ class Validate
     private function emailoccupied(array $option)
     {
         $stmt = \App::db()->prepare("
-            SELECT COUNT(*) FROM `" . TP . "user__`
+            SELECT COUNT(*) FROM `".TP."user__`
             WHERE `email` = ?
         ");
 

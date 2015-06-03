@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * mobiCMS Content Management System (http://mobicms.net)
  *
  * For copyright and license information, please see the LICENSE.md
@@ -86,17 +86,17 @@ class System
     public function getThemesList()
     {
         $tpl_list = [];
-        $dirs = glob(THEMES_PATH . '*', GLOB_ONLYDIR);
+        $dirs = glob(THEMES_PATH.'*', GLOB_ONLYDIR);
 
         foreach ($dirs as $val) {
-            if (is_file($val . DS . 'theme.ini')) {
-                $options = parse_ini_file($val . DS . 'theme.ini');
+            if (is_file($val.DS.'theme.ini')) {
+                $options = parse_ini_file($val.DS.'theme.ini');
 
                 if (isset($options['name'], $options['author'], $options['author_url'], $options['author_email'], $options['description'])
-                    && is_file($val . DS . 'theme.png')
+                    && is_file($val.DS.'theme.png')
                 ) {
                     $dir = basename($val);
-                    $options['thumbinal'] = \App::cfg()->sys->homeurl . 'themes/' . $dir . '/theme.png';
+                    $options['thumbinal'] = \App::cfg()->sys->homeurl.'themes/'.$dir.'/theme.png';
                     $tpl_list[$dir] = $options;
                 }
             }
@@ -134,7 +134,7 @@ class System
      */
     private function writeToFile(array $settings)
     {
-        if (file_put_contents(CONFIG_PATH . 'settings.php', '<?php' . "\n" . '$settings = ' . var_export($settings, true) . ';') === false) {
+        if (file_put_contents(CONFIG_PATH.'settings.php', '<?php'."\n".'$settings = '.var_export($settings, true).';') === false) {
             throw new \RuntimeException('Can not write system configuration file');
         }
     }
@@ -146,8 +146,10 @@ class System
      */
     private function readSettings()
     {
-        if (is_file(CONFIG_PATH . 'settings.php')) {
-            include_once CONFIG_PATH . 'settings.php';
+        $settings = null;
+
+        if (is_file(CONFIG_PATH.'settings.php')) {
+            include_once CONFIG_PATH.'settings.php';
 
             if (isset($settings)
                 && is_array($settings)
@@ -170,7 +172,7 @@ class System
      */
     private function defaults()
     {
-        $url = 'http://' . $_SERVER['SERVER_NAME'] . '/';
+        $url = 'http://'.$_SERVER['SERVER_NAME'].'/';
         $path = trim(str_replace(DIRECTORY_SEPARATOR, '/', dirname($_SERVER['PHP_SELF'])), '/');
 
         return
@@ -184,7 +186,7 @@ class System
                 'email'                      => 'user@example.com',
                 'filesize'                   => 2100,
                 'home_title'                 => 'mobiCMS!',
-                'homeurl'                    => $url . (!empty($path) ? $path . '/' : ''),
+                'homeurl'                    => $url.(!empty($path) ? $path.'/' : ''),
                 'lng'                        => 'ru',
                 'lng_switch'                 => 1,
                 'meta_desc'                  => 'mobiCMS mobile content management system http://mobicms.net',

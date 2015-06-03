@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * mobiCMS Content Management System (http://mobicms.net)
  *
  * For copyright and license information, please see the LICENSE.md
@@ -62,11 +62,10 @@ class User
         }
 
         if ($id && $token) {
-            $user = App::db()->query("SELECT * FROM `" . TP . "user__` WHERE `id` = " . $id);
+            $user = App::db()->query("SELECT * FROM `".TP."user__` WHERE `id` = ".$id);
 
             if ($user->rowCount()) {
                 $this->data = $user->fetch();
-                $user = null;
 
                 // Допуск на авторизацию с COOKIE
                 if ($cookie
@@ -91,7 +90,7 @@ class User
                             $this->settings = unserialize($_SESSION['user_set']);
                         }
                     } else {
-                        if (($settings = $this->getData('user_set')) !== false) {
+                        if (($settings = $this->getData('user_set')) !== false && is_array($settings)) {
                             $this->settings = $settings;
                             $_SESSION['user_set'] = serialize($settings);
                         } else {
@@ -105,7 +104,7 @@ class User
 
                     // Фиксация данных
                     $stmt = App::db()->prepare("
-                        UPDATE `" . TP . "user__`
+                        UPDATE `".TP."user__`
                         SET
                         `last_visit`   = ?,
                         `ip`           = ?,
@@ -123,7 +122,6 @@ class User
                             $id
                         ]
                     );
-                    $stmt = null;
 
                     // Проверка на бан
                     if ($this->data['ban']) {
@@ -132,9 +130,9 @@ class User
                 } else {
                     // Если авторизация не прошла
                     App::db()->exec("
-                        UPDATE `" . TP . "user__` SET
-                        `login_try` = " . ++$this->data['login_try'] . "
-                        WHERE `id`  = " . $this->data['id']
+                        UPDATE `".TP."user__` SET
+                        `login_try` = ".++$this->data['login_try']."
+                        WHERE `id`  = ".$this->data['id']
                     );
 
                     $this->destroy();
@@ -143,8 +141,6 @@ class User
                 // Если пользователь не существует
                 $this->destroy();
             }
-        } else {
-            // Для неавторизованных
         }
     }
 
@@ -156,10 +152,10 @@ class User
     public function destroy($clear_token = false)
     {
         if ($this->id && $clear_token) {
-            App::db()->exec("UPDATE `" . TP . "user__` SET `token` = '' WHERE `id` = " . $this->id);
+            App::db()->exec("UPDATE `".TP."user__` SET `token` = '' WHERE `id` = ".$this->id);
         }
 
-        $this->id = false;
+        $this->id = 0;
         $this->rights = 0;
         $this->data = [];
         setcookie('user_id', '', time() - 3600, '/');
@@ -179,7 +175,7 @@ class User
         if ($this->id && !empty($key)) {
             $stmt = App::db()->prepare("
                 SELECT `value`
-                FROM `" . TP . "user__settings`
+                FROM `".TP."user__settings`
                 WHERE `user_id` = ?
                 AND `key`       = ?
                 LIMIT 1
@@ -189,11 +185,9 @@ class User
 
             if ($stmt->rowCount()) {
                 $result = $stmt->fetch();
-                $stmt = null;
 
                 return unserialize($result['value']);
             }
-            $stmt = null;
         }
 
         return false;
@@ -213,7 +207,7 @@ class User
             if (empty($val)) {
                 // Удаляем пользовательские данные
                 $stmt = App::db()->prepare("
-                    DELETE FROM `" . TP . "user__settings`
+                    DELETE FROM `".TP."user__settings`
                     WHERE `user_id` = ?
                     AND `key`       = ?
                     LIMIT 1
@@ -227,7 +221,7 @@ class User
                 );
             } else {
                 $stmt = App::db()->prepare("
-                    REPLACE INTO `" . TP . "user__settings` SET
+                    REPLACE INTO `".TP."user__settings` SET
                     `user_id` = ?,
                     `key`     = ?,
                     `value`   = ?
@@ -241,7 +235,6 @@ class User
                     ]
                 );
             }
-            $stmt = null;
 
             return true;
         }
@@ -256,9 +249,9 @@ class User
     {
         $ban = App::db()->query("
             SELECT *
-            FROM `" . TP . "user__ban`
-            WHERE `user_id` = " . $this->id . "
-            AND `ban_time`  > " . time()
+            FROM `".TP."user__ban`
+            WHERE `user_id` = ".$this->id."
+            AND `ban_time`  > ".time()
         );
 
         if ($ban->rowCount()) {
@@ -277,13 +270,12 @@ class User
     {
         $q = App::db()->prepare("
             SELECT `id`
-            FROM `" . TP . "user__ip`
+            FROM `".TP."user__ip`
             WHERE `user_id`    = ?
             AND `ip`           = ?
             AND `ip_via_proxy` = ?
             LIMIT 1
             ");
-
         $q->execute(
             [
                 $this->id,
@@ -295,15 +287,12 @@ class User
         if ($q->rowCount()) {
             // Обновляем имеющуюся запись
             $result = $q->fetch();
-            $q = null;
-
             $stmt = App::db()->prepare("
-                UPDATE `" . TP . "user__ip` SET
+                UPDATE `".TP."user__ip` SET
                 `user_agent` = ?,
                 `timestamp`  = ?
                 WHERE `id`   = ?
             ");
-
             $stmt->execute(
                 [
                     App::network()->getUserAgent(),
@@ -311,11 +300,10 @@ class User
                     $result['id']
                 ]
             );
-            $stmt = null;
         } else {
             // Вставляем новую запись
             $stmt = App::db()->prepare("
-                INSERT INTO `" . TP . "user__ip`
+                INSERT INTO `".TP."user__ip`
                 SET
                 `user_id`      = ?,
                 `ip`           = ?,
@@ -333,7 +321,6 @@ class User
                     time()
                 ]
             );
-            $stmt = null;
         }
     }
 }

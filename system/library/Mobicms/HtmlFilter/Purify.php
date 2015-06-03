@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * mobiCMS Content Management System (http://mobicms.net)
  *
  * For copyright and license information, please see the LICENSE.md
@@ -11,8 +11,6 @@
  */
 
 namespace Mobicms\HtmlFilter;
-
-require_once ROOT_PATH . 'system/third-party/Purifier/HTMLPurifier.auto.php';
 
 /**
  * Class Purify
@@ -29,11 +27,12 @@ class Purify
 
     public function __construct($args)
     {
+        require_once ROOT_PATH.'system/third-party/Purifier/HTMLPurifier.auto.php';
         $this->html = isset($args[0]) ? $args[0] : '';
 
         // Base configuration
         $this->config = \HTMLPurifier_Config::createDefault();
-        $cachePath = CACHE_PATH . 'htmlpurifier';
+        $cachePath = CACHE_PATH.'htmlpurifier';
 
         if (!is_dir($cachePath)) {
             mkdir($cachePath, 0700, true);
@@ -43,7 +42,7 @@ class Purify
 
         // Custom Filters (optimized for Wysiwyg editor)
         $this->config->set('HTML.Allowed', 'a[href],strong,em,span[style],p,br,code,pre,hr');
-        $this->config->set('Attr.AllowedFrameTargets', array('_blank', '_self', '_target', '_top'));
+        $this->config->set('Attr.AllowedFrameTargets', ['_blank', '_self', '_target', '_top']);
 
         $this->purifier = new \HTMLPurifier($this->config);
     }

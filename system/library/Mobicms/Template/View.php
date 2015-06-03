@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * mobiCMS Content Management System (http://mobicms.net)
  *
  * For copyright and license information, please see the LICENSE.md
@@ -33,7 +33,7 @@ class View extends \ArrayObject
 
     public function __construct()
     {
-        parent::setFlags(parent::ARRAY_AS_PROPS);
+        $this->setFlags(parent::ARRAY_AS_PROPS);
     }
 
     /**
@@ -112,9 +112,9 @@ class View extends \ArrayObject
      */
     public function setCss($file, array $args = [])
     {
-        $media = isset($args['media']) ? ' media="' . $args['media'] . '"' : '';
+        $media = isset($args['media']) ? ' media="'.$args['media'].'"' : '';
 
-        $css = '    <link rel="stylesheet" href="' . $this->getPath($file, $args) . '"' . $media . '>';
+        $css = '    <link rel="stylesheet" href="'.$this->getPath($file, $args).'"'.$media.'>';
 
         if (isset($args['first']) && $args['first']) {
             array_unshift($this->css, $css);
@@ -136,7 +136,7 @@ class View extends \ArrayObject
      */
     public function setJs($file, array $args = [])
     {
-        $js = '<script src="' . $this->getPath($file, $args) . '" type="text/javascript"></script>';
+        $js = '<script src="'.$this->getPath($file, $args).'" type="text/javascript"></script>';
 
         if (isset($args['header']) && $args['header']) {
             $this->headerJs[] = $js;
@@ -195,21 +195,21 @@ class View extends \ArrayObject
         switch ($dir) {
             case 'css':
             case 'js':
-                $load = implode('.', $tmp) . '.' . ($version ? $version . '.' : '') . $ext;
+                $load = implode('.', $tmp).'.'.($version ? $version.'.' : '').$ext;
 
                 if ($module === false) {
                     // Вызов системного файла
-                    if (is_file(THEMES_PATH . App::user()->settings['skin'] . DS . $dir . DS . $file)) {
-                        return App::cfg()->sys->homeurl . 'themes/' . App::user()->settings['skin'] . '/' . $dir . '/' . $load;
-                    } elseif (is_file(THEMES_PATH . App::cfg()->sys->theme_default . DS . $dir . DS . $file)) {
-                        return App::cfg()->sys->homeurl . 'themes/' . App::cfg()->sys->theme_default . '/' . $dir . '/' . $load;
+                    if (is_file(THEMES_PATH.App::user()->settings['skin'].DS.$dir.DS.$file)) {
+                        return App::cfg()->sys->homeurl.'themes/'.App::user()->settings['skin'].'/'.$dir.'/'.$load;
+                    } elseif (is_file(THEMES_PATH.App::cfg()->sys->theme_default.DS.$dir.DS.$file)) {
+                        return App::cfg()->sys->homeurl.'themes/'.App::cfg()->sys->theme_default.'/'.$dir.'/'.$load;
                     }
                 } else {
                     // Вызов файла модуля
-                    if (is_file(THEMES_PATH . App::user()->settings['skin'] . DS . 'modules' . DS . $module . DS . $dir . DS . $file)) {
-                        return App::cfg()->sys->homeurl . 'themes/' . App::user()->settings['skin'] . '/modules/' . $module . '/' . $dir . '/' . $file;
-                    } elseif (is_file(ASSETS_PATH . 'modules' . DS . $module . DS . $dir . DS . $file)) {
-                        return App::cfg()->sys->homeurl . 'assets/modules/' . $module . '/' . $dir . '/' . $file;
+                    if (is_file(THEMES_PATH.App::user()->settings['skin'].DS.'modules'.DS.$module.DS.$dir.DS.$file)) {
+                        return App::cfg()->sys->homeurl.'themes/'.App::user()->settings['skin'].'/modules/'.$module.'/'.$dir.'/'.$file;
+                    } elseif (is_file(ASSETS_PATH.'modules'.DS.$module.DS.$dir.DS.$file)) {
+                        return App::cfg()->sys->homeurl.'assets/modules/'.$module.'/'.$dir.'/'.$file;
                     }
                 }
                 break;
@@ -217,17 +217,17 @@ class View extends \ArrayObject
             case 'php':
                 if ($module === false) {
                     // Вызов системного файла
-                    if (is_file(THEMES_PATH . App::user()->settings['skin'] . DS . 'templates' . DS . $file)) {
-                        return THEMES_PATH . App::user()->settings['skin'] . DS . 'templates' . DS . $file;
-                    } elseif (is_file(THEMES_PATH . App::cfg()->sys->theme_default . DS . 'templates' . DS . $file)) {
-                        return THEMES_PATH . App::cfg()->sys->theme_default . DS . 'templates' . DS . $file;
+                    if (is_file(THEMES_PATH.App::user()->settings['skin'].DS.'templates'.DS.$file)) {
+                        return THEMES_PATH.App::user()->settings['skin'].DS.'templates'.DS.$file;
+                    } elseif (is_file(THEMES_PATH.App::cfg()->sys->theme_default.DS.'templates'.DS.$file)) {
+                        return THEMES_PATH.App::cfg()->sys->theme_default.DS.'templates'.DS.$file;
                     }
                 } else {
                     // Вызов файла модуля
-                    if (is_file(THEMES_PATH . App::user()->settings['skin'] . DS . 'modules' . DS . $module . DS . 'templates' . DS . $file)) {
-                        return THEMES_PATH . App::user()->settings['skin'] . DS . 'modules' . DS . $module . DS . 'templates' . DS . $file;
-                    } elseif (is_file(MODULE_PATH . $module . DS . '_sys' . DS . 'templates' . DS . $file)) {
-                        return MODULE_PATH . $module . DS . '_sys' . DS . 'templates' . DS . $file;
+                    if (is_file(THEMES_PATH.App::user()->settings['skin'].DS.'modules'.DS.$module.DS.'templates'.DS.$file)) {
+                        return THEMES_PATH.App::user()->settings['skin'].DS.'modules'.DS.$module.DS.'templates'.DS.$file;
+                    } elseif (is_file(MODULE_PATH.$module.DS.'_sys'.DS.'templates'.DS.$file)) {
+                        return MODULE_PATH.$module.DS.'_sys'.DS.'templates'.DS.$file;
                     }
                 }
                 break;
@@ -236,7 +236,7 @@ class View extends \ArrayObject
                 throw new \InvalidArgumentException('Unknown extension');
         }
 
-        throw new \InvalidArgumentException($file . '" not found');
+        throw new \InvalidArgumentException($file.'" not found');
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -270,18 +270,18 @@ class View extends \ArrayObject
         }
     }
 
-    private function loadHeader()
+    protected function loadHeader()
     {
-        return '<meta name="Generator" content="mobiCMS, http://mobicms.net"/>' . "\n" .
-        implode("\n", array_merge($this->css, $this->headerJs)) . "\n";
+        return '<meta name="Generator" content="mobiCMS, http://mobicms.net"/>'."\n".
+        implode("\n", array_merge($this->css, $this->headerJs))."\n";
     }
 
-    private function loadFooter()
+    protected function loadFooter()
     {
-        return implode("\n", $this->footerJs) . "\n";
+        return implode("\n", $this->footerJs)."\n";
     }
 
-    private function loadTemplate($key = null)
+    protected function loadTemplate($key = null)
     {
         if ($key === null) {
             $key = 'content';
@@ -294,7 +294,7 @@ class View extends \ArrayObject
         return 'rrr';//TODO: Убрать
     }
 
-    private function loadRawContent($force = false)
+    protected function loadRawContent($force = false)
     {
         if ($this->template === null || $force) {
             echo $this->rawContent;

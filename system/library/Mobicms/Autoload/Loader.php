@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * mobiCMS Content Management System (http://mobicms.net)
  *
  * For copyright and license information, please see the LICENSE.md
@@ -44,7 +44,7 @@ class Loader
         }
 
         if (isset($this->map[$className])) {
-            throw new \InvalidArgumentException('Class "' . $className . '" is already registered');
+            throw new \InvalidArgumentException('Class "'.$className.'" is already registered');
         }
 
         $this->map[$className] = $pahToFile;
@@ -67,13 +67,13 @@ class Loader
                 $fileName = VENDOR_PATH;
                 if ($lastNsPos = strrpos($className, '\\')) {
                     $namespace = substr($className, 0, $lastNsPos);
-                    $fileName .= str_replace('\\', DS, $namespace) . DS;
+                    $fileName .= str_replace('\\', DS, $namespace).DS;
                 }
-                $fileName .= str_replace('_', DS, substr($className, $lastNsPos + 1)) . '.php';
+                $fileName .= str_replace('_', DS, substr($className, $lastNsPos + 1)).'.php';
             }
 
             if (!is_file($fileName) || !is_readable($fileName)) {
-                throw new \RuntimeException('Class "' . $name . '" is not found or unreadable');
+                throw new \RuntimeException('Class "'.$name.'" is not found or unreadable');
             }
 
             include_once $fileName;
@@ -82,7 +82,7 @@ class Loader
                 && !interface_exists($name, false)
                 && !trait_exists($name, false)
             ) {
-                throw new \RuntimeException('Unable to find "' . $name . '" in file: ' . $fileName);
+                throw new \RuntimeException('Unable to find "'.$name.'" in file: '.$fileName);
             }
         }
     }

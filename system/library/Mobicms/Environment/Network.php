@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * mobiCMS Content Management System (http://mobicms.net)
  *
  * For copyright and license information, please see the LICENSE.md
@@ -28,8 +28,9 @@ class Network
     /**
      * Obtain an IP address
      *
-     * @param bool $string Return IP Address as string xx.xx.xx.xx
-     * @return int|string  IP Address
+     * @param bool $string
+     * @return int|string
+     * @throws \HttpRuntimeException
      */
     public function getIp($string = false)
     {
@@ -39,7 +40,7 @@ class Network
             if ($ip !== false) {
                 $this->ip = $ip;
             } else {
-                die('<p>Invalid IP address</p>');
+                throw new \HttpRuntimeException('Invalid IP address');
             }
         }
 
@@ -88,7 +89,7 @@ class Network
             if (isset($_SERVER["HTTP_X_OPERAMINI_PHONE_UA"])
                 && strlen(trim($_SERVER['HTTP_X_OPERAMINI_PHONE_UA'])) > 5
             ) {
-                $this->userAgent = 'OPERA MINI: ' . htmlspecialchars(substr(trim($_SERVER['HTTP_X_OPERAMINI_PHONE_UA']), 0, 250));
+                $this->userAgent = 'OPERA MINI: '.htmlspecialchars(substr(trim($_SERVER['HTTP_X_OPERAMINI_PHONE_UA']), 0, 250));
             } elseif (isset($_SERVER['HTTP_USER_AGENT'])) {
                 $this->userAgent = htmlspecialchars(substr(trim($_SERVER['HTTP_USER_AGENT']), 0, 250));
             } else {

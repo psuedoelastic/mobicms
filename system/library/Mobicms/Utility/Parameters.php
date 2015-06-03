@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * mobiCMS Content Management System (http://mobicms.net)
  *
  * For copyright and license information, please see the LICENSE.md
@@ -43,8 +43,8 @@ class Parameters extends ArrayObject
      */
     public function get($name, $default = null)
     {
-        if (isset($this[$name])) {
-            return parent::offsetGet($name);
+        if ($this->offsetExists($name)) {
+            return $this->offsetGet($name);
         }
 
         return $default;
