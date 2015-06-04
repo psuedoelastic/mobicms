@@ -60,7 +60,7 @@ class View extends \ArrayObject
      */
     public function offsetGet($key)
     {
-        return parent::offsetExists($key) ? parent::offsetGet($key) : false;
+        return $this->offsetExists($key) === true ? parent::offsetGet($key) : false;
     }
 
     /**
@@ -72,7 +72,7 @@ class View extends \ArrayObject
      */
     public function setRawVar($key, $val)
     {
-        parent::offsetSet($key, $val);
+        $this->offsetSet($key, $val);
     }
 
     public function setLayout($file, $module = false)
