@@ -127,7 +127,7 @@ class Languages
             }
 
             if ($phrase) {
-                return $phrase;
+                return "$phrase";
             }
         } else {
             // Receive module phrases
@@ -144,15 +144,17 @@ class Languages
                 return 'ERROR: language file';
             } elseif (!$forceSystem && isset($this->moduleLanguage[$key])) {
                 // Return the module phrase
-                return $this->moduleLanguage[$key];
+                $phrase = $this->moduleLanguage[$key];
+                return "$phrase";
             } elseif (isset($this->systemLanguage[$key])) {
                 // Return the system phrase
-                return $this->systemLanguage[$key];
+                $phrase = $this->systemLanguage[$key];
+                return "$phrase";
             }
         }
 
         // If the phrase doesn't exist, we return a key
-        return '# '.$key.' #';
+        return "# $key #";
     }
 
     /**
