@@ -1,10 +1,10 @@
 # [mobiCMS 0.1.0](http://mobicms.net)
 
-[![License](https://img.shields.io/badge/license-GPL%20v.3-blue.svg?style=flat-square)](https://www.gnu.org/licenses/gpl-3.0-standalone.html)
-[![SemVer](http://img.shields.io/badge/semver-✓-brightgreen.svg?style=flat-square)](http://semver.org)
-[![devDependency Status](https://david-dm.org/mobiCMS/mobicms/dev-status.svg?style=flat-square)](https://david-dm.org/mobiCMS/mobicms#info=devDependencies)
-[![Scrutinizer](https://img.shields.io/scrutinizer/g/mobiCMS/mobicms.svg?style=flat-square)](https://scrutinizer-ci.com/g/mobiCMS/mobicms/)
-[![Scrutinizer Build](https://img.shields.io/scrutinizer/build/g/mobiCMS/mobicms.svg?style=flat-square)](https://scrutinizer-ci.com/g/mobiCMS/mobicms/build-status/master)
+[![License](https://img.shields.io/badge/license-GPL%20v.3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0-standalone.html)
+[![SemVer](http://img.shields.io/badge/semver-✓-brightgreen.svg)](http://semver.org)
+[![devDependency Status](https://david-dm.org/mobiCMS/mobicms/dev-status.svg)](https://david-dm.org/mobiCMS/mobicms#info=devDependencies)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mobiCMS/mobicms/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mobiCMS/mobicms/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/mobiCMS/mobicms/badges/build.png?b=master)](https://scrutinizer-ci.com/g/mobiCMS/mobicms/build-status/master)
 
 Mobile Content Management System. 
 

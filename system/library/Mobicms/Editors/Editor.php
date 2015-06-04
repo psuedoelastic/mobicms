@@ -55,7 +55,7 @@ class Editor
     public function __call($method, $arguments = [])
     {
         if (method_exists($this->editorInstance, $method)) {
-            return call_user_func([$this->editorInstance, $method], $arguments);
+            return call_user_func_array([$this->editorInstance, $method], $arguments);
         } else {
             throw new \BadMethodCallException('Invalid method ['.$method.']');
         }
