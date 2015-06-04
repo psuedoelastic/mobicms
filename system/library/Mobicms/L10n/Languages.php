@@ -76,7 +76,7 @@ class Languages
     public function getLngList()
     {
         if ($this->lngList === null) {
-            $list = glob(LANGUAGE_PATH.'*', GLOB_ONLYDIR);
+            $list = glob(LANGUAGE_PATH . '*', GLOB_ONLYDIR);
 
             foreach ($list as $val) {
                 $this->lngList[] = basename($val);
@@ -97,10 +97,10 @@ class Languages
         $list = $this->getLngList();
 
         foreach ($list as $iso) {
-            $file = LANGUAGE_PATH.$iso.'/language.ini';
+            $file = LANGUAGE_PATH . $iso . '/language.ini';
 
             if (is_file($file) && ($desc = parse_ini_file($file)) !== false) {
-                $description[$iso] = App::image('flag_'.$iso.'.gif').'&#160; ';
+                $description[$iso] = App::image('flag_' . $iso . '.gif') . '&#160; ';
                 $description[$iso] .= isset($desc['name']) && !empty($desc['name']) ? $desc['name'] : $iso;
             }
         }
@@ -123,16 +123,16 @@ class Languages
             if ($forceSystem) {
                 $phrase = $this->readLng(LANGUAGE_PATH, $key);
             } else {
-                $phrase = $this->readLng(MODULE_PATH.App::router()->dir.DS.'_sys'.DS.'languages'.DS, $key);
+                $phrase = $this->readLng(MODULE_PATH . App::router()->dir . DS . '_sys' . DS . 'languages' . DS, $key);
             }
 
             if ($phrase) {
-                return "$phrase";
+                return (string)$phrase;
             }
         } else {
             // Receive module phrases
             if ($this->moduleLanguage === null && $this->moduleLanguage !== false) {
-                $this->moduleLanguage = $this->readLng(MODULE_PATH.App::router()->dir.DS.'_sys'.DS.'languages'.DS);
+                $this->moduleLanguage = $this->readLng(MODULE_PATH . App::router()->dir . DS . '_sys' . DS . 'languages' . DS);
             }
 
             // Receive system phrases
@@ -144,12 +144,10 @@ class Languages
                 return 'ERROR: language file';
             } elseif (!$forceSystem && isset($this->moduleLanguage[$key])) {
                 // Return the module phrase
-                $phrase = $this->moduleLanguage[$key];
-                return "$phrase";
+                return (string)$this->moduleLanguage[$key];
             } elseif (isset($this->systemLanguage[$key])) {
                 // Return the system phrase
-                $phrase = $this->systemLanguage[$key];
-                return "$phrase";
+                return (string)$this->systemLanguage[$key];
             }
         }
 
@@ -162,16 +160,16 @@ class Languages
      *
      * @param string      $path
      * @param bool|string $isFile
-     * @return array|bool
+     * @return array|string|bool
      */
     private function readLng($path, $isFile = false)
     {
-        $lngFile = $isFile ? $isFile.'.txt' : 'language.lng';
+        $lngFile = $isFile ? $isFile . '.txt' : 'language.lng';
         $array =
             [
-                $path.$this->getCurrentISO().DS.$lngFile,
-                $path.'en'.DS.$lngFile,
-                $path.'ru'.DS.$lngFile
+                $path . $this->getCurrentISO() . DS . $lngFile,
+                $path . 'en' . DS . $lngFile,
+                $path . 'ru' . DS . $lngFile
             ];
 
         foreach ($array as $file) {
