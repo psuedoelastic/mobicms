@@ -72,7 +72,7 @@ class View extends \ArrayObject
      */
     public function setRawVar($key, $val)
     {
-        $this->offsetSet($key, $val);
+        parent::offsetSet($key, $val);
     }
 
     public function setLayout($file, $module = false)
