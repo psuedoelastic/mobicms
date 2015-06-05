@@ -23,3 +23,8 @@ Mobile Content Management System.
 - PHP 5.5 +
 - MySQL (InnoDB support required) 5.1 +
 - .htaccess support
+
+## Documentation
+Документация находится в стадии разработки и будет постоянно дополняться.  
+С предварительной версией можно ознакомиться тут:  
+[http://mobicms.info](http://localhost/mobicms-documentation/ru/index.html)
