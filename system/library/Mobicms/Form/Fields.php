@@ -124,85 +124,15 @@ class Fields
                     return 'ERROR: missing radio element items';
                 }
 
-                $radio = [];
-
-                foreach ($this->option['items'] as $value => $label) {
-                    $radio['name'] = $this->option['name'];
-                    $radio['value'] = $value;
-
-                    if (isset($this->option['checked']) && $this->option['checked'] == $value) {
-                        $radio['checked'] = true;
-                    }
-
-                    if (empty($label)) {
-                        $out[] = $this->build('radio', $radio);
-                    } else {
-                        $radio['label_inline'] = $label;
-                        $radio['label_inline_class'] = isset($this->option['label_inline_class']) ? $this->option['label_inline_class'] : 'inline';
-                        $radio['content'] = $this->build('radio', $radio);
-                        $out[] = $this->build('label_inline', $radio);
-                    }
-                    unset($radio, $value, $label);
-                }
+                $out[] = $this->prepareRadio();
                 break;
 
             case 'select':
-                // Добавляем элемент SELECT
-                $multiple = isset($this->option['multiple']) && $this->option['multiple'] ? true : false;
-                if (isset($this->option['items']) && is_array($this->option['items'])) {
-                    $list = [];
-                    $listElement = [];
-                    foreach ($this->option['items'] as $value => $label) {
-                        if (empty($label)) {
-                            $listElement['label'] = $value;
-                        }
-
-                        if (isset($this->option['selected'])) {
-                            if ($multiple && is_array($this->option['selected'])) {
-                                if (in_array($value, $this->option['selected'])) {
-                                    $listElement['selected'] = true;
-                                }
-                            } else {
-                                if ($this->option['selected'] == $value) {
-                                    $listElement['selected'] = true;
-                                }
-                            }
-                        }
-
-                        $listElement['value'] = $value;
-                        $listElement['label'] = $label;
-                        $list[] = $this->build('option', $listElement);
-                        unset($listElement, $value, $label);
-                    }
-                    $this->option['content'] = "\n".implode("\n", $list)."\n";
-                }
-
-                if ($multiple) {
-                    $this->option['name'] = $this->option['name'].'[]';
-                }
-
-                $out[] = $this->build('select', $this->option);
+                $out = $this->prepareSelect();
                 break;
 
             case 'textarea':
-                if (!empty($this->option['editor'])) {
-                    // Initialize editor
-                    $this->option['id'] = 'editor';
-                    $editor = new \Mobicms\Editors\Editor(\App::user()->settings['editor']);
-                    $lng = \App::languages()->getCurrentISO();
-                    $editor->setLanguage($lng);
-                    $this->option['style'] = $editor->getStyle();
-
-                    if (empty($this->option['description'])) {
-                        $this->option['description'] = $editor->getHelp();
-                    } else {
-                        $this->option['description'] = $editor->getHelp().'<br>'.$this->option['description'];
-                    }
-
-                    $editor->display();
-                }
-
-                $out[] = $this->build($this->option['type'], $this->option);
+                $out[] = $this->prepareTextarea();
                 break;
 
             default:
@@ -264,5 +194,100 @@ class Fields
         }
 
         return vsprintf($this->elements[$type][0], $placeholders);
+    }
+
+    /**
+     * @return string
+     */
+    private function prepareRadio()
+    {
+        $out = [];
+        $radio = [];
+
+        foreach ($this->option['items'] as $value => $label) {
+            $radio['name'] = $this->option['name'];
+            $radio['value'] = $value;
+
+            if (isset($this->option['checked']) && $this->option['checked'] == $value) {
+                $radio['checked'] = true;
+            }
+
+            if (empty($label)) {
+                $out[] = $this->build('radio', $radio);
+            } else {
+                $radio['label_inline'] = $label;
+                $radio['label_inline_class'] = isset($this->option['label_inline_class']) ? $this->option['label_inline_class'] : 'inline';
+                $radio['content'] = $this->build('radio', $radio);
+                $out[] = $this->build('label_inline', $radio);
+            }
+        }
+
+        return implode("\n", $out);
+    }
+
+    /**
+     * @return string
+     */
+    private function prepareSelect()
+    {
+        // Добавляем элемент SELECT
+        $multiple = isset($this->option['multiple']) && $this->option['multiple'] ? true : false;
+        if (isset($this->option['items']) && is_array($this->option['items'])) {
+            $list = [];
+            $listElement = [];
+            foreach ($this->option['items'] as $value => $label) {
+                if (empty($label)) {
+                    $listElement['label'] = $value;
+                }
+
+                if (isset($this->option['selected'])) {
+                    if ($multiple && is_array($this->option['selected'])) {
+                        if (in_array($value, $this->option['selected'])) {
+                            $listElement['selected'] = true;
+                        }
+                    } else {
+                        if ($this->option['selected'] == $value) {
+                            $listElement['selected'] = true;
+                        }
+                    }
+                }
+
+                $listElement['value'] = $value;
+                $listElement['label'] = $label;
+                $list[] = $this->build('option', $listElement);
+            }
+            $this->option['content'] = "\n".implode("\n", $list)."\n";
+        }
+
+        if ($multiple) {
+            $this->option['name'] = $this->option['name'].'[]';
+        }
+
+        return $this->build('select', $this->option);
+    }
+
+    /**
+     * @return string
+     */
+    private function prepareTextarea()
+    {
+        if (!empty($this->option['editor'])) {
+            // Initialize editor
+            $this->option['id'] = 'editor';
+            $editor = new \Mobicms\Editors\Editor(\App::user()->settings['editor']);
+            $lng = \App::languages()->getCurrentISO();
+            $editor->setLanguage($lng);
+            $this->option['style'] = $editor->getStyle();
+
+            if (empty($this->option['description'])) {
+                $this->option['description'] = $editor->getHelp();
+            } else {
+                $this->option['description'] = $editor->getHelp().'<br>'.$this->option['description'];
+            }
+
+            $editor->display();
+        }
+
+        return $this->build($this->option['type'], $this->option);
     }
 }
