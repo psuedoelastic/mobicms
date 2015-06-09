@@ -23,11 +23,9 @@ class Filter
 {
     private $html = '';
 
-    public function __construct($args)
+    public function __construct($html)
     {
-        if (isset($args[0])) {
-            $this->html = $args[0];
-        }
+        $this->html = $html;
     }
 
     public function __toString()

@@ -1,5 +1,5 @@
 <!-- Заголовок раздела -->
-<div class="titlebar toogle-admin">
+<div class="titlebar<?= App::user()->rights >= 7 ? ' toogle-admin' : '' ?>">
     <div class="button"></div>
     <div><h1><?= __('news') ?></h1></div>
     <?php if (App::user()->rights >= 7): ?>

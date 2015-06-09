@@ -25,10 +25,10 @@ class Purify
     private $config;
     private $html = '';
 
-    public function __construct($args)
+    public function __construct($html)
     {
         require_once ROOT_PATH.'system/third-party/Purifier/HTMLPurifier.auto.php';
-        $this->html = isset($args[0]) ? $args[0] : '';
+        $this->html = $html;
 
         // Base configuration
         $this->config = \HTMLPurifier_Config::createDefault();
