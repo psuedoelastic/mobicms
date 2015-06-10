@@ -37,16 +37,6 @@ class Loader
      */
     public function import($className, $pahToFile)
     {
-        if (empty($className)
-            || empty($pahToFile)
-        ) {
-            throw new \InvalidArgumentException('Invalid class registration');
-        }
-
-        if (isset($this->map[$className])) {
-            throw new \InvalidArgumentException('Class "'.$className.'" is already registered');
-        }
-
         $this->map[$className] = $pahToFile;
     }
 
@@ -72,18 +62,11 @@ class Loader
                 $fileName .= str_replace('_', DS, substr($className, $lastNsPos + 1)).'.php';
             }
 
-            if (!is_file($fileName) || !is_readable($fileName)) {
+            if (!is_file($fileName)) {
                 throw new \RuntimeException('Class "'.$name.'" is not found or unreadable');
             }
 
             include_once $fileName;
-
-            if (!class_exists($name, false)
-                && !interface_exists($name, false)
-                && !trait_exists($name, false)
-            ) {
-                throw new \RuntimeException('Unable to find "'.$name.'" in file: '.$fileName);
-            }
         }
     }
 }
