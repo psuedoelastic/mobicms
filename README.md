@@ -27,4 +27,4 @@ Mobile Content Management System.
 ## Documentation
 Документация находится в стадии разработки и будет постоянно дополняться.  
 С предварительной версией можно ознакомиться тут:  
-[http://mobicms.info](http://localhost/mobicms-documentation/ru/index.html)
+[http://mobicms.info](http://mobicms.info/ru/index.html)
