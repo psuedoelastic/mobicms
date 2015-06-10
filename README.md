@@ -22,7 +22,7 @@ Mobile Content Management System.
 ## System Requirements
 - PHP 5.5 +
 - MySQL (InnoDB support required) 5.1 +
-- .htaccess support
+- Apache with mod_rewrite and .htaccess support
 
 ## Documentation
 Документация находится в стадии разработки и будет постоянно дополняться.  

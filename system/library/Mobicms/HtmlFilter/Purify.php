@@ -27,7 +27,7 @@ class Purify
 
     public function __construct($html)
     {
-        require_once ROOT_PATH.'system/third-party/Purifier/HTMLPurifier.auto.php';
+        require_once ROOT_PATH.'system/third-party/Purifier/HTMLPurifier.standalone.php';
         $this->html = $html;
 
         // Base configuration
