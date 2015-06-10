@@ -177,17 +177,17 @@ class Firewall
         $file = LOG_PATH.$this->requestsLogFile;
 
         if (!is_file($file) || filemtime($file) < time() - $this->requestsLogInterval) {
-            $out = 'Date: GMT '.date('d.m.Y H:i:s')."\r\n";
-            $out .= '-----------------------------'."\r\n";
+            $out = 'Date: GMT '.date('d.m.Y H:i:s')."\n";
+            $out .= '-----------------------------'."\n";
 
             if (empty($requests)) {
-                $out .= '[1] - '.long2ip($ip)."\r\n";
+                $out .= '1::'.long2ip($ip)."\r\n";
             } else {
                 $ip_list = array_count_values($requests);
                 arsort($ip_list);
 
                 foreach ($ip_list as $key => $val) {
-                    $out .= '['.$val.'] - '.long2ip($key)."\r\n";
+                    $out .= $val.'::'.long2ip($key)."\n";
                 }
             }
 

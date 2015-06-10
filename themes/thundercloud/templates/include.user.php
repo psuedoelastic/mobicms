@@ -24,7 +24,9 @@
                 <dt>
                     <?php if (!empty($user['avatar'])): ?>
                         <img src="<?= $user['avatar'] ?>"/>
-                    <?php endif ?>
+                    <?php else: ?>
+                        <?= App::image('empty_user.png') ?>
+                    <?php endif; ?>
                 </dt>
                 <dd>
                     <div class="header">
@@ -38,6 +40,7 @@
                     <?php if (isset($user['status']) && !empty($user['status'])): ?>
                         <div class="small bold colored"><?= $user['status'] ?></div>
                     <?php endif ?>
+                    <div><?= __('last_visit').': '.Functions::displayDate($user['last_visit']) ?></div>
                     <?php if (App::user()->rights): ?>
                         <div class="small inline margin"><?= $user['user_agent'] ?></div>
                         <div class="small">

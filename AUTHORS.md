@@ -3,10 +3,6 @@
 List of mobiCMS contributors, third-party components and libraries.  
 `Updated before every release`
 
-## Major developers
-
-  * Oleg Kasyanov aka AlkatraZ <http://mobicms.net>
-
 ## Contributors
 
   * Oleg (AlkatraZ) Kasyanov <http://mobicms.net>
