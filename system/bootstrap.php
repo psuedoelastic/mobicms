@@ -97,12 +97,12 @@ mb_internal_encoding('UTF-8');
  * Error reporting configuration
  */
 if (DEBUG) {
-    error_reporting(E_ALL);
+    ini_set('error_reporting', E_ALL);
     ini_set('display_errors', 'On');
     ini_set('log_errors', 'On');
     ini_set('error_log', LOG_PATH . 'errors-' . date('Y-m-d') . '.log');
 } else {
-    error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
+    ini_set('error_reporting', E_ALL & ~E_DEPRECATED & ~E_STRICT);
     ini_set('display_errors', 'Off');
     ini_set('log_errors', 'Off');
 }
@@ -139,8 +139,8 @@ class App
      */
     private static $services =
         [
-            'image'  => '\Mobicms\Helpers\Image',
-            'filter' => '\Mobicms\HtmlFilter\Filter'
+            'image'  => Mobicms\Helpers\Image::class,
+            'filter' => Mobicms\HtmlFilter\Filter::class,
         ];
 
     /**
@@ -148,17 +148,17 @@ class App
      */
     private static $singleInstanceServices =
         [
-            'autoload'  => '\Mobicms\Autoload\Loader',
-            'cfg'       => '\Mobicms\Config\Factory',
-            'db'        => '\Mobicms\Database\PDOmysql',
-            'languages' => '\Mobicms\L10n\Languages',
-            'network'   => '\Mobicms\Environment\Network',
-            'request'   => '\Mobicms\Environment\Request',
-            'router'    => '\Mobicms\Routing\Router',
-            'purify'    => '\Mobicms\HtmlFilter\Purify',
-            'user'      => '\Mobicms\Users\User',
-            'vars'      => '\Mobicms\Environment\Vars',
-            'view'      => '\Mobicms\Template\View'
+            'autoload'  => Mobicms\Autoload\Loader::class,
+            'cfg'       => Mobicms\Config\Factory::class,
+            'db'        => Mobicms\Database\PDOmysql::class,
+            'languages' => Mobicms\L10n\Languages::class,
+            'network'   => Mobicms\Environment\Network::class,
+            'request'   => Mobicms\Environment\Request::class,
+            'router'    => Mobicms\Routing\Router::class,
+            'purify'    => Mobicms\HtmlFilter\Purify::class,
+            'user'      => Mobicms\Users\User::class,
+            'vars'      => Mobicms\Environment\Vars::class,
+            'view'      => Mobicms\Template\View::class,
         ];
 
     /**
