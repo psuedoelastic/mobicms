@@ -202,7 +202,6 @@ class Fields
     private function prepareRadio()
     {
         $out = [];
-        $radio = [];
 
         foreach ($this->option['items'] as $value => $label) {
             $radio['name'] = $this->option['name'];
