@@ -220,6 +220,7 @@ class Fields
                 $radio['content'] = $this->build('radio', $radio);
                 $out[] = $this->build('label_inline', $radio);
             }
+            unset($radio, $value, $label);
         }
 
         return implode("\n", $out);

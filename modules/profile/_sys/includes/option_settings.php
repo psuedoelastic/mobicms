@@ -39,34 +39,6 @@ $form
                 ]
         ]
     )
-    ->element('checkbox', 'direct_url',
-        [
-            'checked'      => App::user()->settings['direct_url'],
-            'label_inline' => __('direct_url')
-        ]
-    )
-    ->element('checkbox', 'avatars',
-        [
-            'checked'      => App::user()->settings['avatars'],
-            'label_inline' => __('avatars')
-        ]
-    )
-    ->element('checkbox', 'smilies',
-        [
-            'checked'      => App::user()->settings['smilies'],
-            'label_inline' => __('smilies')
-        ]
-    )
-    // Choose text editor
-    ->title(__('text_editor'))
-    ->element('radio', 'editor',
-        [
-            'checked' => App::user()->settings['editor'],
-            'items'   => $editors
-        ]
-    )
-    // Set apperance
-    ->title(__('apperance'))
     ->element('text', 'page_size',
         [
             'value'        => App::user()->settings['page_size'],
@@ -82,19 +54,18 @@ $form
                 ]
         ]
     )
-    ->element('text', 'field_h',
+    ->element('checkbox', 'direct_url',
         [
-            'value'        => App::user()->settings['field_h'],
-            'label_inline' => __('field_height'),
-            'description'  => __('field_height_help') . ' (2-9)',
-            'class'        => 'small',
-            'maxlength'    => 1,
-            'filter'       =>
-                [
-                    'type' => 'int',
-                    'min'  => 2,
-                    'max'  => 9
-                ]
+            'checked'      => App::user()->settings['direct_url'],
+            'label_inline' => __('direct_url')
+        ]
+    )
+    // Choose text editor
+    ->title(__('text_editor'))
+    ->element('radio', 'editor',
+        [
+            'checked' => App::user()->settings['editor'],
+            'items'   => $editors
         ]
     )
     ->divider()
