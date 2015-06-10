@@ -19,7 +19,7 @@
         <?php endif ?>
 
         <!-- Ссылка на профиль, контейнер -->
-        <a href="<?= App::cfg()->sys->homeurl . 'profile/' . $user['id'] ?>" class="mlink<?= App::user()->rights ? ' has-lbtn' : '' ?>">
+        <a href="<?= App::cfg()->sys->homeurl.'profile/'.$user['id'] ?>" class="mlink<?= App::user()->rights ? ' has-lbtn' : '' ?>">
             <dl class="description">
                 <dt>
                     <?php if (!empty($user['avatar'])): ?>
@@ -40,7 +40,9 @@
                     <?php if (isset($user['status']) && !empty($user['status'])): ?>
                         <div class="small bold colored"><?= $user['status'] ?></div>
                     <?php endif ?>
-                    <div><?= __('last_visit').': '.Functions::displayDate($user['last_visit']) ?></div>
+                    <?php if ($user['last_visit'] < time() - 300): ?>
+                        <div><?= __('last_visit').': '.Functions::displayDate($user['last_visit']) ?></div>
+                    <?php endif ?>
                     <?php if (App::user()->rights): ?>
                         <div class="small inline margin"><?= $user['user_agent'] ?></div>
                         <div class="small">
