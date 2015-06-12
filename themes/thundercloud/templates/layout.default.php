@@ -1,7 +1,3 @@
-<?php
-\App::view()->setCss('mobicms.min.css', ['first' => true, 'version' => 1]);
-\App::view()->setJs('mobicms.min.js');
-?>
 <!DOCTYPE html>
 <html lang="<?= \App::cfg()->sys->lng ?>">
 <head>
@@ -16,6 +12,7 @@
     <title><?= isset($this->pagetitle) ? $this->pagetitle : App::cfg()->sys->home_title ?></title>
     <link rel="shortcut icon" href="<?= App::image('favicon.ico', [], false, false) ?>"/>
     <link rel="alternate" type="application/rss+xml" title="<?= __('site_news', 1) ?>" href="<?= App::cfg()->sys->homeurl ?>rss"/>
+    <link rel="stylesheet" href="<?= $this->getLink('mobicms.min.css') ?>">
     <?= $this->loadHeader() ?>
 </head>
 <body>
@@ -54,6 +51,7 @@
 </div>
 <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js" type="text/javascript"></script>-->
 <script src="<?= App::cfg()->sys->homeurl ?>assets/js/jquery-2.1.3.min.js"></script>
+<script src="<?= $this->getLink('mobicms.min.js') ?>"></script>
 <?= $this->loadFooter() ?>
 </body>
 </html>

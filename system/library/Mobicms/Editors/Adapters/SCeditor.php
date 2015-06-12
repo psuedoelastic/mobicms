@@ -38,7 +38,7 @@ class SCeditor implements AdapterInterface
             'emoticonsEnabled: false',
 //            'toolbar: "bold,italic,underline,strike|size,color|left,center,right,justify|bulletlist,orderedlist,code,quote|link,unlink,youtube,horizontalrule|source"',
             'toolbar: "bold,italic,underline,strike|size,color|bulletlist,orderedlist,code,quote|link,unlink,youtube,horizontalrule|source"',
-            'style: "'.\App::view()->getPath('editors/sceditor/editor.min.css').'"'
+            'style: "'.\App::view()->getLink('editors/sceditor/editor.min.css').'"'
         ];
         \App::view()->embedJs('<script>$(function () {$("textarea").sceditor({'.implode(',', $editorOptions).'});});</script>');
     }

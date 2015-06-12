@@ -13,6 +13,8 @@
 namespace Mobicms\Template;
 
 use App;
+use Mobicms\Template\Traits\HelpersTrait;
+use Mobicms\Template\Traits\PathTrait;
 
 /**
  * Class View
@@ -23,7 +25,8 @@ use App;
  */
 class View extends \ArrayObject
 {
-    use FunctionsTrait;
+    use HelpersTrait;
+    use PathTrait;
 
     private $httpHeaders = [];
     private $layout = null;
@@ -110,19 +113,13 @@ class View extends \ArrayObject
      * Preparing CSS
      *
      * @param string $file
-     * @param array  $args
+     * @param string $media
      */
-    public function setCss($file, array $args = [])
+    public function setCss($file, $media = '')
     {
-        $media = isset($args['media']) ? ' media="'.$args['media'].'"' : '';
-
-        $css = '    <link rel="stylesheet" href="'.$this->getPath($file, $args).'"'.$media.'>';
-
-        if (isset($args['first']) && $args['first']) {
-            array_unshift($this->css, $css);
-        } else {
-            $this->css[] = $css;
-        }
+        $media = empty($media) ? ' media="'.$media.'"' : '';
+        $css = '    <link rel="stylesheet" href="'.$this->getLink($file).'"'.$media.'>';
+        $this->css[] = $css;
     }
 
     public function embedCss($css = '')
@@ -138,7 +135,7 @@ class View extends \ArrayObject
      */
     public function setJs($file, array $args = [])
     {
-        $js = '<script src="'.$this->getPath($file, $args).'" type="text/javascript"></script>';
+        $js = '<script src="'.$this->getLink($file).'" type="text/javascript"></script>';
 
         if (isset($args['header']) && $args['header']) {
             $this->headerJs[] = $js;
@@ -219,7 +216,7 @@ class View extends \ArrayObject
             return include_once $this->getPath($this->template[$key]['template'], ['module' => $this->template[$key]['module']]);
         }
 
-        return 'rrr';//TODO: Убрать
+        return false;
     }
 
     protected function loadRawContent($force = false)
