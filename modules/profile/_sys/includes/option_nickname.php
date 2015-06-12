@@ -63,7 +63,7 @@ if (App::user()->rights >= 7 || (Users::$data['change_time']) < time() - (App::c
 
 if ($form->process() === true) {
     $stmt = App::db()->prepare("
-      UPDATE `" . TP . "user__` SET
+      UPDATE `user__` SET
       `nickname`    = ?,
       `change_time` = ?
       WHERE `id`    = ?

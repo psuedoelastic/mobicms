@@ -41,7 +41,7 @@ if (App::user()->id && isset($query[1], $query[2], $catalog[$query[2]]) && $quer
         ->html('<a class="btn btn-link" href="' . App::router()->getUri(2) . 'list/' . \App::router()->getQuery(2) . '">' . __('back') . '</a>');
 
     if ($form->process() === true) {
-        $stmt = App::db()->prepare("UPDATE `" . TP . "user__` SET `avatar` = ? WHERE `id` = " . App::user()->id);
+        $stmt = App::db()->prepare("UPDATE `user__` SET `avatar` = ? WHERE `id` = " . App::user()->id);
         $stmt->execute([$image]);
         $stmt = null;
 

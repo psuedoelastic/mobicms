@@ -51,7 +51,7 @@ $form
 if ($form->process() === true) {
     $token = Functions::generateToken();
     $stmt = App::db()->prepare("
-      UPDATE `" . TP . "user__` SET
+      UPDATE `user__` SET
       `password` = ?,
       `token`    = ?
       WHERE `id` = ?

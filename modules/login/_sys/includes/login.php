@@ -84,7 +84,7 @@ if ($form->isValid && ($user = Validate::getUserData()) !== false) {
     }
 
     $stmt = App::db()->prepare("
-      UPDATE `" . TP . "user__` SET
+      UPDATE `user__` SET
       `login_try` = 0,
       `token` = ?
       WHERE `id` = ?

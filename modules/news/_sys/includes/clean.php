@@ -40,19 +40,19 @@ if ($form->process() === true) {
     switch ($form->output['clear']) {
         case 2:
             // Чистим старше 1 недели
-            App::db()->exec("DELETE FROM `" . TP . "news` WHERE `time` <= " . (time() - 604800));
-            App::db()->query("OPTIMIZE TABLE `" . TP . "news`");
+            App::db()->exec("DELETE FROM `news` WHERE `time` <= " . (time() - 604800));
+            App::db()->query("OPTIMIZE TABLE `news`");
             break;
 
         case 3:
             // Удаляем все новости
-            App::db()->query("TRUNCATE TABLE `" . TP . "news`");
+            App::db()->query("TRUNCATE TABLE `news`");
             break;
 
         default:
             // Чистим старше 1 месяца
-            App::db()->exec("DELETE FROM `" . TP . "news` WHERE `time` <= " . (time() - 2592000));
-            App::db()->query("OPTIMIZE TABLE `" . TP . "news`");
+            App::db()->exec("DELETE FROM `news` WHERE `time` <= " . (time() - 2592000));
+            App::db()->query("OPTIMIZE TABLE `news`");
     }
 
     //TODO: Добавить удаление комментариев к новости

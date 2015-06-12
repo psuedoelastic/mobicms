@@ -25,7 +25,7 @@ switch (trim(App::request()->getQuery('act', ''))) {
         echo '<div class="phdr"><a href="' . $uri . '"><b>' . __('advertisement') . '</b></a> | ' . ($id ? __('link_edit') : __('link_add')) . '</div>';
         if ($id) {
             // Если ссылка редактироется, запрашиваем ее данные в базе
-            $req = App::db()->query("SELECT * FROM `" . TP . "system__advt` WHERE `id` = " . $id);
+            $req = App::db()->query("SELECT * FROM `system__advt` WHERE `id` = " . $id);
             if ($req->rowCount()) {
                 $res = $req->fetch();
             } else {
@@ -70,7 +70,7 @@ switch (trim(App::request()->getQuery('act', ''))) {
             if (!$url || !$name)
                 $error[] = __('error_empty_fields');
             if (!$mesto) {
-                $total = App::db()->query("SELECT COUNT(*) FROM `" . TP . "system__advt` WHERE `mesto` = '" . $mesto . "' AND `type` = '" . $type . "'")->fetchColumn();
+                $total = App::db()->query("SELECT COUNT(*) FROM `system__advt` WHERE `mesto` = '" . $mesto . "' AND `type` = '" . $type . "'")->fetchColumn();
                 if ($total != 0)
                     $error[] = __('links_place_occupied');
             }
@@ -87,7 +87,7 @@ switch (trim(App::request()->getQuery('act', ''))) {
             if ($id) {
                 // Обновляем ссылку после редактирования
                 $stmt = App::db()->prepare("
-                    UPDATE `" . TP . "system__advt` SET
+                    UPDATE `system__advt` SET
                     `type` = ?,
                     `view` = ?,
                     `link` = ?,
@@ -123,7 +123,7 @@ switch (trim(App::request()->getQuery('act', ''))) {
                 $stmt = null;
             } else {
                 // Добавляем новую ссылку
-                $req = App::db()->query("SELECT `mesto` FROM `" . TP . "system__advt` ORDER BY `mesto` DESC LIMIT 1");
+                $req = App::db()->query("SELECT `mesto` FROM `system__advt` ORDER BY `mesto` DESC LIMIT 1");
                 if ($req->rowCount()) {
                     $res = $req->fetch();
                     $mesto = $res['mesto'] + 1;
@@ -131,7 +131,7 @@ switch (trim(App::request()->getQuery('act', ''))) {
                     $mesto = 1;
                 }
                 $stmt = App::db()->prepare("
-                    INSERT INTO `" . TP . "system__advt`
+                    INSERT INTO `system__advt`
                     (`type`, `view`, `mesto`, `link`, `name`, `color`, `count_link`, `day`, `layout`, `show`, `time`, `bold`, `italic`, `underline`)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ");
@@ -157,7 +157,7 @@ switch (trim(App::request()->getQuery('act', ''))) {
                 $stmt = null;
             }
 
-            App::db()->exec("UPDATE `" . TP . "user__` SET `lastpost` = '" . time() . "' WHERE `id` = " . App::user()->id);
+            App::db()->exec("UPDATE `user__` SET `lastpost` = '" . time() . "' WHERE `id` = " . App::user()->id);
             echo '<div class="menu"><p>' . ($id ? __('link_edit_ok') : __('link_add_ok')) . '<br />' .
                 '<a href="' . $uri . '?sort=' . $type . '">' . __('continue') . '</a></p></div>';
         } else {
@@ -176,17 +176,17 @@ switch (trim(App::request()->getQuery('act', ''))) {
         -----------------------------------------------------------------
         */
         if ($id) {
-            $req = App::db()->query("SELECT `mesto`, `type` FROM `" . TP . "system__advt` WHERE `id` = " . $id);
+            $req = App::db()->query("SELECT `mesto`, `type` FROM `system__advt` WHERE `id` = " . $id);
             if ($req->rowCount()) {
                 $res = $req->fetch();
                 $mesto = $res['mesto'];
-                $req = App::db()->query("SELECT * FROM `" . TP . "system__advt` WHERE `mesto` > '$mesto' AND `type` = '" . $res['type'] . "' ORDER BY `mesto` ASC");
+                $req = App::db()->query("SELECT * FROM `system__advt` WHERE `mesto` > '$mesto' AND `type` = '" . $res['type'] . "' ORDER BY `mesto` ASC");
                 if ($req->rowCount()) {
                     $res = $req->fetch();
                     $id2 = $res['id'];
                     $mesto2 = $res['mesto'];
-                    App::db()->exec("UPDATE `" . TP . "system__advt` SET `mesto` = '$mesto2' WHERE `id` = " . $id);
-                    App::db()->exec("UPDATE `" . TP . "system__advt` SET `mesto` = '$mesto' WHERE `id` = '$id2'");
+                    App::db()->exec("UPDATE `system__advt` SET `mesto` = '$mesto2' WHERE `id` = " . $id);
+                    App::db()->exec("UPDATE `system__advt` SET `mesto` = '$mesto' WHERE `id` = '$id2'");
                 }
             }
         }
@@ -201,17 +201,17 @@ switch (trim(App::request()->getQuery('act', ''))) {
         -----------------------------------------------------------------
         */
         if ($id) {
-            $req = App::db()->query("SELECT `mesto`, `type` FROM `" . TP . "system__advt` WHERE `id` = " . $id);
+            $req = App::db()->query("SELECT `mesto`, `type` FROM `system__advt` WHERE `id` = " . $id);
             if ($req->rowCount()) {
                 $res = $req->fetch();
                 $mesto = $res['mesto'];
-                $req = App::db()->query("SELECT * FROM `" . TP . "system__advt` WHERE `mesto` < '$mesto' AND `type` = '" . $res['type'] . "' ORDER BY `mesto` DESC");
+                $req = App::db()->query("SELECT * FROM `system__advt` WHERE `mesto` < '$mesto' AND `type` = '" . $res['type'] . "' ORDER BY `mesto` DESC");
                 if ($req->rowCount()) {
                     $res = $req->fetch();
                     $id2 = $res['id'];
                     $mesto2 = $res['mesto'];
-                    App::db()->exec("UPDATE `" . TP . "system__advt` SET `mesto` = '$mesto2' WHERE `id` = " . $id);
-                    App::db()->exec("UPDATE `" . TP . "system__advt` SET `mesto` = '$mesto' WHERE `id` = '$id2'");
+                    App::db()->exec("UPDATE `system__advt` SET `mesto` = '$mesto2' WHERE `id` = " . $id);
+                    App::db()->exec("UPDATE `system__advt` SET `mesto` = '$mesto' WHERE `id` = '$id2'");
                 }
             }
         }
@@ -227,7 +227,7 @@ switch (trim(App::request()->getQuery('act', ''))) {
         */
         if ($id) {
             if (isset($_POST['submit'])) {
-                App::db()->exec("DELETE FROM `" . TP . "system__advt` WHERE `id` = " . $id);
+                App::db()->exec("DELETE FROM `system__advt` WHERE `id` = " . $id);
 
                 header('Location: ' . $_POST['ref']);
             } else {
@@ -249,8 +249,8 @@ switch (trim(App::request()->getQuery('act', ''))) {
         -----------------------------------------------------------------
         */
         if (isset($_POST['submit'])) {
-            App::db()->exec("DELETE FROM `" . TP . "system__advt` WHERE `to` = '1'");
-            App::db()->query("OPTIMIZE TABLE `" . TP . "system__advt`");
+            App::db()->exec("DELETE FROM `system__advt` WHERE `to` = '1'");
+            App::db()->query("OPTIMIZE TABLE `system__advt`");
 
             header('location: ' . $uri);
         } else {
@@ -270,10 +270,10 @@ switch (trim(App::request()->getQuery('act', ''))) {
         -----------------------------------------------------------------
         */
         if ($id) {
-            $req = App::db()->query("SELECT * FROM `" . TP . "system__advt` WHERE `id` = " . $id);
+            $req = App::db()->query("SELECT * FROM `system__advt` WHERE `id` = " . $id);
             if ($req->rowCount()) {
                 $res = $req->fetch();
-                App::db()->exec("UPDATE `" . TP . "system__advt` SET `to`='" . ($res['to'] ? 0 : 1) . "' WHERE `id` = " . $id);
+                App::db()->exec("UPDATE `system__advt` SET `to`='" . ($res['to'] ? 0 : 1) . "' WHERE `id` = " . $id);
             }
         }
 
@@ -308,9 +308,9 @@ switch (trim(App::request()->getQuery('act', ''))) {
                 ($type == 3 ? __('below') : '<a href="' . $uri . '?type=3">' . __('below') . '</a>')
             ];
         echo '<div class="topmenu">' . Functions::displayMenu($array_menu) . '</div>';
-        $total = App::db()->query("SELECT COUNT(*) FROM `" . TP . "system__advt` WHERE `type` = '$type'")->fetchColumn();
+        $total = App::db()->query("SELECT COUNT(*) FROM `system__advt` WHERE `type` = '$type'")->fetchColumn();
         if ($total) {
-            $req = App::db()->query("SELECT * FROM `" . TP . "system__advt` WHERE `type` = '$type' ORDER BY `mesto` ASC " . App::db()->pagination());
+            $req = App::db()->query("SELECT * FROM `system__advt` WHERE `type` = '$type' ORDER BY `mesto` ASC " . App::db()->pagination());
             $i = 0;
             while ($res = $req->fetch()) {
                 echo $i % 2 ? '<div class="list2">' : '<div class="list1">';

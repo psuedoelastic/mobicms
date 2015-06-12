@@ -62,7 +62,7 @@ class User
         }
 
         if ($id && $token) {
-            $user = App::db()->query("SELECT * FROM `".TP."user__` WHERE `id` = ".$id);
+            $user = App::db()->query("SELECT * FROM `user__` WHERE `id` = ".$id);
 
             if ($user->rowCount()) {
                 $this->data = $user->fetch();
@@ -104,7 +104,7 @@ class User
 
                     // Фиксация данных
                     $stmt = App::db()->prepare("
-                        UPDATE `".TP."user__`
+                        UPDATE `user__`
                         SET
                         `last_visit`   = ?,
                         `ip`           = ?,
@@ -130,7 +130,7 @@ class User
                 } else {
                     // Если авторизация не прошла
                     App::db()->exec("
-                        UPDATE `".TP."user__` SET
+                        UPDATE `user__` SET
                         `login_try` = ".++$this->data['login_try']."
                         WHERE `id`  = ".$this->data['id']
                     );
@@ -152,7 +152,7 @@ class User
     public function destroy($clear_token = false)
     {
         if ($this->id && $clear_token) {
-            App::db()->exec("UPDATE `".TP."user__` SET `token` = '' WHERE `id` = ".$this->id);
+            App::db()->exec("UPDATE `user__` SET `token` = '' WHERE `id` = ".$this->id);
         }
 
         $this->id = 0;
@@ -175,7 +175,7 @@ class User
         if ($this->id && !empty($key)) {
             $stmt = App::db()->prepare("
                 SELECT `value`
-                FROM `".TP."user__settings`
+                FROM `user__settings`
                 WHERE `user_id` = ?
                 AND `key`       = ?
                 LIMIT 1
@@ -207,7 +207,7 @@ class User
             if (empty($val)) {
                 // Удаляем пользовательские данные
                 $stmt = App::db()->prepare("
-                    DELETE FROM `".TP."user__settings`
+                    DELETE FROM `user__settings`
                     WHERE `user_id` = ?
                     AND `key`       = ?
                     LIMIT 1
@@ -221,7 +221,7 @@ class User
                 );
             } else {
                 $stmt = App::db()->prepare("
-                    REPLACE INTO `".TP."user__settings` SET
+                    REPLACE INTO `user__settings` SET
                     `user_id` = ?,
                     `key`     = ?,
                     `value`   = ?
@@ -249,7 +249,7 @@ class User
     {
         $ban = App::db()->query("
             SELECT *
-            FROM `".TP."user__ban`
+            FROM `user__ban`
             WHERE `user_id` = ".$this->id."
             AND `ban_time`  > ".time()
         );
@@ -270,7 +270,7 @@ class User
     {
         $q = App::db()->prepare("
             SELECT `id`
-            FROM `".TP."user__ip`
+            FROM `user__ip`
             WHERE `user_id`    = ?
             AND `ip`           = ?
             AND `ip_via_proxy` = ?
@@ -288,7 +288,7 @@ class User
             // Обновляем имеющуюся запись
             $result = $q->fetch();
             $stmt = App::db()->prepare("
-                UPDATE `".TP."user__ip` SET
+                UPDATE `user__ip` SET
                 `user_agent` = ?,
                 `timestamp`  = ?
                 WHERE `id`   = ?
@@ -303,7 +303,7 @@ class User
         } else {
             // Вставляем новую запись
             $stmt = App::db()->prepare("
-                INSERT INTO `".TP."user__ip`
+                INSERT INTO `user__ip`
                 SET
                 `user_id`      = ?,
                 `ip`           = ?,

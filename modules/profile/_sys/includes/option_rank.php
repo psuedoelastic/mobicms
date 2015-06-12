@@ -59,7 +59,7 @@ if (App::user()->rights == 9 || (App::user()->rights == 7 && App::user()->rights
     $form->validate('password', 'password');
 
     if ($form->process() === true) {
-        App::db()->exec("UPDATE `" . TP . "user__` SET `rights` = '" . intval($form->output['rights']) . "' WHERE `id` = " . Users::$data['id']);
+        App::db()->exec("UPDATE `user__` SET `rights` = '" . intval($form->output['rights']) . "' WHERE `id` = " . Users::$data['id']);
 
         if (Users::$data['id'] == App::user()->id) {
             header('Location: ' . App::router()->getUri(3));

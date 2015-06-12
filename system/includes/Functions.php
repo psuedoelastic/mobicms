@@ -22,7 +22,7 @@ class Functions
         switch (App::cfg()->sys->usr_flood_mode) {
             case 1:
                 // Адаптивный режим
-                $adm = App::db()->query("SELECT COUNT(*) FROM `" . TP . "user__` WHERE `rights` >= 3 AND `last_visit` > " . (time() - 300))->fetchColumn();
+                $adm = App::db()->query("SELECT COUNT(*) FROM `user__` WHERE `rights` >= 3 AND `last_visit` > " . (time() - 300))->fetchColumn();
                 $limit = $adm > 0 ? App::cfg()->sys->usr_flood_day : App::cfg()->sys->usr_flood_night;
                 break;
             case 3:

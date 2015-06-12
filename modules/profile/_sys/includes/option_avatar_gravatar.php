@@ -34,7 +34,7 @@ $form
 
 if ($form->process() === true) {
     $default = 'http://johncms.com/images/empty.png'; //TODO: Установить изображение по-умолчанию
-    $stmt = App::db()->prepare("UPDATE `" . TP . "user__` SET `avatar` = ? WHERE `id` = " . App::user()->id);
+    $stmt = App::db()->prepare("UPDATE `user__` SET `avatar` = ? WHERE `id` = " . App::user()->id);
     $stmt->execute(['http://www.gravatar.com/avatar/' . md5(strtolower(trim($form->output['email']))) . '?d=' . urlencode($default) . '&s=48']);
     $stmt = null;
 

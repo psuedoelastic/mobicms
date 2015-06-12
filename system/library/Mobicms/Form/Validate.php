@@ -63,7 +63,7 @@ class Validate
     private function login(array $option)
     {
         $stmt = \App::db()->prepare("
-            SELECT * FROM `".TP."user__`
+            SELECT * FROM `user__`
             WHERE `".($this->email($option, false) ? 'email' : 'nickname')."` = ?
             LIMIT 1
         ");
@@ -102,7 +102,7 @@ class Validate
 
                 // Накручиваем счетчик неудачных логинов
                 if (!\App::user()->id && self::$_userData['login_try'] < 3) {
-                    \App::db()->exec("UPDATE `".TP."user__` SET `login_try` = ".++self::$_userData['login_try']." WHERE `id` = ".self::$_userData['id']);
+                    \App::db()->exec("UPDATE `user__` SET `login_try` = ".++self::$_userData['login_try']." WHERE `id` = ".self::$_userData['id']);
                     self::$_userData = null;
                 }
             }
@@ -272,7 +272,7 @@ class Validate
     private function nickoccupied(array $option)
     {
         $stmt = \App::db()->prepare("
-            SELECT COUNT(*) FROM `".TP."user__`
+            SELECT COUNT(*) FROM `user__`
             WHERE `nickname` = ?
         ");
 
@@ -296,7 +296,7 @@ class Validate
     private function emailoccupied(array $option)
     {
         $stmt = \App::db()->prepare("
-            SELECT COUNT(*) FROM `".TP."user__`
+            SELECT COUNT(*) FROM `user__`
             WHERE `email` = ?
         ");
 

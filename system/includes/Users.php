@@ -23,7 +23,7 @@ class Users
             return true;
         }
 
-        $req = App::db()->query("SELECT * FROM `" . TP . "user__` WHERE `id` = " . intval($id));
+        $req = App::db()->query("SELECT * FROM `user__` WHERE `id` = " . intval($id));
         if ($req->rowCount()) {
             self::$data = $req->fetch();
 

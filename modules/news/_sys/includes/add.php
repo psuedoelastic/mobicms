@@ -50,7 +50,7 @@ $form
 
 if ($form->process() === true) {
     $stmt = App::db()->prepare("
-        INSERT INTO `" . TP . "news` SET
+        INSERT INTO `news` SET
         `time`        = ?,
         `author`      = ?,
         `author_id`   = ?,
@@ -71,7 +71,7 @@ if ($form->process() === true) {
     );
     $stmt = null;
 
-    App::db()->query("UPDATE `" . TP . "user__` SET `lastpost` = " . time() . " WHERE `id` = " . App::user()->id);
+    App::db()->query("UPDATE `user__` SET `lastpost` = " . time() . " WHERE `id` = " . App::user()->id);
 
     header('Location: ' . App::router()->getUri());
     exit;

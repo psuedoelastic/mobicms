@@ -17,7 +17,7 @@ $id = abs(intval(App::request()->getQuery('id', 0)));
 $form = new Mobicms\Form\Form(['action' => App::router()->getUri(2) . ($id ? '?id=' . $id : '')]);
 
 if ($id) {
-    $stmt = App::db()->query("SELECT * FROM `" . TP . "news` WHERE `id` = " . $id);
+    $stmt = App::db()->query("SELECT * FROM `news` WHERE `id` = " . $id);
     if ($stmt->rowCount()) {
         $result = $stmt->fetch();
 
@@ -69,7 +69,7 @@ if ($id) {
 
 if ($form->process() === true) {
     $stmt = App::db()->prepare("
-        UPDATE `" . TP . "news` SET
+        UPDATE `news` SET
         `title`       = ?,
         `text`        = ?,
         `comm_enable` = ?

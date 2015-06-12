@@ -17,7 +17,7 @@ $id = abs(intval(App::request()->getQuery('id', 0)));
 $form = new Mobicms\Form\Form(['action' => App::router()->getUri(2) . ($id ? '?id=' . $id : '')]);
 
 if ($id) {
-    $stmt = App::db()->query("SELECT * FROM `" . TP . "news` WHERE `id` = " . $id);
+    $stmt = App::db()->query("SELECT * FROM `news` WHERE `id` = " . $id);
     if ($stmt->rowCount()) {
         $form
             ->title(__('article_delete'))
@@ -41,7 +41,7 @@ if ($id) {
 }
 
 if ($form->process() === true) {
-    App::db()->exec("DELETE FROM `" . TP . "news` WHERE `id` = " . $id);
+    App::db()->exec("DELETE FROM `news` WHERE `id` = " . $id);
     //TODO: Добавить удаление комментариев к новости
     $form->confirmation = true;
     $form->continueLink = App::router()->getUri();

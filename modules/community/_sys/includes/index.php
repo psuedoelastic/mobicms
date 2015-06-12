@@ -12,11 +12,11 @@
 
 defined('MOBICMS') or die('Error: restricted access');
 //TODO: переделать счетчик на тех, у кого уже регистрация подтверждена
-App::view()->total = App::db()->query("SELECT COUNT(*) FROM `" . TP . "user__` ")->fetchColumn();
+App::view()->total = App::db()->query("SELECT COUNT(*) FROM `user__` ")->fetchColumn();
 
 App::view()->list = App::db()->query("
     SELECT *
-    FROM `" . TP . "user__`
+    FROM `user__`
     ORDER BY `id` ASC" .
     App::db()->pagination()
 )->fetchAll();

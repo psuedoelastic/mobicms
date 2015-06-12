@@ -35,11 +35,6 @@ class PDOmysql extends \PDO
             throw new \RuntimeException('database configuration file does not exist.<br/>Please install the system or restore the file /system/config/system/database.php.');
         }
 
-        /**
-         * Префиксы таблиц базы данных
-         */
-        define('TP', $db_prefix);
-
         try {
             parent::__construct(
                 'mysql:host='.$db_host.';dbname='.$db_name,

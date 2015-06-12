@@ -110,7 +110,7 @@ switch (trim(App::request()->getQuery('act', ''))) {
 
             if (!$error) {
                 // Проверка на конфликты адресов
-                $req = App::db()->query("SELECT * FROM `" . TP . "system__firewall` WHERE ('$ip1' BETWEEN `ip` AND `ip_upto`) OR ('$ip2' BETWEEN `ip` AND `ip_upto`) OR (`ip` > '$ip1' AND `ip_upto` < '$ip2')");
+                $req = App::db()->query("SELECT * FROM `system__firewall` WHERE ('$ip1' BETWEEN `ip` AND `ip_upto`) OR ('$ip2' BETWEEN `ip` AND `ip_upto`) OR (`ip` > '$ip1' AND `ip_upto` < '$ip2')");
                 $total = $req->rowCount();
                 if ($total) {
                     echo __('add_ip_address_conflict');
@@ -133,7 +133,7 @@ switch (trim(App::request()->getQuery('act', ''))) {
             if (empty($error)) {
                 if (isset($_POST['confirm'])) {
                     // Добавляем IP в базу данных
-                    App::db()->exec("INSERT INTO `" . TP . "system__firewall` SET
+                    App::db()->exec("INSERT INTO `system__firewall` SET
                         `ip` = $ip1,
                         `ip_upto` = $ip2,
                         `mode` = '" . $mod . "',
@@ -202,8 +202,8 @@ switch (trim(App::request()->getQuery('act', ''))) {
                 : '<div class="gmenu"><p><h3>' . __('white_list') . '</h3></p></div>'
             );
         if (isset($_POST['submit'])) {
-            App::db()->exec("DELETE FROM `" . TP . "system__firewall` WHERE `mode` = '" . $mod . "'");
-            App::db()->query("OPTIMIZE TABLE `" . TP . "system__firewall`");
+            App::db()->exec("DELETE FROM `system__firewall` WHERE `mode` = '" . $mod . "'");
+            App::db()->query("OPTIMIZE TABLE `system__firewall`");
             update_cache();
             header('Location: ' . $uri . '?mod=' . $mod);
         } else {
@@ -231,10 +231,10 @@ switch (trim(App::request()->getQuery('act', ''))) {
             if (isset($_POST['submit'])) {
                 foreach ($del as $val) {
                     if (is_numeric($val)) {
-                        mysql_query("DELETE FROM `" . TP . "system__firewall` WHERE `ip` = " . $val);
+                        mysql_query("DELETE FROM `system__firewall` WHERE `ip` = " . $val);
                     }
                 }
-                App::db()->query("OPTIMIZE TABLE `" . TP . "system__firewall`");
+                App::db()->query("OPTIMIZE TABLE `system__firewall`");
                 update_cache();
                 header('Location: ' . $uri . '?mod=' . $mod);
             } else {
@@ -266,7 +266,7 @@ switch (trim(App::request()->getQuery('act', ''))) {
         echo '<div class="phdr"><a href="' . App::router()->getUri() . '"><b>' . __('admin_panel') . '</b></a> | ' . __('firewall') . '</div>' .
             '<div class="topmenu">' . Functions::displayMenu($menu) . '</div>';
 
-        $total = App::db()->query("SELECT COUNT(*) FROM `" . TP . "system__firewall` WHERE `mode` = '" . $mod . "'")->fetchColumn();
+        $total = App::db()->query("SELECT COUNT(*) FROM `system__firewall` WHERE `mode` = '" . $mod . "'")->fetchColumn();
 
         if ($total > App::user()->settings['page_size']) {
             echo '<div class="topmenu">' . Functions::displayPagination($uri . '?', App::vars()->start, $total, App::user()->settings['page_size']) . '</div>';
@@ -283,10 +283,10 @@ switch (trim(App::request()->getQuery('act', ''))) {
             '<div class="' . ($mod == 'white' ? 'gmenu' : 'rmenu') . '"><input type="submit" name="delete" value="' . __('add') . '"/></div></form>';
         if ($total) {
             echo '<form action="' . $uri . '?act=del&amp;mod=' . $mod . '" method="post">';
-            $req = App::db()->query("SELECT `" . TP . "system__firewall`.*, `" . TP . "user__`.`nickname`
-                FROM `" . TP . "system__firewall` LEFT JOIN `" . TP . "user__` ON `" . TP . "system__firewall`.`user_id` = `" . TP . "user__`.`id`
-                WHERE `" . TP . "system__firewall`.`mode` = '" . $mod . "'
-                ORDER BY `" . TP . "system__firewall`.`timestamp` DESC
+            $req = App::db()->query("SELECT `system__firewall`.*, `user__`.`nickname`
+                FROM `system__firewall` LEFT JOIN `user__` ON `system__firewall`.`user_id` = `user__`.`id`
+                WHERE `system__firewall`.`mode` = '" . $mod . "'
+                ORDER BY `system__firewall`.`timestamp` DESC
                 " . App::db()->pagination()
             );
             for ($i = 0; $res = $req->fetch(); ++$i) {

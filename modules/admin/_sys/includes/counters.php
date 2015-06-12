@@ -19,14 +19,14 @@ switch (trim(App::request()->getQuery('act', ''))) {
     case 'view':
         // Предварительный просмотр счетчиков
         if ($id) {
-            $req = App::db()->query("SELECT * FROM `" . TP . "system__counters` WHERE `id` = " . $id);
+            $req = App::db()->query("SELECT * FROM `system__counters` WHERE `id` = " . $id);
             if ($req->rowCount()) {
                 if (isset($_GET['go']) && $_GET['go'] == 'on') {
-                    App::db()->exec("UPDATE `" . TP . "system__counters` SET `switch` = '1' WHERE `id` = " . $id);
-                    $req = App::db()->query("SELECT * FROM `" . TP . "system__counters` WHERE `id` = " . $id);
+                    App::db()->exec("UPDATE `system__counters` SET `switch` = '1' WHERE `id` = " . $id);
+                    $req = App::db()->query("SELECT * FROM `system__counters` WHERE `id` = " . $id);
                 } elseif (isset($_GET['go']) && $_GET['go'] == 'off') {
-                    App::db()->exec("UPDATE `" . TP . "system__counters` SET `switch` = '0' WHERE `id` = " . $id);
-                    $req = App::db()->query("SELECT * FROM `" . TP . "system__counters` WHERE `id` = " . $id);
+                    App::db()->exec("UPDATE `system__counters` SET `switch` = '0' WHERE `id` = " . $id);
+                    $req = App::db()->query("SELECT * FROM `system__counters` WHERE `id` = " . $id);
                 }
                 $res = $req->fetch();
                 echo '<div class="phdr"><a href="' . $uri . '"><b>' . __('counters') . '</b></a> | ' . __('viewing') . '</div>' .
@@ -60,17 +60,17 @@ switch (trim(App::request()->getQuery('act', ''))) {
     case 'up':
         // Перемещение счетчика на одну позицию вверх
         if ($id) {
-            $req = App::db()->query("SELECT `sort` FROM `" . TP . "system__counters` WHERE `id` = " . $id);
+            $req = App::db()->query("SELECT `sort` FROM `system__counters` WHERE `id` = " . $id);
             if ($req->rowCount()) {
                 $res = $req->fetch();
                 $sort = $res['sort'];
-                $req = App::db()->query("SELECT * FROM `" . TP . "system__counters` WHERE `sort` < '$sort' ORDER BY `sort` DESC LIMIT 1");
+                $req = App::db()->query("SELECT * FROM `system__counters` WHERE `sort` < '$sort' ORDER BY `sort` DESC LIMIT 1");
                 if ($req->rowCount()) {
                     $res = $req->fetch();
                     $id2 = $res['id'];
                     $sort2 = $res['sort'];
-                    App::db()->exec("UPDATE `" . TP . "system__counters` SET `sort` = '$sort2' WHERE `id` = " . $id);
-                    App::db()->exec("UPDATE `" . TP . "system__counters` SET `sort` = '$sort' WHERE `id` = '$id2'");
+                    App::db()->exec("UPDATE `system__counters` SET `sort` = '$sort2' WHERE `id` = " . $id);
+                    App::db()->exec("UPDATE `system__counters` SET `sort` = '$sort' WHERE `id` = '$id2'");
                 }
             }
         }
@@ -81,17 +81,17 @@ switch (trim(App::request()->getQuery('act', ''))) {
     case 'down':
         // Перемещение счетчика на одну позицию вниз
         if ($id) {
-            $req = App::db()->query("SELECT `sort` FROM `" . TP . "system__counters` WHERE `id` = " . $id);
+            $req = App::db()->query("SELECT `sort` FROM `system__counters` WHERE `id` = " . $id);
             if ($req->rowCount()) {
                 $res = $req->fetch();
                 $sort = $res['sort'];
-                $req = App::db()->query("SELECT * FROM `" . TP . "system__counters` WHERE `sort` > '$sort' ORDER BY `sort` ASC LIMIT 1");
+                $req = App::db()->query("SELECT * FROM `system__counters` WHERE `sort` > '$sort' ORDER BY `sort` ASC LIMIT 1");
                 if ($req->rowCount()) {
                     $res = $req->fetch();
                     $id2 = $res['id'];
                     $sort2 = $res['sort'];
-                    App::db()->exec("UPDATE `" . TP . "system__counters` SET `sort` = '$sort2' WHERE `id` = " . $id);
-                    App::db()->exec("UPDATE `" . TP . "system__counters` SET `sort` = '$sort' WHERE `id` = '$id2'");
+                    App::db()->exec("UPDATE `system__counters` SET `sort` = '$sort2' WHERE `id` = " . $id);
+                    App::db()->exec("UPDATE `system__counters` SET `sort` = '$sort' WHERE `id` = '$id2'");
                 }
             }
         }
@@ -105,10 +105,10 @@ switch (trim(App::request()->getQuery('act', ''))) {
             echo __('error_wrong_data') . ' <a href="' . $uri . '">' . __('back') . '</a>';
             exit;
         }
-        $req = App::db()->query("SELECT * FROM `" . TP . "system__counters` WHERE `id` = " . $id);
+        $req = App::db()->query("SELECT * FROM `system__counters` WHERE `id` = " . $id);
         if ($req->rowCount()) {
             if (isset($_POST['submit'])) {
-                App::db()->exec("DELETE FROM `" . TP . "system__counters` WHERE `id` = " . $id);
+                App::db()->exec("DELETE FROM `system__counters` WHERE `id` = " . $id);
                 echo '<p>' . __('counter_deleted') . '<br/><a href="' . $uri . '">' . __('continue') . '</a></p>';
                 exit;
             } else {
@@ -158,7 +158,7 @@ switch (trim(App::request()->getQuery('act', ''))) {
             $mode = 0;
             if ($id) {
                 // запрос к базе, если счетчик редактируется
-                $req = App::db()->query("SELECT * FROM `" . TP . "system__counters` WHERE `id` = " . $id);
+                $req = App::db()->query("SELECT * FROM `system__counters` WHERE `id` = " . $id);
                 if ($req->rowCount()) {
                     $res = $req->fetch();
                     $name = htmlspecialchars($res['name']);
@@ -200,14 +200,14 @@ switch (trim(App::request()->getQuery('act', ''))) {
         }
         if ($id) {
             // Режим редактирования
-            $req = App::db()->query("SELECT * FROM `" . TP . "system__counters` WHERE `id` = " . $id);
+            $req = App::db()->query("SELECT * FROM `system__counters` WHERE `id` = " . $id);
             if ($req->rowCount() != 1) {
                 echo __('error_wrong_data');
                 exit;
             }
 
             $stmt = App::db()->prepare("
-                UPDATE `" . TP . "system__counters` SET
+                UPDATE `system__counters` SET
                 `name`     = ?,
                 `link1`    = ?,
                 `link2`    = ?,
@@ -227,7 +227,7 @@ switch (trim(App::request()->getQuery('act', ''))) {
             $stmt = null;
         } else {
             // Получаем значение сортировки
-            $req = App::db()->query("SELECT `sort` FROM `" . TP . "system__counters` ORDER BY `sort` DESC LIMIT 1");
+            $req = App::db()->query("SELECT `sort` FROM `system__counters` ORDER BY `sort` DESC LIMIT 1");
             if ($req->rowCount()) {
                 $res = $req->fetch();
                 $sort = $res['sort'] + 1;
@@ -237,7 +237,7 @@ switch (trim(App::request()->getQuery('act', ''))) {
 
             // Режим добавления
             $stmt = App::db()->prepare("
-                INSERT INTO `" . TP . "system__counters`
+                INSERT INTO `system__counters`
                 (`name`, `sort`, `link1`, `link2`, `mode`)
                 VALUES (?, ?, ?, ?, ?)
             ");
@@ -266,7 +266,7 @@ switch (trim(App::request()->getQuery('act', ''))) {
         */
         echo '<div class="phdr"><a href="' . App::router()->getUri() . '"><b>' . __('admin_panel') . '</b></a> | ' . __('counters') . '</div>' .
             '<div class="gmenu"><form action="' . $uri . '?act=edit" method="post"><input type="submit" name="delete" value="' . __('add') . '"/></form></div>';
-        $req = App::db()->query("SELECT * FROM `" . TP . "system__counters` ORDER BY `sort` ASC");
+        $req = App::db()->query("SELECT * FROM `system__counters` ORDER BY `sort` ASC");
         $total = $req->rowCount();
         if ($total) {
             for ($i = 0; $res = $req->fetch(); ++$i) {

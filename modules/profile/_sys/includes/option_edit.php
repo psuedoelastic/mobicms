@@ -173,7 +173,7 @@ if ($form->process() === true) {
     //TODO: Добавить валидацию даты
 
     $stmt = App::db()->prepare("
-        UPDATE `" . TP . "user__`
+        UPDATE `user__`
         SET
         `status`   = ?,
         `sex`      = ?,

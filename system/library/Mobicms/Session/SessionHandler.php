@@ -94,7 +94,7 @@ class SessionHandler implements \SessionHandlerInterface
     {
         $stmt = \App::db()->prepare("
             SELECT *
-            FROM `".TP."system__sessions`
+            FROM `system__sessions`
             WHERE `session_id` = ?
             FOR UPDATE
             ");
@@ -111,7 +111,7 @@ class SessionHandler implements \SessionHandlerInterface
             return $result['session_data'];
         } else {
             $stmt = \App::db()->prepare("
-                INSERT INTO `".TP."system__sessions`
+                INSERT INTO `system__sessions`
                 SET
                 `session_id`        = ?,
                 `session_timestamp` = ?,
@@ -147,7 +147,7 @@ class SessionHandler implements \SessionHandlerInterface
         }
 
         $stmt = \App::db()->prepare("
-            UPDATE `".TP."system__sessions`
+            UPDATE `system__sessions`
             SET
             `session_timestamp` = ?,
             `session_data`      = ?,
@@ -188,7 +188,7 @@ class SessionHandler implements \SessionHandlerInterface
     public function destroy($sessionId)
     {
         $stmt = \App::db()->prepare("
-            DELETE FROM `".TP."system__sessions`
+            DELETE FROM `system__sessions`
             WHERE `session_id` = ?
             ");
 
@@ -207,7 +207,7 @@ class SessionHandler implements \SessionHandlerInterface
     {
         //TODO: Обдумать использование $maxlifetime
         $stmt = \App::db()->prepare("
-            DELETE FROM `".TP."system__sessions`
+            DELETE FROM `system__sessions`
             WHERE `session_timestamp` < ?
             ");
 

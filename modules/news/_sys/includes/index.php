@@ -14,10 +14,10 @@ defined('MOBICMS') or die('Error: restricted access');
 
 App::view()->uri = App::router()->getUri();
 
-App::view()->total = App::db()->query("SELECT COUNT(*) FROM `" . TP . "news`")->fetchColumn();
+App::view()->total = App::db()->query("SELECT COUNT(*) FROM `news`")->fetchColumn();
 
 if (App::view()->total) {
-    App::view()->setRawVar('list', App::db()->query("SELECT * FROM `" . TP . "news` ORDER BY `id` DESC " . App::db()->pagination())->fetchAll());
+    App::view()->setRawVar('list', App::db()->query("SELECT * FROM `news` ORDER BY `id` DESC " . App::db()->pagination())->fetchAll());
 }
 
 App::view()->setTemplate('index.php');

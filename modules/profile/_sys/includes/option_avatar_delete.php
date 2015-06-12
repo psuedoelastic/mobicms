@@ -27,7 +27,7 @@ $form
     ->html('<a class="btn btn-link" href="' . App::router()->getUri(4) . '">' . __('cancel') . '</a>');
 
 if ($form->process() === true) {
-    App::db()->exec("UPDATE `" . TP . "user__` SET `avatar` = '' WHERE `id` = " . App::user()->id);
+    App::db()->exec("UPDATE `user__` SET `avatar` = '' WHERE `id` = " . App::user()->id);
     @unlink(FILES_PATH . 'users' . DS . 'avatar' . DS . Users::$data['id'] . '.jpg');
     @unlink(FILES_PATH . 'users' . DS . 'avatar' . DS . Users::$data['id'] . '.gif');
 

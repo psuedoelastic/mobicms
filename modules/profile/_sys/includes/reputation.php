@@ -23,7 +23,7 @@ if (App::user()->id && App::user()->id != Users::$data['id']) {
     // Поиск имеющегося голосования
     $req = App::db()->query("
         SELECT *
-        FROM `" . TP . "user__reputation`
+        FROM `user__reputation`
         WHERE `from` = " . App::user()->id . "
         AND `to` = " . Users::$data['id'] . "
         LIMIT 1
@@ -66,7 +66,7 @@ if (App::user()->id && App::user()->id != Users::$data['id']) {
         if ($update) {
             // Если есть, то обновляем данные
             App::db()->query("
-                UPDATE `" . TP . "user__reputation` SET
+                UPDATE `user__reputation` SET
                 `value` = " . $form->output['vote'] . "
                 WHERE `from` = " . App::user()->id . "
                 AND `to` = " . Users::$data['id']
@@ -74,7 +74,7 @@ if (App::user()->id && App::user()->id != Users::$data['id']) {
         } else {
             // Если нет, то вставляем новую запись
             App::db()->query("
-                INSERT INTO `" . TP . "user__reputation`
+                INSERT INTO `user__reputation`
                 SET
                 `value` = " . $form->output['vote'] . ",
                 `from` = " . App::user()->id . ",
@@ -94,7 +94,7 @@ if (App::user()->id && App::user()->id != Users::$data['id']) {
             WHERE `to` = " . Users::$data['id']
         )->fetch();
 
-        $stmt = App::db()->prepare("UPDATE `" . TP . "user__` SET `reputation` = ? WHERE `id` = ?");
+        $stmt = App::db()->prepare("UPDATE `user__` SET `reputation` = ? WHERE `id` = ?");
         $stmt->execute([serialize($reputation), Users::$data['id']]);
         $stmt = null;
     }

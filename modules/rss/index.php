@@ -36,7 +36,7 @@ if (!is_file($rssCacheFile) || filemtime($rssCacheFile) < time() - $rssCacheTime
             '<webMaster>' . App::cfg()->sys->email . '</webMaster>'
         ];
 
-    $query = App::db()->query("SELECT * FROM `" . TP . "news` ORDER BY `id` DESC LIMIT 15");
+    $query = App::db()->query("SELECT * FROM `news` ORDER BY `id` DESC LIMIT 15");
 
     while ($result = $query->fetch()) {
         $rss[] = '<item>';

@@ -58,7 +58,7 @@ if ($form->process() === true) {
             ) {
                 unlink(FILES_PATH . 'users' . DS . 'avatar' . DS . Users::$data['id'] . '.jpg');
 
-                $stmt = App::db()->prepare("UPDATE `" . TP . "user__` SET `avatar` = ? WHERE `id` = " . App::user()->id);
+                $stmt = App::db()->prepare("UPDATE `user__` SET `avatar` = ? WHERE `id` = " . App::user()->id);
                 $stmt->execute([App::cfg()->sys->homeurl . '/uploads/users/avatar/' . Users::$data['id'] . '.gif']);
                 $stmt = null;
 

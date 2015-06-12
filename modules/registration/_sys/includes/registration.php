@@ -96,7 +96,7 @@ if (App::cfg()->sys->usr_reg_allow) {
     if ($form->process() === true) {
         $token = Functions::generateToken();
         $stmt = App::db()->prepare("
-          INSERT INTO `" . TP . "user__` SET
+          INSERT INTO `user__` SET
           `nickname`      = ?,
           `password`      = ?,
           `token`         = ?,

@@ -62,7 +62,7 @@ $form
 
 if ($form->process() === true) {
     $stmt = App::db()->prepare("
-        UPDATE `" . TP . "user__`
+        UPDATE `user__`
         SET
         `email`    = ?
         WHERE `id` = ?
