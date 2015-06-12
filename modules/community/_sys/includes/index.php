@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * mobiCMS Content Management System (http://mobicms.net)
  *
  * For copyright and license information, please see the LICENSE.md
@@ -11,10 +11,14 @@
  */
 
 defined('MOBICMS') or die('Error: restricted access');
+//TODO: переделать счетчик на тех, у кого уже регистрация подтверждена
+App::view()->total = App::db()->query("SELECT COUNT(*) FROM `" . TP . "user__` ")->fetchColumn();
 
-if (isset($_SESSION['ref'])) {
-    unset($_SESSION['ref']);
-}
+App::view()->list = App::db()->query("
+    SELECT *
+    FROM `" . TP . "user__`
+    ORDER BY `id` ASC" .
+    App::db()->pagination()
+)->fetchAll();
 
-App::view()->total_users = App::db()->query('SELECT COUNT(*) FROM `user__`')->fetchColumn();
-App::view()->setTemplate('index.php');
+App::view()->setTemplate('user_list.php');
