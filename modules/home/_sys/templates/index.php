@@ -9,7 +9,7 @@
     <li><a href="news/"><i class="rss fw lg"></i><?= __('news_archive') ?></a></li>
     <li class="title"><?= __('dialogue') ?></li>
     <li><a href="#"><i class="comments fw lg"></i><?= __('guestbook') ?> <span class="label label-warning">planned</span> <span class="badge pull-right">0</span></a></li>
-    <li><a href="forum/"><i class="comment lg fw"></i><?= __('forum') ?> <span class="label label-danger">draft</span> <span class="badge pull-right">0</span></a></li>
+    <li><a href="forum/"><i class="comment lg fw"></i><?= __('forum') ?><span class="badge pull-right">0</span></a></li>
     <li class="title"><?= __('useful') ?></li>
     <li><a href="#"><i class="download lg fw"></i><?= __('downloads') ?> <span class="label label-warning">planned</span> <span class="badge pull-right">0</span></a></li>
     <li><a href="#"><i class="books lg fw"></i><?= __('library') ?> <span class="label label-warning">planned</span> <span class="badge pull-right">0</span></a></li>
