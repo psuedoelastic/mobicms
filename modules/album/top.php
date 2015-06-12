@@ -21,12 +21,12 @@ switch ($act) {
         Последние комментарии по всем альбомам
         -----------------------------------------------------------------
         */
-        $total = App::db()->query("SELECT COUNT(DISTINCT `sub_id`) FROM `" . TP . "album__comments` WHERE `time` >" . (time() - 86400))->fetchColumn();
+        $total = App::db()->query("SELECT COUNT(DISTINCT `sub_id`) FROM `album__comments` WHERE `time` >" . (time() - 86400))->fetchColumn();
         $title = __('new_comments');
         $select = "";
-        $join = "INNER JOIN `" . TP . "album__comments` ON `" . TP . "album__files`.`id` = `" . TP . "album__comments`.`sub_id`";
-        $where = "`" . TP . "album__comments`.`time` > " . (time() - 86400) . " GROUP BY `" . TP . "album__files`.`id`";
-        $order = "`" . TP . "album__comments`.`time` DESC";
+        $join = "INNER JOIN `album__comments` ON `album__files`.`id` = `album__comments`.`sub_id`";
+        $where = "`album__comments`.`time` > " . (time() - 86400) . " GROUP BY `album__files`.`id`";
+        $order = "`album__comments`.`time` DESC";
         $url = '&amp;mod=last_comm';
         break;
 
@@ -39,7 +39,7 @@ switch ($act) {
         $title = __('top_views');
         $select = "";
         $join = "";
-        $where = "`" . TP . "album__files`.`views` > '0'" . (App::user()->rights >= 6 ? "" : " AND `" . TP . "album__files`.`access` = '4'");
+        $where = "`album__files`.`views` > '0'" . (App::user()->rights >= 6 ? "" : " AND `album__files`.`access` = '4'");
         $order = "`views` DESC";
         $url = '&amp;act=views';
         break;
@@ -53,7 +53,7 @@ switch ($act) {
         $title = __('top_downloads');
         $select = "";
         $join = "";
-        $where = "`" . TP . "album__files`.`downlosystem__advt` > 0" . (App::user()->rights >= 6 ? "" : " AND `" . TP . "album__files`.`access` = '4'");
+        $where = "`album__files`.`downlosystem__advt` > 0" . (App::user()->rights >= 6 ? "" : " AND `album__files`.`access` = '4'");
         $order = "`downlosystem__advt` DESC";
         $url = 'act=downloads';
         break;
@@ -67,7 +67,7 @@ switch ($act) {
         $title = __('top_comments');
         $select = "";
         $join = "";
-        $where = "`" . TP . "album__files`.`comm_count` > '0'" . (App::user()->rights >= 6 ? "" : " AND `" . TP . "album__files`.`access` = '4'");
+        $where = "`album__files`.`comm_count` > '0'" . (App::user()->rights >= 6 ? "" : " AND `album__files`.`access` = '4'");
         $order = "`comm_count` DESC";
         $url = 'act=comments';
         break;
@@ -81,7 +81,7 @@ switch ($act) {
         $title = __('top_trash');
         $select = ", (`vote_plus` - `vote_minus`) AS `rating`";
         $join = "";
-        $where = "(`vote_plus` - `vote_minus`) < -2" . (App::user()->rights >= 6 ? "" : " AND `" . TP . "album__files`.`access` = '4'");
+        $where = "(`vote_plus` - `vote_minus`) < -2" . (App::user()->rights >= 6 ? "" : " AND `album__files`.`access` = '4'");
         $order = "`rating` ASC";
         $url = 'act=trash';
         break;
@@ -95,7 +95,7 @@ switch ($act) {
         $title = __('top_votes');
         $select = ", (`vote_plus` - `vote_minus`) AS `rating`";
         $join = "";
-        $where = "(`vote_plus` - `vote_minus`) > 2" . (App::user()->rights >= 6 ? "" : " AND `" . TP . "album__files`.`access` = '4'");
+        $where = "(`vote_plus` - `vote_minus`) > 2" . (App::user()->rights >= 6 ? "" : " AND `album__files`.`access` = '4'");
         $order = "`rating` DESC";
         $url = 'act=votes';
 }
@@ -109,17 +109,17 @@ unset($_SESSION['ref']);
 echo '<div class="phdr"><a href="' . $url . '"><b>' . __('photo_albums') . '</b></a> | ' . $title . '</div>';
 
 if (!isset($total)) {
-    $total = App::db()->query("SELECT COUNT(*) FROM `" . TP . "album__files` WHERE $where")->fetchColumn();
+    $total = App::db()->query("SELECT COUNT(*) FROM `album__files` WHERE $where")->fetchColumn();
 }
 
 if ($total) {
     if ($total > App::user()->settings['page_size'])
         echo '<div class="topmenu">' . Functions::displayPagination($url . '?' . $url . '&amp;', App::vars()->start, $total, App::user()->settings['page_size']) . '</div>';
     $req = App::db()->query("
-        SELECT `" . TP . "album__files`.*, `" . TP . "user__`.`nickname` AS `user_name`, `" . TP . "album__cat`.`name` AS `album_name` $select
-        FROM `" . TP . "album__files`
-        INNER JOIN `" . TP . "user__` ON `" . TP . "album__files`.`user_id` = `" . TP . "user__`.`id`
-        INNER JOIN `" . TP . "album__cat` ON `" . TP . "album__files`.`album_id` = `" . TP . "album__cat`.`id`
+        SELECT `album__files`.*, `user__`.`nickname` AS `user_name`, `album__cat`.`name` AS `album_name` $select
+        FROM `album__files`
+        INNER JOIN `user__` ON `album__files`.`user_id` = `user__`.`id`
+        INNER JOIN `album__cat` ON `album__files`.`album_id` = `album__cat`.`id`
         $join
         WHERE $where
         ORDER BY $order

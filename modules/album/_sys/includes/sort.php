@@ -23,17 +23,17 @@ switch ($mod) {
         -----------------------------------------------------------------
         */
         if ($al && $user['id'] == App::user()->id || App::user()->rights >= 7) {
-            $req = mysql_query("SELECT `sort` FROM `" . TP . "album__cat` WHERE `id` = '$al' AND `user_id` = '" . $user['id'] . "'");
+            $req = mysql_query("SELECT `sort` FROM `album__cat` WHERE `id` = '$al' AND `user_id` = '" . $user['id'] . "'");
             if (mysql_num_rows($req)) {
                 $res = mysql_fetch_assoc($req);
                 $sort = $res['sort'];
-                $req = mysql_query("SELECT * FROM `" . TP . "album__cat` WHERE `user_id` = '" . $user['id'] . "' AND `sort` < '$sort' ORDER BY `sort` DESC LIMIT 1");
+                $req = mysql_query("SELECT * FROM `album__cat` WHERE `user_id` = '" . $user['id'] . "' AND `sort` < '$sort' ORDER BY `sort` DESC LIMIT 1");
                 if (mysql_num_rows($req)) {
                     $res = mysql_fetch_assoc($req);
                     $id2 = $res['id'];
                     $sort2 = $res['sort'];
-                    mysql_query("UPDATE `" . TP . "album__cat` SET `sort` = '$sort2' WHERE `id` = '$al'");
-                    mysql_query("UPDATE `" . TP . "album__cat` SET `sort` = '$sort' WHERE `id` = '$id2'");
+                    mysql_query("UPDATE `album__cat` SET `sort` = '$sort2' WHERE `id` = '$al'");
+                    mysql_query("UPDATE `album__cat` SET `sort` = '$sort' WHERE `id` = '$id2'");
                 }
             }
         }
@@ -46,17 +46,17 @@ switch ($mod) {
         -----------------------------------------------------------------
         */
         if ($al && $user['id'] == App::user()->id || App::user()->rights >= 7) {
-            $req = mysql_query("SELECT `sort` FROM `" . TP . "album__cat` WHERE `id` = '$al' AND `user_id` = '" . $user['id'] . "'");
+            $req = mysql_query("SELECT `sort` FROM `album__cat` WHERE `id` = '$al' AND `user_id` = '" . $user['id'] . "'");
             if (mysql_num_rows($req)) {
                 $res = mysql_fetch_assoc($req);
                 $sort = $res['sort'];
-                $req = mysql_query("SELECT * FROM `" . TP . "album__cat` WHERE `user_id` = '" . $user['id'] . "' AND `sort` > '$sort' ORDER BY `sort` ASC LIMIT 1");
+                $req = mysql_query("SELECT * FROM `album__cat` WHERE `user_id` = '" . $user['id'] . "' AND `sort` > '$sort' ORDER BY `sort` ASC LIMIT 1");
                 if (mysql_num_rows($req)) {
                     $res = mysql_fetch_assoc($req);
                     $id2 = $res['id'];
                     $sort2 = $res['sort'];
-                    mysql_query("UPDATE `" . TP . "album__cat` SET `sort` = '$sort2' WHERE `id` = '$al'");
-                    mysql_query("UPDATE `" . TP . "album__cat` SET `sort` = '$sort' WHERE `id` = '$id2'");
+                    mysql_query("UPDATE `album__cat` SET `sort` = '$sort2' WHERE `id` = '$al'");
+                    mysql_query("UPDATE `album__cat` SET `sort` = '$sort' WHERE `id` = '$id2'");
                 }
             }
         }

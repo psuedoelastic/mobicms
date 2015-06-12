@@ -22,7 +22,7 @@ $url = App::router()->getUri(1);
 */
 if ($img && $user['id'] == App::user()->id || App::user()->rights >= 6) {
     //TODO: переделать запрос
-    $req = mysql_query("SELECT * FROM `" . TP . "album__files` WHERE `id` = '$img' AND `user_id` = '" . $user['id'] . "' LIMIT 1");
+    $req = mysql_query("SELECT * FROM `album__files` WHERE `id` = '$img' AND `user_id` = '" . $user['id'] . "' LIMIT 1");
     if (mysql_num_rows($req)) {
         $res = mysql_fetch_assoc($req);
         $album = $res['album_id'];
@@ -33,10 +33,10 @@ if ($img && $user['id'] == App::user()->id || App::user()->rights >= 6) {
             @unlink(ALBUMPATH . $user['id'] . DIRECTORY_SEPARATOR . $res['img_name']);
             @unlink(ALBUMPATH . $user['id'] . DIRECTORY_SEPARATOR . $res['tmb_name']);
             // Удаляем записи из таблиц
-            mysql_query("DELETE FROM `" . TP . "album__files` WHERE `id` = '$img'");
-            mysql_query("DELETE FROM `" . TP . "album__votes` WHERE `file_id` = '$img'");
-            mysql_query("DELETE FROM `" . TP . "album__comments` WHERE `sub_id` = '$img'");
-            mysql_query("OPTIMIZE TABLE `" . TP . "album__comments`, `" . TP . "album__votes`");
+            mysql_query("DELETE FROM `album__files` WHERE `id` = '$img'");
+            mysql_query("DELETE FROM `album__votes` WHERE `file_id` = '$img'");
+            mysql_query("DELETE FROM `album__comments` WHERE `sub_id` = '$img'");
+            mysql_query("OPTIMIZE TABLE `album__comments`, `album__votes`");
             header('Location: ' . $url . '?act=show&al=' . $album . '&user=' . $user['id']);
         } else {
             echo '<div class="rmenu"><form action="' . $url . '?act=image_delete&amp;img=' . $img . '&amp;user=' . $user['id'] . '" method="post">' .

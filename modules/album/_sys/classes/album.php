@@ -36,7 +36,7 @@ class Album
         ) {
             // Проверяем, имеет ли юзер право голоса
             //TODO: Доработать ссылки
-            $req = App::db()->query("SELECT * FROM `" . TP . "album__votes` WHERE `user_id` = " . App::user()->id . " AND `file_id` = '" . $arg['id'] . "' LIMIT 1");
+            $req = App::db()->query("SELECT * FROM `album__votes` WHERE `user_id` = " . App::user()->id . " AND `file_id` = '" . $arg['id'] . "' LIMIT 1");
             if (!$req->rowCount()) {
                 $out .= '<br />' . __('vote') . ': <a href="' . App::router()->getUri(2) . '?act=vote&amp;mod=minus&amp;img=' . $arg['id'] . '">&lt;&lt; -1</a> | ';
                 $out .= '<a href="' . App::router()->getUri(2) . '?act=vote&amp;mod=plus&amp;img=' . $arg['id'] . '">+1 &gt;&gt;</a>';

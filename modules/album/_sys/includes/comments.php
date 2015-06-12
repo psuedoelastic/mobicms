@@ -16,7 +16,7 @@ defined('_IN_MOBICMS') or die('Error: restricted access');
 $url = App::router()->getUri(1);
 
 // Проверяем наличие комментируемого объекта
-$req_obj = mysql_query("SELECT * FROM `" . TP . "album__files` WHERE `id` = '$img'");
+$req_obj = mysql_query("SELECT * FROM `album__files` WHERE `id` = '$img'");
 if (mysql_num_rows($req_obj)) {
     $res_obj = mysql_fetch_assoc($req_obj);
 
@@ -38,7 +38,7 @@ if (mysql_num_rows($req_obj)) {
     -----------------------------------------------------------------
     */
     unset($_SESSION['ref']);
-    $req_a = mysql_query("SELECT * FROM `" . TP . "album__cat` WHERE `id` = '" . $res_obj['album_id'] . "'");
+    $req_a = mysql_query("SELECT * FROM `album__cat` WHERE `id` = '" . $res_obj['album_id'] . "'");
     $res_a = mysql_fetch_assoc($req_a);
     if ($res_a['access'] == 1 && $owner['id'] != App::user()->id && App::user()->rights < 6) {
         // Если доступ закрыт
@@ -87,7 +87,7 @@ if (mysql_num_rows($req_obj)) {
     -----------------------------------------------------------------
     */
     if (App::user()->id == $user['id'] && $res_obj['unread_comments'])
-        mysql_query("UPDATE `" . TP . "album__files` SET `unread_comments` = '0' WHERE `id` = '$img' LIMIT 1");
+        mysql_query("UPDATE `album__files` SET `unread_comments` = '0' WHERE `id` = '$img' LIMIT 1");
 
     /*
     -----------------------------------------------------------------
@@ -102,7 +102,7 @@ if (mysql_num_rows($req_obj)) {
     -----------------------------------------------------------------
     */
     if ($comm->added)
-        mysql_query("UPDATE `" . TP . "album__files` SET `unread_comments` = '1' WHERE `id` = '$img' LIMIT 1");
+        mysql_query("UPDATE `album__files` SET `unread_comments` = '1' WHERE `id` = '$img' LIMIT 1");
 } else {
     echo __('error_wrong_data');
 }

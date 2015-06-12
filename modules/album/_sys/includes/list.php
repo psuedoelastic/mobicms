@@ -24,12 +24,12 @@ $url = App::router()->getUri(1);
 if (isset($_SESSION['ap']))
     unset($_SESSION['ap']);
 echo '<div class="phdr"><a href="' . $url . '"><b>' . __('photo_albums') . '</b></a> | ' . __('personal_2') . '</div>';
-$req = mysql_query("SELECT * FROM `" . TP . "album__cat` WHERE `user_id` = '" . $user['id'] . "' " . ($user['id'] == App::user()->id || App::user()->rights >= 6 ? "" : "AND `access` > 1") . " ORDER BY `sort` ASC");
+$req = mysql_query("SELECT * FROM `album__cat` WHERE `user_id` = '" . $user['id'] . "' " . ($user['id'] == App::user()->id || App::user()->rights >= 6 ? "" : "AND `access` > 1") . " ORDER BY `sort` ASC");
 $total = mysql_num_rows($req);
 echo '<div class="user"><p>' . Functions::displayUser($user, ['iphide' => 1,]) . '</p></div>';
 if ($total) {
     for ($i = 0; $res = mysql_fetch_assoc($req); ++$i) {
-        $count = mysql_result(mysql_query("SELECT COUNT(*) FROM `" . TP . "album__files` WHERE `album_id` = '" . $res['id'] . "'"), 0);
+        $count = mysql_result(mysql_query("SELECT COUNT(*) FROM `album__files` WHERE `album_id` = '" . $res['id'] . "'"), 0);
         echo ($i % 2 ? '<div class="list2">' : '<div class="list1">') .
             Functions::loadModuleImage('album_' . $res['access'] . '.png') . '&#160;' .
             '<a href="' . $url . '?act=show&amp;al=' . $res['id'] . '&amp;user=' . $user['id'] . '"><b>' . htmlspecialchars($res['name']) . '</b></a>&#160;(' . $count . ')';

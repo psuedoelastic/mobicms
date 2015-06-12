@@ -22,15 +22,15 @@ $url = App::router()->getUri(1);
 */
 //TODO: переделать запросы
 if ($img && $user['id'] == App::user()->id || App::user()->rights >= 6) {
-    $req = mysql_query("SELECT * FROM `" . TP . "album__files` WHERE `id` = '$img' AND `user_id` = '" . $user['id'] . "'");
+    $req = mysql_query("SELECT * FROM `album__files` WHERE `id` = '$img' AND `user_id` = '" . $user['id'] . "'");
     if (mysql_num_rows($req)) {
         $image = mysql_fetch_assoc($req);
         echo '<div class="phdr"><a href="' . $url . '?act=show&amp;al=' . $image['album_id'] . '&amp;user=' . $user['id'] . '"><b>' . __('photo_album') . '</b></a> | ' . __('image_move') . '</div>';
         if (isset($_POST['submit'])) {
-            $req_a = mysql_query("SELECT * FROM `" . TP . "album__cat` WHERE `id` = '$al' AND `user_id` = '" . $user['id'] . "'");
+            $req_a = mysql_query("SELECT * FROM `album__cat` WHERE `id` = '$al' AND `user_id` = '" . $user['id'] . "'");
             if (mysql_num_rows($req_a)) {
                 $res_a = mysql_fetch_assoc($req_a);
-                mysql_query("UPDATE `" . TP . "album__files` SET
+                mysql_query("UPDATE `album__files` SET
                     `album_id` = '$al',
                     `access` = '" . $res_a['access'] . "'
                     WHERE `id` = '$img'
@@ -41,7 +41,7 @@ if ($img && $user['id'] == App::user()->id || App::user()->rights >= 6) {
                 echo __('error_wrong_data');
             }
         } else {
-            $req = mysql_query("SELECT * FROM `" . TP . "album__cat` WHERE `user_id` = '" . $user['id'] . "' AND `id` != '" . $image['album_id'] . "' ORDER BY `sort` ASC");
+            $req = mysql_query("SELECT * FROM `album__cat` WHERE `user_id` = '" . $user['id'] . "' AND `id` != '" . $image['album_id'] . "' ORDER BY `sort` ASC");
             if (mysql_num_rows($req)) {
                 echo '<form action="' . $url . '?act=image_move&amp;img=' . $img . '&amp;user=' . $user['id'] . '" method="post">' .
                     '<div class="menu"><p><h3>' . __('album_select') . '</h3>' .

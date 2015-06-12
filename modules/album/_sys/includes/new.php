@@ -29,9 +29,9 @@ switch ($mod) {
         }
         $title = __('unread_comments');
         $select = "";
-        $join = "INNER JOIN `" . TP . "album__comments` ON `" . TP . "album__files`.`id` = `" . TP . "album__comments`.`sub_id`";
-        $where = "`" . TP . "album__files`.`user_id` = '" . App::user()->id . "' AND `" . TP . "album__files`.`unread_comments` = 1 GROUP BY `" . TP . "album__files`.`id`";
-        $order = "`" . TP . "album__comments`.`time` DESC";
+        $join = "INNER JOIN `album__comments` ON `album__files`.`id` = `album__comments`.`sub_id`";
+        $where = "`album__files`.`user_id` = '" . App::user()->id . "' AND `album__files`.`unread_comments` = 1 GROUP BY `album__files`.`id`";
+        $order = "`album__comments`.`time` DESC";
         $url = '&amp;mod=my_new_comm';
         break;
 
@@ -41,12 +41,12 @@ switch ($mod) {
         Последние комментарии по всем альбомам
         -----------------------------------------------------------------
         */
-        $total = mysql_result(mysql_query("SELECT COUNT(DISTINCT `sub_id`) FROM `" . TP . "album__comments` WHERE `time` >" . (time() - 86400)), 0);
+        $total = mysql_result(mysql_query("SELECT COUNT(DISTINCT `sub_id`) FROM `album__comments` WHERE `time` >" . (time() - 86400)), 0);
         $title = __('new_comments');
         $select = "";
-        $join = "INNER JOIN `" . TP . "album__comments` ON `" . TP . "album__files`.`id` = `" . TP . "album__comments`.`sub_id`";
-        $where = "`" . TP . "album__comments`.`time` > " . (time() - 86400) . " GROUP BY `" . TP . "album__files`.`id`";
-        $order = "`" . TP . "album__comments`.`time` DESC";
+        $join = "INNER JOIN `album__comments` ON `album__files`.`id` = `album__comments`.`sub_id`";
+        $where = "`album__comments`.`time` > " . (time() - 86400) . " GROUP BY `album__files`.`id`";
+        $order = "`album__comments`.`time` DESC";
         $url = '&amp;mod=last_comm';
         break;
 
@@ -59,7 +59,7 @@ switch ($mod) {
         $title = __('top_views');
         $select = "";
         $join = "";
-        $where = "`" . TP . "album__files`.`views` > '0'" . (App::user()->rights >= 6 ? "" : " AND `" . TP . "album__files`.`access` = '4'");
+        $where = "`album__files`.`views` > '0'" . (App::user()->rights >= 6 ? "" : " AND `album__files`.`access` = '4'");
         $order = "`views` DESC";
         $url = '&amp;mod=views';
         break;
@@ -73,7 +73,7 @@ switch ($mod) {
         $title = __('top_downloads');
         $select = "";
         $join = "";
-        $where = "`" . TP . "album__files`.`downlosystem__advt` > 0" . (App::user()->rights >= 6 ? "" : " AND `" . TP . "album__files`.`access` = '4'");
+        $where = "`album__files`.`downlosystem__advt` > 0" . (App::user()->rights >= 6 ? "" : " AND `album__files`.`access` = '4'");
         $order = "`downlosystem__advt` DESC";
         $url = '&amp;mod=downloads';
         break;
@@ -87,7 +87,7 @@ switch ($mod) {
         $title = __('top_comments');
         $select = "";
         $join = "";
-        $where = "`" . TP . "album__files`.`comm_count` > '0'" . (App::user()->rights >= 6 ? "" : " AND `" . TP . "album__files`.`access` = '4'");
+        $where = "`album__files`.`comm_count` > '0'" . (App::user()->rights >= 6 ? "" : " AND `album__files`.`access` = '4'");
         $order = "`comm_count` DESC";
         $url = '&amp;mod=comments';
         break;
@@ -101,7 +101,7 @@ switch ($mod) {
         $title = __('top_votes');
         $select = ", (`vote_plus` - `vote_minus`) AS `rating`";
         $join = "";
-        $where = "(`vote_plus` - `vote_minus`) > 2" . (App::user()->rights >= 6 ? "" : " AND `" . TP . "album__files`.`access` = '4'");
+        $where = "(`vote_plus` - `vote_minus`) > 2" . (App::user()->rights >= 6 ? "" : " AND `album__files`.`access` = '4'");
         $order = "`rating` DESC";
         $url = '&amp;mod=votes';
         break;
@@ -115,7 +115,7 @@ switch ($mod) {
         $title = __('top_trash');
         $select = ", (`vote_plus` - `vote_minus`) AS `rating`";
         $join = "";
-        $where = "(`vote_plus` - `vote_minus`) < -2" . (App::user()->rights >= 6 ? "" : " AND `" . TP . "album__files`.`access` = '4'");
+        $where = "(`vote_plus` - `vote_minus`) < -2" . (App::user()->rights >= 6 ? "" : " AND `album__files`.`access` = '4'");
         $order = "`rating` ASC";
         $url = '&amp;mod=trash';
         break;
@@ -129,8 +129,8 @@ switch ($mod) {
         $title = __('new_photo');
         $select = "";
         $join = "";
-        $where = "`" . TP . "album__files`.`time` > '" . (time() - 259200) . "'" . (App::user()->rights >= 6 ? "" : " AND `" . TP . "album__files`.`access` > '1'");
-        $order = "`" . TP . "album__files`.`time` DESC";
+        $where = "`album__files`.`time` > '" . (time() - 259200) . "'" . (App::user()->rights >= 6 ? "" : " AND `album__files`.`access` > '1'");
+        $order = "`album__files`.`time` DESC";
         $url = '';
 }
 
@@ -145,16 +145,16 @@ echo '<div class="phdr"><a href="' . $url . '"><b>' . __('photo_albums') . '</b>
 if ($mod == 'my_new_comm') {
     $total = $new_album_comm;
 } elseif (!isset($total)) {
-    $total = mysql_result(mysql_query("SELECT COUNT(*) FROM `" . TP . "album__files` WHERE $where"), 0);
+    $total = mysql_result(mysql_query("SELECT COUNT(*) FROM `album__files` WHERE $where"), 0);
 }
 
 if ($total) {
     if ($total > App::user()->settings['page_size'])
         echo '<div class="topmenu">' . Functions::displayPagination($url . '?act=top' . $url . '&amp;', App::vars()->start, $total, App::user()->settings['page_size']) . '</div>';
-    $req = mysql_query("SELECT `" . TP . "album__files`.*, `" . TP . "user__`.`nickname` AS `user_name`, `" . TP . "album__cat`.`name` AS `album_name` $select
-        FROM `" . TP . "album__files`
-        INNER JOIN `" . TP . "user__` ON `" . TP . "album__files`.`user_id` = `" . TP . "user__`.`id`
-        INNER JOIN `" . TP . "album__cat` ON `" . TP . "album__files`.`album_id` = `" . TP . "album__cat`.`id`
+    $req = mysql_query("SELECT `album__files`.*, `user__`.`nickname` AS `user_name`, `album__cat`.`name` AS `album_name` $select
+        FROM `album__files`
+        INNER JOIN `user__` ON `album__files`.`user_id` = `user__`.`id`
+        INNER JOIN `album__cat` ON `album__files`.`album_id` = `album__cat`.`id`
         $join
         WHERE $where
         ORDER BY $order

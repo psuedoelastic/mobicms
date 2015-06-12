@@ -21,7 +21,7 @@ $url = App::router()->getUri(1);
 -----------------------------------------------------------------
 */
 if ($al && $user['id'] == App::user()->id || App::user()->rights >= 7) {
-    $req_a = mysql_query("SELECT * FROM `" . TP . "album__cat` WHERE `id` = '$al' AND `user_id` = '" . $user['id'] . "'");
+    $req_a = mysql_query("SELECT * FROM `album__cat` WHERE `id` = '$al' AND `user_id` = '" . $user['id'] . "'");
     if (!mysql_num_rows($req_a)) {
         // Если альбома не существует, завершаем скрипт
         echo __('error_wrong_data');
@@ -68,7 +68,7 @@ if ($al && $user['id'] == App::user()->id || App::user()->rights >= 7) {
                 if ($handle->processed) {
                     $description = isset($_POST['description']) ? trim($_POST['description']) : '';
                     $description = mb_substr($description, 0, 500);
-                    mysql_query("INSERT INTO `" . TP . "album__files` SET
+                    mysql_query("INSERT INTO `album__files` SET
                         `album_id` = '$al',
                         `user_id` = '" . $user['id'] . "',
                         `img_name` = '" . mysql_real_escape_string($img_name) . "',

@@ -22,11 +22,11 @@ $mod = urldecode(trim(App::request()->getQuery('mod', false)));
 */
 switch ($mod) {
     case 'boys':
-        $sql = "WHERE `" . TP . "user__`.`sex` = 'm'";
+        $sql = "WHERE `user__`.`sex` = 'm'";
         break;
 
     case 'girls':
-        $sql = "WHERE `" . TP . "user__`.`sex` = 'w'";
+        $sql = "WHERE `user__`.`sex` = 'w'";
         break;
     default:
         $sql = "";
@@ -40,14 +40,14 @@ $menu = [
 echo '<div class="phdr"><a href="' . $url . '"><b>' . __('photo_albums') . '</b></a> | ' . __('list') . '</div>' .
     '<div class="topmenu">' . Functions::displayMenu($menu) . '</div>';
 $total = mysql_result(mysql_query("SELECT COUNT(DISTINCT `user_id`)
-    FROM `" . TP . "album__files`
-    LEFT JOIN `" . TP . "user__` ON `" . TP . "album__files`.`user_id` = `" . TP . "user__`.`id`
+    FROM `album__files`
+    LEFT JOIN `user__` ON `album__files`.`user_id` = `user__`.`id`
 " . $sql), 0);
 if ($total) {
-    $req = mysql_query("SELECT `" . TP . "album__files`.*, COUNT(`" . TP . "album__files`.`id`) AS `count`, `" . TP . "user__`.`id` AS `uid`, `" . TP . "user__`.`nickname`, `" . TP . "user__`.`sex`
-        FROM `" . TP . "album__files`
-        LEFT JOIN `" . TP . "user__` ON `" . TP . "album__files`.`user_id` = `" . TP . "user__`.`id` $sql
-        GROUP BY `" . TP . "album__files`.`user_id` ORDER BY `" . TP . "user__`.`nickname` ASC " . App::db()->pagination()
+    $req = mysql_query("SELECT `album__files`.*, COUNT(`album__files`.`id`) AS `count`, `user__`.`id` AS `uid`, `user__`.`nickname`, `user__`.`sex`
+        FROM `album__files`
+        LEFT JOIN `user__` ON `album__files`.`user_id` = `user__`.`id` $sql
+        GROUP BY `album__files`.`user_id` ORDER BY `user__`.`nickname` ASC " . App::db()->pagination()
     );
     $i = 0;
     for ($i = 0; $res = mysql_fetch_assoc($req); ++$i) {

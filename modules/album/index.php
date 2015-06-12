@@ -75,10 +75,10 @@ $actions =
 if (isset($actions[App::vars()->act]) && is_file(__DIR__ . DS . '_sys' . DS . 'includes' . DS . $actions[App::vars()->act])) {
     require_once(__DIR__ . DS . '_sys' . DS . 'includes' . DS . $actions[App::vars()->act]);
 } else {
-    App::view()->new = App::db()->query("SELECT COUNT(*) FROM `" . TP . "album__files` WHERE `time` > '" . (time() - 259200) . "' AND `access` > '1'")->fetchColumn();
-    App::view()->count_m = App::db()->query("SELECT COUNT(DISTINCT `user_id`) FROM `" . TP . "album__files` LEFT JOIN `" . TP . "user__` ON `" . TP . "album__files`.`user_id` = `" . TP . "user__`.`id` WHERE `" . TP . "user__`.`sex` = 'm'")->fetchColumn();
-    App::view()->count_w = App::db()->query("SELECT COUNT(DISTINCT `user_id`) FROM `" . TP . "album__files` LEFT JOIN `" . TP . "user__` ON `" . TP . "album__files`.`user_id` = `" . TP . "user__`.`id` WHERE `" . TP . "user__`.`sex` = 'w'")->fetchColumn();
-    App::view()->count_my = App::db()->query("SELECT COUNT(*) FROM `" . TP . "album__files` WHERE `user_id` = " . App::user()->id)->fetchColumn();
+    App::view()->new = App::db()->query("SELECT COUNT(*) FROM `album__files` WHERE `time` > '" . (time() - 259200) . "' AND `access` > '1'")->fetchColumn();
+    App::view()->count_m = App::db()->query("SELECT COUNT(DISTINCT `user_id`) FROM `album__files` LEFT JOIN `user__` ON `album__files`.`user_id` = `user__`.`id` WHERE `user__`.`sex` = 'm'")->fetchColumn();
+    App::view()->count_w = App::db()->query("SELECT COUNT(DISTINCT `user_id`) FROM `album__files` LEFT JOIN `user__` ON `album__files`.`user_id` = `user__`.`id` WHERE `user__`.`sex` = 'w'")->fetchColumn();
+    App::view()->count_my = App::db()->query("SELECT COUNT(*) FROM `album__files` WHERE `user_id` = " . App::user()->id)->fetchColumn();
 
     App::view()->link = App::router()->getUri(2);
     App::view()->setTemplate('index.php');

@@ -20,7 +20,7 @@ global $img, $user;
 */
 //TODO: Переделать запросы
 if ($img && $user['id'] == App::user()->id || App::user()->rights >= 6) {
-    $req = mysql_query("SELECT * FROM `" . TP . "album__files` WHERE `id` = '$img' AND `user_id` = '" . $user['id'] . "'");
+    $req = mysql_query("SELECT * FROM `album__files` WHERE `id` = '$img' AND `user_id` = '" . $user['id'] . "'");
     if (mysql_num_rows($req)) {
         App::view()->res = mysql_fetch_assoc($req);
         App::view()->album = App::view()->res['album_id'];
@@ -125,7 +125,7 @@ if ($img && $user['id'] == App::user()->id || App::user()->rights >= 6) {
                 @unlink(ALBUMPATH . $user['id'] . DIRECTORY_SEPARATOR . App::view()->res['tmb_name']);
                 $sql = "`img_name` = '" . mysql_real_escape_string($img_name) . "', `tmb_name` = '" . mysql_real_escape_string($tmb_name) . "',";
             }
-            mysql_query("UPDATE `" . TP . "album__files` SET $sql
+            mysql_query("UPDATE `album__files` SET $sql
                 `description` = '" . mysql_real_escape_string(App::view()->description) . "'
                 WHERE `id` = '$img'
             ");

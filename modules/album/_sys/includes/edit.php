@@ -22,7 +22,7 @@ global $user, $al;
 */
 if ($user['id'] == App::user()->id || App::user()->rights >= 7) {
     if ($al) {
-        $req = mysql_query("SELECT * FROM `" . TP . "album__cat` WHERE `id` = '$al' AND `user_id` = '" . $user['id'] . "'");
+        $req = mysql_query("SELECT * FROM `album__cat` WHERE `id` = '$al' AND `user_id` = '" . $user['id'] . "'");
         if (mysql_num_rows($req)) {
             echo '<div class="phdr"><b>' . __('album_edit') . '</b></div>';
             $res = mysql_fetch_assoc($req);
@@ -61,13 +61,13 @@ if ($user['id'] == App::user()->id || App::user()->rights >= 7) {
         if ($access < 1 || $access > 4)
             $error[] = __('error_wrong_data');
         // Проверяем, есть ли уже альбом с таким же именем?
-        if (!$al && mysql_num_rows(mysql_query("SELECT * FROM `" . TP . "album__cat` WHERE `name` = '" . mysql_real_escape_string($name) . "' AND `user_id` = '" . $user['id'] . "' LIMIT 1")))
+        if (!$al && mysql_num_rows(mysql_query("SELECT * FROM `album__cat` WHERE `name` = '" . mysql_real_escape_string($name) . "' AND `user_id` = '" . $user['id'] . "' LIMIT 1")))
             $error[] = __('error_album_exists');
         if (!$error) {
             if ($al) {
                 // Изменяем данные в базе
-                mysql_query("UPDATE `" . TP . "album__files` SET `access` = '$access' WHERE `album_id` = '$al' AND `user_id` = '" . $user['id'] . "'");
-                mysql_query("UPDATE `" . TP . "album__cat` SET
+                mysql_query("UPDATE `album__files` SET `access` = '$access' WHERE `album_id` = '$al' AND `user_id` = '" . $user['id'] . "'");
+                mysql_query("UPDATE `album__cat` SET
                     `name` = '" . mysql_real_escape_string($name) . "',
                     `description` = '" . mysql_real_escape_string($description) . "',
                     `password` = '" . mysql_real_escape_string($password) . "',
@@ -76,7 +76,7 @@ if ($user['id'] == App::user()->id || App::user()->rights >= 7) {
                 ");
             } else {
                 // Вычисляем сортировку
-                $req = mysql_query("SELECT * FROM `" . TP . "album__cat` WHERE `user_id` = '" . $user['id'] . "' ORDER BY `sort` DESC LIMIT 1");
+                $req = mysql_query("SELECT * FROM `album__cat` WHERE `user_id` = '" . $user['id'] . "' ORDER BY `sort` DESC LIMIT 1");
                 if (mysql_num_rows($req)) {
                     $res = mysql_fetch_assoc($req);
                     $sort = $res['sort'] + 1;
@@ -84,7 +84,7 @@ if ($user['id'] == App::user()->id || App::user()->rights >= 7) {
                     $sort = 1;
                 }
                 // Заносим данные в базу
-                mysql_query("INSERT INTO `" . TP . "album__cat` SET
+                mysql_query("INSERT INTO `album__cat` SET
                     `user_id` = '" . $user['id'] . "',
                     `name` = '" . mysql_real_escape_string($name) . "',
                     `description` = '" . mysql_real_escape_string($description) . "',

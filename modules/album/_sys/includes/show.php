@@ -19,7 +19,7 @@ if (!$al) {
     echo __('error_wrong_data');
     exit;
 }
-$req = mysql_query("SELECT * FROM `" . TP . "album__cat` WHERE `id` = '$al'");
+$req = mysql_query("SELECT * FROM `album__cat` WHERE `id` = '$al'");
 if (!mysql_num_rows($req)) {
     echo __('error_wrong_data');
     exit;
@@ -80,18 +80,18 @@ if ($album['access'] == 1 && $user['id'] != App::user()->id && App::user()->righ
 */
 if ($view) {
     App::user()->settings['page_size'] = 1;
-    App::vars()->start = isset($_REQUEST['page']) ? App::vars()->page - 1 : (mysql_result(mysql_query("SELECT COUNT(*) FROM `" . TP . "album__files` WHERE `album_id` = '$al' AND `id` > '$img'"), 0));
+    App::vars()->start = isset($_REQUEST['page']) ? App::vars()->page - 1 : (mysql_result(mysql_query("SELECT COUNT(*) FROM `album__files` WHERE `album_id` = '$al' AND `id` > '$img'"), 0));
     // Обрабатываем ссылку для возврата
     if (empty($_SESSION['ref']))
         $_SESSION['ref'] = htmlspecialchars($_SERVER['HTTP_REFERER']);
 } else {
     unset($_SESSION['ref']);
 }
-$total = mysql_result(mysql_query("SELECT COUNT(*) FROM `" . TP . "album__files` WHERE `album_id` = '$al'"), 0);
+$total = mysql_result(mysql_query("SELECT COUNT(*) FROM `album__files` WHERE `album_id` = '$al'"), 0);
 if ($total > App::user()->settings['page_size'])
     echo '<div class="topmenu">' . Functions::displayPagination($url . '?act=show&amp;al=' . $al . '&amp;user=' . $user['id'] . '&amp;' . ($view ? 'view&amp;' : ''), App::vars()->start, $total, App::user()->settings['page_size']) . '</div>';
 if ($total) {
-    $req = mysql_query("SELECT * FROM `" . TP . "album__files` WHERE `user_id` = '" . $user['id'] . "' AND `album_id` = '$al' ORDER BY `id` DESC " . App::db()->pagination());
+    $req = mysql_query("SELECT * FROM `album__files` WHERE `user_id` = '" . $user['id'] . "' AND `album_id` = '$al' ORDER BY `id` DESC " . App::db()->pagination());
     for ($i = 0; $res = mysql_fetch_assoc($req); ++$i) {
         echo($i % 2 ? '<div class="list2">' : '<div class="list1">');
         if ($view) {
@@ -103,20 +103,20 @@ if ($total) {
             if ($user['id'] == App::user()->id && isset($_GET['profile'])) {
                 copy(
                     ALBUMPATH . $user['id'] . DIRECTORY_SEPARATOR . $res['tmb_name'],
-                    ROOTPATH . 'files' . DIRECTORY_SEPARATOR . 'users' . DIRECTORY_SEPARATOR . 'photo' . DIRECTORY_SEPARATOR . App::user()->id . '_small.jpg'
+                    ROOT_PATH . 'files' . DIRECTORY_SEPARATOR . 'users' . DIRECTORY_SEPARATOR . 'photo' . DIRECTORY_SEPARATOR . App::user()->id . '_small.jpg'
                 );
                 copy(
                     ALBUMPATH . $user['id'] . DIRECTORY_SEPARATOR . $res['img_name'],
-                    ROOTPATH . 'files' . DIRECTORY_SEPARATOR . 'users' . DIRECTORY_SEPARATOR . 'photo' . DIRECTORY_SEPARATOR . App::user()->id . '.jpg'
+                    ROOT_PATH . 'files' . DIRECTORY_SEPARATOR . 'users' . DIRECTORY_SEPARATOR . 'photo' . DIRECTORY_SEPARATOR . App::user()->id . '.jpg'
                 );
                 echo '<span class="green"><b>' . __('photo_profile_ok') . '</b></span><br />';
             }
             echo '<a href="' . $_SESSION['ref'] . '"><img src="' . App::cfg()->sys->homeurl . 'assets/misc/album_image.php?u=' . $user['id'] . '&amp;f=' . $res['img_name'] . '" /></a>';
             // Счетчик просмотров
-            if (!mysql_result(mysql_query("SELECT COUNT(*) FROM `" . TP . "album__views` WHERE `user_id` = '" . App::user()->id . "' AND `file_id` = '" . $res['id'] . "'"), 0)) {
-                mysql_query("INSERT INTO `" . TP . "album__views` SET `user_id` = '" . App::user()->id . "', `file_id` = '" . $res['id'] . "', `time` = '" . time() . "'");
-                $views = mysql_result(mysql_query("SELECT COUNT(*) FROM `" . TP . "album__views` WHERE `file_id` = '" . $res['id'] . "'"), 0);
-                mysql_query("UPDATE `" . TP . "album__files` SET `views` = '$views' WHERE `id` = '" . $res['id'] . "'");
+            if (!mysql_result(mysql_query("SELECT COUNT(*) FROM `album__views` WHERE `user_id` = '" . App::user()->id . "' AND `file_id` = '" . $res['id'] . "'"), 0)) {
+                mysql_query("INSERT INTO `album__views` SET `user_id` = '" . App::user()->id . "', `file_id` = '" . $res['id'] . "', `time` = '" . time() . "'");
+                $views = mysql_result(mysql_query("SELECT COUNT(*) FROM `album__views` WHERE `file_id` = '" . $res['id'] . "'"), 0);
+                mysql_query("UPDATE `album__files` SET `views` = '$views' WHERE `id` = '" . $res['id'] . "'");
             }
         } else {
             /*

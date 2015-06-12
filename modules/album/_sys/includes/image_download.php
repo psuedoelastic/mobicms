@@ -20,12 +20,12 @@ defined('_IN_MOBICMS') or die('Error: restricted access');
 */
 //TODO: переделать запросы
 $error = [];
-$req = mysql_query("SELECT * FROM `" . TP . "album__files` WHERE `id` = '$img'");
+$req = mysql_query("SELECT * FROM `album__files` WHERE `id` = '$img'");
 if (mysql_num_rows($req)) {
     $res = mysql_fetch_assoc($req);
     // Проверка прав доступа
     if (App::user()->rights < 6 && App::user()->id != $res['user_id']) {
-        $req_a = mysql_query("SELECT * FROM `" . TP . "album__cat` WHERE `id` = '" . $res['album_id'] . "'");
+        $req_a = mysql_query("SELECT * FROM `album__cat` WHERE `id` = '" . $res['album_id'] . "'");
         if (mysql_num_rows($req_a)) {
             $res_a = mysql_fetch_assoc($req_a);
             if ($res_a['access'] == 1 || $res_a['access'] == 2 && (!isset($_SESSION['ap']) || $_SESSION['ap'] != $res_a['password']))
@@ -42,10 +42,10 @@ if (mysql_num_rows($req)) {
 }
 if (!$error) {
     // Счетчик скачиваний
-    if (!mysql_result(mysql_query("SELECT COUNT(*) FROM `" . TP . "album__downlosystem__advt` WHERE `user_id` = '" . App::user()->id . "' AND `file_id` = '$img'"), 0)) {
-        mysql_query("INSERT INTO `" . TP . "album__downlosystem__advt` SET `user_id` = '" . App::user()->id . "', `file_id` = '$img', `time` = '" . time() . "'");
-        $downloads = mysql_result(mysql_query("SELECT COUNT(*) FROM `" . TP . "album__downlosystem__advt` WHERE `file_id` = '$img'"), 0);
-        mysql_query("UPDATE `" . TP . "album__files` SET `downlosystem__advt` = '$downloads' WHERE `id` = '$img'");
+    if (!mysql_result(mysql_query("SELECT COUNT(*) FROM `album__downlosystem__advt` WHERE `user_id` = '" . App::user()->id . "' AND `file_id` = '$img'"), 0)) {
+        mysql_query("INSERT INTO `album__downlosystem__advt` SET `user_id` = '" . App::user()->id . "', `file_id` = '$img', `time` = '" . time() . "'");
+        $downloads = mysql_result(mysql_query("SELECT COUNT(*) FROM `album__downlosystem__advt` WHERE `file_id` = '$img'"), 0);
+        mysql_query("UPDATE `album__files` SET `downlosystem__advt` = '$downloads' WHERE `id` = '$img'");
     }
     // Отдаем файл
     header('location: ' . App::cfg()->homeurl . 'files/users/album/' . $res['user_id'] . '/' . $res['img_name']);
