@@ -22,7 +22,7 @@ namespace Mobicms\Editors;
  * @method display()
  * @method getHelp()
  * @method getStyle()
- * @method setLanguage()
+ * @method setLanguage($iso)
  */
 class Editor
 {

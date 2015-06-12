@@ -27,7 +27,6 @@ class PDOmysql extends \PDO
         $db_user = 'root';
         $db_pass = '';
         $db_name = 'mobicms';
-        $db_prefix = '';
 
         if (is_file(CONFIG_PATH.'database.php')) {
             require_once CONFIG_PATH.'database.php';

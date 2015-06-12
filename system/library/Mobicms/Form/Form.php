@@ -270,7 +270,7 @@ class Form
                     if ($this->isSubmitted && isset($element['reset_value'])) {
                         $element['value'] = $element['reset_value'];
                     }
-                    $out[] = (new Fields($element, $this->form['name']))->display();
+                    $out[] = (new Fields($element))->display();
             }
         }
 
