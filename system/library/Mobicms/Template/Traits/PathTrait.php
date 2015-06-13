@@ -19,7 +19,7 @@ use App;
  *
  * @package Mobicms\Template\Traits
  * @author  Oleg (AlkatraZ) Kasyanov <dev@mobicms.net>
- * @version v.1.0.0 2015-06-12
+ * @version v.1.1.0 2015-06-13
  */
 trait PathTrait
 {
@@ -31,35 +31,7 @@ trait PathTrait
      */
     public function getLink($file)
     {
-        $type = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-        $moduleDir = App::router()->dir;
-        $themeLink = App::cfg()->sys->homeurl.'themes/';
-        $skinLink = $themeLink.App::user()->settings['skin'].'/';
-        $skinPath = THEMES_PATH.App::user()->settings['skin'].DS;
-
-        $search =
-            [
-                [
-                    // Поиск файла в теме (папка для модулей)
-                    $skinPath.'modules'.DS.$moduleDir.DS.$type.DS.$file,
-                    $skinLink.'modules/'.$moduleDir.'/'.$type.'/'.$file
-                ],
-                [
-                    // Поиск файла в модуле
-                    ASSETS_PATH.'modules'.DS.$moduleDir.DS.$type.DS.$file,
-                    App::cfg()->sys->homeurl.'assets/modules/'.$moduleDir.'/'.$type.'/'.$file
-                ],
-                [
-                    // Поиск файла в теме
-                    $skinPath.$type.DS.$file,
-                    $skinLink.$type.'/'.$file
-                ],
-                [
-                    // Поиск файла в теме по-умолчанию
-                    THEMES_PATH.App::cfg()->sys->theme_default.DS.$type.DS.$file,
-                    $themeLink.App::cfg()->sys->theme_default.'/'.$type.'/'.$file
-                ]
-            ];
+        $search = $this->links($file);
 
         foreach ($search as $val) {
             if (is_file($val[0])) {
@@ -100,5 +72,38 @@ trait PathTrait
         }
 
         throw new \InvalidArgumentException($file.'" not found');
+    }
+
+    private function links($file)
+    {
+        $type = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+        $moduleDir = App::router()->dir;
+        $themeLink = App::cfg()->sys->homeurl.'themes/';
+        $skinLink = $themeLink.App::user()->settings['skin'].'/';
+        $skinPath = THEMES_PATH.App::user()->settings['skin'].DS;
+
+        return
+            [
+                [
+                    // Поиск файла в теме (папка для модулей)
+                    $skinPath.'modules'.DS.$moduleDir.DS.$type.DS.$file,
+                    $skinLink.'modules/'.$moduleDir.'/'.$type.'/'.$file
+                ],
+                [
+                    // Поиск файла в модуле
+                    ASSETS_PATH.'modules'.DS.$moduleDir.DS.$type.DS.$file,
+                    App::cfg()->sys->homeurl.'assets/modules/'.$moduleDir.'/'.$type.'/'.$file
+                ],
+                [
+                    // Поиск файла в теме
+                    $skinPath.$type.DS.$file,
+                    $skinLink.$type.'/'.$file
+                ],
+                [
+                    // Поиск файла в теме по-умолчанию
+                    THEMES_PATH.App::cfg()->sys->theme_default.DS.$type.DS.$file,
+                    $themeLink.App::cfg()->sys->theme_default.'/'.$type.'/'.$file
+                ]
+            ];
     }
 }
