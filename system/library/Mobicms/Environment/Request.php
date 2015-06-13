@@ -39,7 +39,7 @@ class Request
     public function getQuery($name = null, $default = null)
     {
         if ($this->queryParams === null) {
-            $this->queryParams = new Parameters(isset($_GET) ? $_GET : null);
+            $this->queryParams = new Parameters(filter_input_array(INPUT_GET));
         }
 
         if ($name === null) {
@@ -59,7 +59,7 @@ class Request
     public function getPost($name = null, $default = null)
     {
         if ($this->postParams === null) {
-            $this->postParams = new Parameters(isset($_POST) ? $_POST : null);
+            $this->postParams = new Parameters(filter_input_array(INPUT_POST));
         }
 
         if ($name === null) {

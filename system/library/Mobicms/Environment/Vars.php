@@ -12,7 +12,11 @@
 
 namespace Mobicms\Environment;
 
-//TODO: класс предназначен для удаления
+/**
+ * Class Vars
+ *
+ * @package Mobicms\Environment
+ */
 class Vars
 {
     public $page = 1;
@@ -21,11 +25,11 @@ class Vars
     public function __construct()
     {
         // Obtain variables
-        if (isset($_REQUEST['page'])) {
-            $this->page = intval($_REQUEST['page']);
+        if (filter_has_var(INPUT_ENV, 'page')) {
+            $this->page = filter_input(INPUT_ENV, 'page', FILTER_SANITIZE_NUMBER_INT);
             $this->start = intval($this->page * \App::user()->settings['page_size'] - \App::user()->settings['page_size']);
-        } elseif (isset($_REQUEST['start'])) {
-            $this->start = intval($_REQUEST['start']);
+        } elseif (filter_has_var(INPUT_ENV, 'start')) {
+            $this->start = filter_input(INPUT_ENV, 'start', FILTER_SANITIZE_NUMBER_INT);
         }
     }
 }
