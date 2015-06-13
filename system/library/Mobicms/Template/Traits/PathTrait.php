@@ -31,9 +31,7 @@ trait PathTrait
      */
     public function getLink($file)
     {
-        $search = $this->links($file);
-
-        foreach ($search as $val) {
+        foreach ($this->links($file) as $val) {
             if (is_file($val[0])) {
                 return $val[1];
             }
