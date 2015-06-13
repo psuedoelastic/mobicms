@@ -28,7 +28,6 @@ class Form
     private $fields = [];
     private $rules = [];
     private $validate = true;
-    private $requestObject;
     public $input;
 
     public $validationToken = true;
@@ -51,13 +50,12 @@ class Form
             $this->form['name'] = 'form';
         }
 
-        $this->requestObject = new Request;
         if (isset($option['method']) && $option['method'] == 'get') {
             $this->form['method'] = 'get';
-            $this->input = $this->requestObject->getQuery();
+            $this->input = filter_input_array(INPUT_GET);
         } else {
             $this->form['method'] = 'post';
-            $this->input = $this->requestObject->getPost();
+            $this->input = filter_input_array(INPUT_POST);
         }
 
         $this->successMessage = __('data_saved');
@@ -190,7 +188,7 @@ class Form
     {
         // Checking whether the form is submitted?
         foreach ($this->submitNames as $submit) {
-            if ($this->input->offsetExists($submit)) {
+            if (isset($this->input[$submit])) {
                 if (!$this->validationToken
                     || (isset($this->input['form_token'], $_SESSION['form_token'])
                         && $this->input['form_token'] == $_SESSION['form_token'])
@@ -232,9 +230,10 @@ class Form
     {
         // Информационные сообщения об ошибке, или успехе
         $message = '';
+        $saved = filter_has_var(INPUT_GET, 'saved');
 
-        if ($this->infoMessages !== false && $this->isSubmitted || $this->requestObject->getQuery()->offsetExists('saved')) {
-            if ($this->isValid || $this->requestObject->getQuery()->offsetExists('saved')) {
+        if ($this->infoMessages !== false && $this->isSubmitted || $saved) {
+            if ($this->isValid || $saved) {
                 // Сообщение об удачном сохранении данных
                 $message = sprintf($this->infoMessages, 'alert-success', $this->successMessage);
 
@@ -308,9 +307,9 @@ class Form
             case 'password':
             case 'hidden':
             case 'textarea':
-                if ($this->input->offsetExists($option['name'])) {
+                if (isset($this->input[$option['name']])) {
                     $option['value'] = trim($this->input[$option['name']]);
-                    $this->input->offsetUnset($option['name']);
+                    unset($this->input[$option['name']]);
 
                     // Применяем фильтры
                     if (isset($option['filter'])) {
@@ -335,7 +334,7 @@ class Form
                     if (array_key_exists($this->input[$option['name']], $option['items'])) {
                         $option['checked'] = trim($this->input[$option['name']]);
                         $this->output[$option['name']] = $option['checked'];
-                        $this->input->offsetUnset($option['name']);
+                        unset($this->input[$option['name']]);
                     } else {
                         $this->isValid = false;
                     }
@@ -362,7 +361,7 @@ class Form
                     if ($allow) {
                         $option['selected'] = $this->input[$option['name']];
                         $this->output[$option['name']] = $option['selected'];
-                        $this->input->offsetUnset($option['name']);
+                        unset($this->input[$option['name']]);
                     } else {
                         $this->isValid = false;
                     }
@@ -370,8 +369,8 @@ class Form
                 break;
 
             case 'checkbox':
-                if ($this->input->offsetExists($option['name'])) {
-                    $this->input->offsetUnset($option['name']);
+                if (isset($this->input[$option['name']])) {
+                    unset($this->input[$option['name']]);
                     $option['checked'] = 1;
                     $this->output[$option['name']] = 1;
                 } else {

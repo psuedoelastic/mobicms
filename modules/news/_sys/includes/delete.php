@@ -12,7 +12,7 @@
 
 defined('MOBICMS') or die('Error: restricted access');
 
-$id = abs(intval(App::request()->getQuery('id', 0)));
+$id = filter_input(INPUT_ENV, 'id', FILTER_SANITIZE_NUMBER_INT);
 
 $form = new Mobicms\Form\Form(['action' => App::router()->getUri(2) . ($id ? '?id=' . $id : '')]);
 

@@ -13,11 +13,13 @@
 defined('MOBICMS') or die('Error: restricted access');
 
 $themes = App::cfg()->sys->getThemesList();
+$act = filter_input(INPUT_ENV, 'act', FILTER_SANITIZE_STRING);
+$mod = filter_input(INPUT_ENV, 'mod', FILTER_SANITIZE_STRING);
 
-if (trim(App::request()->getQuery('act', '')) == 'set' && isset($themes[App::request()->getQuery('mod')])) {
-    $theme = $themes[App::request()->getQuery('mod')];
+if ($act == 'set' && isset($themes[$mod])) {
+    $theme = $themes[$mod];
     $description = '<br/><dl class="description">' .
-        '<dt class="wide"><img src="' . $themes[App::request()->getQuery('mod')]['thumbinal'] . '" alt=""/></dt>' .
+        '<dt class="wide"><img src="' . $themes[$mod]['thumbinal'] . '" alt=""/></dt>' .
         '<dd>' .
         '<div class="header">' . $theme['name'] . '</div>' .
         (!empty($theme['author']) ? '<strong>' . __('author') . '</strong>: ' . htmlspecialchars($theme['author']) : '') .
