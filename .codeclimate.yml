@@ -1,0 +1,18 @@
+languages:
+   Ruby: false
+   JavaScript: false
+   Python: false
+   PHP: true
+
+exclude_paths:
+ - "assets/*"
+ - "install/*"
+ - "modules/*"
+ - "system/cache/*"
+ - "system/config/*"
+ - "system/includes/*"
+ - "system/languages/*"
+ - "system/logs/*"
+ - "system/third-party/*"
+ - "themes/*"
+ - "uploads/*"
