@@ -33,52 +33,52 @@ define('DS', DIRECTORY_SEPARATOR);
 /**
  * Defines the root directory of the mobiCMS installation
  */
-define('ROOT_PATH', dirname(__DIR__) . DS);
+define('ROOT_PATH', dirname(__DIR__).DS);
 
 /**
  * Path to the PSR-0 compatible libraries
  */
-define('VENDOR_PATH', __DIR__ . DS . 'library' . DS);
+define('VENDOR_PATH', __DIR__.DS.'library'.DS);
 
 /**
  * Path to the configuration files
  */
-define('CONFIG_PATH', __DIR__ . DS . 'config' . DS);
+define('CONFIG_PATH', __DIR__.DS.'config'.DS);
 
 /**
  * Path to the system cache files
  */
-define('CACHE_PATH', __DIR__ . DS . 'cache' . DS);
+define('CACHE_PATH', __DIR__.DS.'cache'.DS);
 
 /**
  * Path to the LOG files
  */
-define('LOG_PATH', __DIR__ . DS . 'logs' . DS);
+define('LOG_PATH', __DIR__.DS.'logs'.DS);
 
 /**
  * Path to the language files
  */
-define('LANGUAGE_PATH', __DIR__ . DS . 'languages' . DS);
+define('LANGUAGE_PATH', __DIR__.DS.'languages'.DS);
 
 /**
  * Path to the modiles
  */
-define('MODULE_PATH', ROOT_PATH . 'modules' . DS);
+define('MODULE_PATH', ROOT_PATH.'modules'.DS);
 
 /**
  * Path to the Templates
  */
-define('THEMES_PATH', ROOT_PATH . 'themes' . DS);
+define('THEMES_PATH', ROOT_PATH.'themes'.DS);
 
 /**
  * Path to the Upload files
  */
-define('FILES_PATH', ROOT_PATH . 'uploads' . DS);
+define('FILES_PATH', ROOT_PATH.'uploads'.DS);
 
 /**
  * Path to the Upload files
  */
-define('ASSETS_PATH', ROOT_PATH . 'assets' . DS);
+define('ASSETS_PATH', ROOT_PATH.'assets'.DS);
 
 
 /**
@@ -100,7 +100,7 @@ if (DEBUG) {
     ini_set('error_reporting', E_ALL);
     ini_set('display_errors', 'On');
     ini_set('log_errors', 'On');
-    ini_set('error_log', LOG_PATH . 'errors-' . date('Y-m-d') . '.log');
+    ini_set('error_log', LOG_PATH.'errors-'.date('Y-m-d').'.log');
 } else {
     ini_set('error_reporting', E_ALL & ~E_DEPRECATED & ~E_STRICT);
     ini_set('display_errors', 'Off');
@@ -120,7 +120,6 @@ if (DEBUG) {
  * @method static \Mobicms\Helpers\Image        image()
  * @method static \Mobicms\L10n\Languages       languages()
  * @method static \Mobicms\Environment\Network  network()
- * @method static \Mobicms\Environment\Request  request()
  * @method static \Mobicms\HtmlFilter\Purify    purify()
  * @method static \Mobicms\Routing\Router       router()
  * @method static \Mobicms\Users\User           user()
@@ -153,7 +152,6 @@ class App
             'db'        => Mobicms\Database\PDOmysql::class,
             'languages' => Mobicms\L10n\Languages::class,
             'network'   => Mobicms\Environment\Network::class,
-            'request'   => Mobicms\Environment\Request::class,
             'router'    => Mobicms\Routing\Router::class,
             'purify'    => Mobicms\HtmlFilter\Purify::class,
             'user'      => Mobicms\Users\User::class,
@@ -178,7 +176,7 @@ class App
 
             return self::$objects[$name];
         } else {
-            throw new BadMethodCallException('method ' . $name . '() not found');
+            throw new BadMethodCallException('method '.$name.'() not found');
         }
     }
 
@@ -209,12 +207,12 @@ class App
 /**
  * Autoloading classes
  */
-require_once(VENDOR_PATH . 'Mobicms/Autoload/Loader.php');
+require_once(VENDOR_PATH.'Mobicms/Autoload/Loader.php');
 
 // Register old classes in folder /system/includes
-App::autoload()->import('Counters', __DIR__ . '/includes/Counters.php');
-App::autoload()->import('Functions', __DIR__ . '/includes/Functions.php');
-App::autoload()->import('Users', __DIR__ . '/includes/Users.php'); //TODO: удалить
+App::autoload()->import('Counters', __DIR__.'/includes/Counters.php');
+App::autoload()->import('Functions', __DIR__.'/includes/Functions.php');
+App::autoload()->import('Users', __DIR__.'/includes/Users.php'); //TODO: удалить
 
 /**
  * Exception handler
